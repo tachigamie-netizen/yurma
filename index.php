@@ -19,100 +19,90 @@
         </div>
     </section>
 
-    <!-- Проживание -->
-    <section class="accommodation">
-        <div class="container">
-            <h2>Проживание</h2>
+<!-- Проживание -->
+<section class="accommodation">
+    <div class="container">
+        <h2>Проживание</h2>
+        
+        <div class="card-grid">
+            <?php
+            // Получаем ID выбранных номеров для 4 слотов
+            $slot_1 = get_theme_mod('room_slot_1', '');
+            $slot_2 = get_theme_mod('room_slot_2', '');
+            $slot_3 = get_theme_mod('room_slot_3', '');
+            $slot_4 = get_theme_mod('room_slot_4', '');
             
-            <div class="card-grid">
-                <!-- Карточка 1 -->
-                <div class="card room-card">
-                    <img src="resource/img/room_11.jpg" alt="Комфорт" class="card_image">
-                    <div class="card_content">
-                        <div class="card_header">
-                            <h3>Комфорт с балконом</h3>
-                            <span class="second">2 местный</span>
-                        </div>
-                        <ul class="card_list">
-                            <li>Двуспальная кровать</li>
-                            <li>TV Триколор</li>
-                            <li>Душ и туалет</li>
-                            <li>Балкон</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">8 800 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Карточка 2 -->
-                <div class="card room-card">
-                    <img src="resource/img/room_2.jpg" alt="Стандарт" class="card_image">
-                    <div class="card_content">
-                        <div class="card_header">
-                            <h3>Стандарт</h3>
-                            <span class="second">2 местный</span>
-                        </div>
-                        <ul class="card_list">
-                            <li>Двуспальная кровать</li>
-                            <li>TV Триколор</li>
-                            <li>Душ и туалет</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">5 500 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Карточка 3 -->
-                <div class="card room-card">
-                    <img src="resource/img/room_3.jpg" alt="Семейный" class="card_image">
-                    <div class="card_content">
-                        <div class="card_header">
-                            <h3>Семейный люкс</h3>
-                            <span class="second">4 местный</span>
-                        </div>
-                        <ul class="card_list">
-                            <li>2 спальни</li>
-                            <li>TV Триколор</li>
-                            <li>Душ и туалет</li>
-                            <li>Кухонная зона</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">12 000 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Карточка 4 -->
-                <div class="card room-card">
-                    <img src="resource/img/room_4.jpg" alt="Эконом" class="card_image">
-                    <div class="card_content">
-                        <div class="card_header">
-                            <h3>Эконом</h3>
-                            <span class="second">2 местный</span>
-                        </div>
-                        <ul class="card_list">
-                            <li>Две односпальные кровати</li>
-                            <li>TV Триколор</li>
-                            <li>Душ и туалет</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">4 500 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            $slots = array($slot_1, $slot_2, $slot_3, $slot_4);
             
-            <div class="section_footer">
-                <a href="#" class="btn-link">Все варианты размещения</a>
-            </div>
+            foreach ($slots as $slot_id) {
+                if (empty($slot_id)) {
+                    // Если номер не выбран, показываем заглушку
+                    ?>
+                    <div class="card room-card placeholder">
+                        <div class="card_content">
+                            <div class="card_header">
+                                <h3>Скоро здесь будет номер</h3>
+                            </div>
+                            <p>Выберите номер в настройках темы</p>
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    // Получаем данные номера
+                    $room = get_post($slot_id);
+                    if ($room) {
+                        $price = get_post_meta($slot_id, 'room_price', true);
+                        $capacity = get_post_meta($slot_id, 'room_capacity', true);
+                        $features = get_post_meta($slot_id, 'room_features', true);
+                        $image_id = get_post_meta($slot_id, 'room_image_id', true);
+                        $features_list = $features ? explode("\n", $features) : array();
+                        ?>
+                        <div class="card room-card">
+                            <?php if ($image_id) : ?>
+                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($room->post_title); ?>" class="card_image">
+                            <?php else : ?>
+                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card_image">
+                            <?php endif; ?>
+                            
+                            <div class="card_content">
+                                <div class="card_header">
+                                    <h3><?php echo esc_html($room->post_title); ?></h3>
+                                    <?php if ($capacity) : ?>
+                                        <span class="second"><?php echo esc_html($capacity); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <?php if (!empty($features_list)) : ?>
+                                    <ul class="card_list">
+                                        <?php foreach ($features_list as $feature) : ?>
+                                            <?php $feature = trim($feature); ?>
+                                            <?php if (!empty($feature)) : ?>
+                                                <li><?php echo esc_html($feature); ?></li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
+                                
+                                <div class="card_footer">
+                                    <?php if ($price) : ?>
+                                        <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
+                                    <?php endif; ?>
+                                    <button class="btn btn-primary">заказать</button>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+            }
+            ?>
         </div>
-    </section>
+        
+        <div class="section_footer">
+            <a href="#" class="btn-link">Все варианты размещения</a>
+        </div>
+    </div>
+</section>
     
     <!-- Экскурсии -->
     <section class="section tours">
