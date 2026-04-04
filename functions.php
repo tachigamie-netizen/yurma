@@ -329,5 +329,22 @@ function yurma_customize_register($wp_customize) {
 }
 add_action('customize_register', 'yurma_customize_register');
 
+// Логируем все события Contact Form 7
+add_action('wpcf7_before_send_mail', function($contact_form) {
+    file_put_contents(__DIR__ . '/cf7_debug.txt', date('H:i:s') . " - before_send_mail вызван\n", FILE_APPEND);
+});
 
-?>
+add_action('wpcf7_mail_sent', function($contact_form) {
+    file_put_contents(__DIR__ . '/cf7_debug.txt', date('H:i:s') . " - mail_sent (успех)\n", FILE_APPEND);
+});
+
+add_action('wpcf7_mail_failed', function($contact_form) {
+    file_put_contents(__DIR__ . '/cf7_debug.txt', date('H:i:s') . " - mail_failed (ошибка)\n", FILE_APPEND);
+});
+add_action('wpcf7_mail_sent', function($contact_form) {
+    $submission = WPCF7_Submission::get_instance();
+    if ($submission) {
+        $data = $submission->get_posted_data();
+        file_put_contents(__DIR__ . '/cf7_data.txt', date('H:i:s') . " - Имя: " . ($data['your-name'] ?? '') . " Телефон: " . ($data['your-phone'] ?? '') . "\n", FILE_APPEND);
+    }
+});

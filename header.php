@@ -13,13 +13,13 @@
     <header class="header">
         <div class="container header_container">
             <a href="index.html" class="logo">
-                <img src="resource/img/logo.svg" alt="Логотип">
+                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo.svg" alt="Логотип">
             </a>
 
             <!-- Навигация -->
             <nav>
                 <ul>
-                    <li><a href="#">Проживание</a></li>
+                    <li><a href="<?php echo home_url('/проживание/'); ?>">Проживание</a></li>
                     <li><a href="#">Экскурсии</a></li>
                     <li><a href="#">Услуги</a></li>
                     <li><a href="#">Галерея</a></li>
