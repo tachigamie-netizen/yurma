@@ -19,274 +19,263 @@
         </div>
     </section>
 
-<!-- Проживание -->
+    <!-- Проживание -->
 <section class="accommodation">
     <div class="container">
         <h2>Проживание</h2>
         
         <div class="card-grid">
             <?php
-            // Получаем ID выбранных номеров для 4 слотов
+            // Получаем ID выбранных номеров
             $slot_1 = get_theme_mod('room_slot_1', '');
             $slot_2 = get_theme_mod('room_slot_2', '');
             $slot_3 = get_theme_mod('room_slot_3', '');
             $slot_4 = get_theme_mod('room_slot_4', '');
             
-            $slots = array($slot_1, $slot_2, $slot_3, $slot_4);
+            // Собираем только выбранные (не пустые) номера
+            $slots = array();
+            if (!empty($slot_1)) $slots[] = $slot_1;
+            if (!empty($slot_2)) $slots[] = $slot_2;
+            if (!empty($slot_3)) $slots[] = $slot_3;
+            if (!empty($slot_4)) $slots[] = $slot_4;
             
             foreach ($slots as $slot_id) {
-                if (empty($slot_id)) {
-                    // Если номер не выбран, показываем заглушку
+                $room = get_post($slot_id);
+                if ($room) {
+                    $price = get_post_meta($slot_id, 'room_price', true);
+                    $capacity = get_post_meta($slot_id, 'room_capacity', true);
+                    $features = get_post_meta($slot_id, 'room_features', true);
+                    $image_id = get_post_meta($slot_id, 'room_image_id', true);
+                    $features_list = $features ? explode("\n", $features) : array();
                     ?>
-                    <div class="card room-card placeholder">
+                    <div class="card room-card">
+                        <?php if ($image_id) : ?>
+                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($room->post_title); ?>" class="card_image">
+                        <?php else : ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card_image">
+                        <?php endif; ?>
+                        
                         <div class="card_content">
                             <div class="card_header">
-                                <h3>Скоро здесь будет номер</h3>
+                                <h3><?php echo esc_html($room->post_title); ?></h3>
+                                <?php if ($capacity) : ?>
+                                    <span class="second"><?php echo esc_html($capacity); ?></span>
+                                <?php endif; ?>
                             </div>
-                            <p>Выберите номер в настройках темы</p>
+                            
+                            <?php if (!empty($features_list)) : ?>
+                                <ul class="card_list">
+                                    <?php foreach ($features_list as $feature) : ?>
+                                        <?php $feature = trim($feature); ?>
+                                        <?php if (!empty($feature)) : ?>
+                                            <li><?php echo esc_html($feature); ?></li>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                            
+                            <div class="card_footer">
+                                <?php if ($price) : ?>
+                                    <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
+                                <?php endif; ?>
+                                <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                            </div>
                         </div>
                     </div>
                     <?php
-                } else {
-                    // Получаем данные номера
-                    $room = get_post($slot_id);
-                    if ($room) {
-                        $price = get_post_meta($slot_id, 'room_price', true);
-                        $capacity = get_post_meta($slot_id, 'room_capacity', true);
-                        $features = get_post_meta($slot_id, 'room_features', true);
-                        $image_id = get_post_meta($slot_id, 'room_image_id', true);
-                        $features_list = $features ? explode("\n", $features) : array();
-                        ?>
-                        <div class="card room-card">
-                            <?php if ($image_id) : ?>
-                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($room->post_title); ?>" class="card_image">
-                            <?php else : ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card_image">
-                            <?php endif; ?>
-                            
-                            <div class="card_content">
-                                <div class="card_header">
-                                    <h3><?php echo esc_html($room->post_title); ?></h3>
-                                    <?php if ($capacity) : ?>
-                                        <span class="second"><?php echo esc_html($capacity); ?></span>
-                                    <?php endif; ?>
-                                </div>
-                                
-                                <?php if (!empty($features_list)) : ?>
-                                    <ul class="card_list">
-                                        <?php foreach ($features_list as $feature) : ?>
-                                            <?php $feature = trim($feature); ?>
-                                            <?php if (!empty($feature)) : ?>
-                                                <li><?php echo esc_html($feature); ?></li>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                <?php endif; ?>
-                                
-                                <div class="card_footer">
-                                    <?php if ($price) : ?>
-                                        <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
-                                    <?php endif; ?>
-                                    <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                    }
                 }
             }
             ?>
         </div>
         
         <div class="section_footer">
-            <a href="<?php echo home_url('/проживание/'); ?>" class="btn-link">Все варианты размещения</a>
+            <a href="<?php echo home_url('/rooms/'); ?>" class="btn-link">Все варианты размещения</a>
         </div>
     </div>
 </section>
     
-    <!-- Экскурсии -->
-    <section class="section tours">
-        <div class="container">
-            <div class="tours_header">
-                <h2>Экскурсии</h2>
-                <p class="tours_description">Бескрайние леса, заснеженные вершины, горные реки и скалистые хребты</p>
-                <p class="tours_text">Каждая поездка проходит в сопровождении опытного гида. От спокойных прогулок для новичков до дневных треков для опытных райдеров. Техника рассчитана на двоих, второй участник — 1 000 ₽</p>
-            </div>
-            
-            <div class="card-grid">
-                <!-- Маршрут 1 -->
-                <div class="card route-card">
-                    <img src="resource/img/tour-1.jpg" alt="По хребту Юрма" class="card_image">
-                    <div class="card_content">
-                        <h3>По хребту Юрма</h3>
-                        <ul class="card_list">
-                            <li>📍 Длина: 25 км</li>
-                            <li>⏱ Время: 2-2.5 ч</li>
-                            <li>📊 Сложность: ■■□□□</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">10 000 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Маршрут 2 -->
-                <div class="card route-card">
-                    <img src="resource/img/tour-2.jpg" alt="Соколиная сопка" class="card_image">
-                    <div class="card_content">
-                        <h3>Соколиная сопка</h3>
-                        <ul class="card_list">
-                            <li>📍 Длина: 35 км</li>
-                            <li>⏱ Время: 3-4 ч</li>
-                            <li>📊 Сложность: ■■■□□</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">14 000 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Маршрут 3 -->
-                <div class="card route-card">
-                    <img src="resource/img/tour-3.jpg" alt="Горное озеро" class="card_image">
-                    <div class="card_content">
-                        <h3>Горное озеро</h3>
-                        <ul class="card_list">
-                            <li>📍 Длина: 18 км</li>
-                            <li>⏱ Время: 2 ч</li>
-                            <li>📊 Сложность: ■□□□□</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">8 000 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Маршрут 4 -->
-                <div class="card route-card">
-                    <img src="resource/img/tour-4.jpg" alt="Ночной тур" class="card_image">
-                    <div class="card_content">
-                        <h3>Ночной тур</h3>
-                        <ul class="card_list">
-                            <li>📍 Длина: 20 км</li>
-                            <li>⏱ Время: 2.5 ч</li>
-                            <li>📊 Сложность: ■■□□□</li>
-                        </ul>
-                        <div class="card_footer">
-                            <span class="price">12 000 ₽</span>
-                            <button class="btn btn-primary">заказать</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section_footer">
-                <a href="#" class="btn-link">Все маршруты</a>
-            </div>
+<!-- Экскурсии -->
+<section class="section tours">
+    <div class="container">
+        <div class="tours_header">
+            <h2>Маршруты</h2>
+            <p class="tours_description">Бескрайние леса, заснеженные вершины, горные реки и скалистые хребты</p>
+            <p class="tours_text">Каждая поездка проходит в сопровождении опытного гида. От спокойных прогулок для новичков до дневных треков для опытных райдеров. Техника рассчитана на двоих, второй участник — 1 000 ₽</p>
         </div>
-    </section>
+        
+        <div class="card-grid">
+            <?php
+            // Получаем ID выбранных экскурсий
+            $tour_slot_1 = get_theme_mod('tour_slot_1', '');
+            $tour_slot_2 = get_theme_mod('tour_slot_2', '');
+            $tour_slot_3 = get_theme_mod('tour_slot_3', '');
+            $tour_slot_4 = get_theme_mod('tour_slot_4', '');
+            
+            // Собираем только выбранные (не пустые) экскурсии
+            $tour_slots = array();
+            if (!empty($tour_slot_1)) $tour_slots[] = $tour_slot_1;
+            if (!empty($tour_slot_2)) $tour_slots[] = $tour_slot_2;
+            if (!empty($tour_slot_3)) $tour_slots[] = $tour_slot_3;
+            if (!empty($tour_slot_4)) $tour_slots[] = $tour_slot_4;
+            
+            foreach ($tour_slots as $slot_id) {
+                $tour = get_post($slot_id);
+                if ($tour) {
+                    $price = get_post_meta($slot_id, 'tour_price', true);
+                    $length = get_post_meta($slot_id, 'tour_length', true);
+                    $duration = get_post_meta($slot_id, 'tour_duration', true);
+                    $difficulty = get_post_meta($slot_id, 'tour_difficulty', true);
+                    $image_id = get_post_meta($slot_id, 'tour_image_id', true);
+                    ?>
+                    <div class="card route-card">
+                        <?php if ($image_id) : ?>
+                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($tour->post_title); ?>" class="card_image">
+                        <?php else : ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Экскурсия" class="card_image">
+                        <?php endif; ?>
+                        
+                        <div class="card_content">
+                            <div class="card_header">
+                                <h3><?php echo esc_html($tour->post_title); ?></h3>
+                            </div>
+                            
+                            <ul class="card_list">
+                                <li>📍 Длина: <?php echo esc_html($length); ?></li>
+                                <li>⏱ Время: <?php echo esc_html($duration); ?></li>
+                                <li>📊 Сложность: <?php echo esc_html($difficulty); ?></li>
+                            </ul>
+                            
+                            <div class="card_footer">
+                                <?php if ($price) : ?>
+                                    <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
+                                <?php endif; ?>
+                                <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+        </div>
+        
+        <div class="section_footer">
+            <a href="<?php echo home_url('//маршруты/'); ?>" class="btn-link">Все маршруты</a>
+        </div>
+    </div>
+</section>
+        
+
     
-    <!-- Услуги -->
-    <section class="section services">
-        <div class="container">
-            <h2>Услуги</h2>
+<!-- Услуги -->
+<section class="section services">
+    <div class="container">
+        <h2>Услуги</h2>
+        
+        <div class="card-grid services-grid">
+            <?php
+            // Получаем ID выбранных услуг (5 слотов)
+            $service_slot_1 = get_theme_mod('service_slot_1', '');
+            $service_slot_2 = get_theme_mod('service_slot_2', '');
+            $service_slot_3 = get_theme_mod('service_slot_3', '');
+            $service_slot_4 = get_theme_mod('service_slot_4', '');
+            $service_slot_5 = get_theme_mod('service_slot_5', '');
             
-            <div class="card-grid">
-                <!-- Услуга 1 -->
-                <div class="card service-card">
-                    <div class="service-card_image">
-                        <img src="resource/img/Frame%20172.png" alt="Русская баня">
-                    </div>
-                    <div class="card_content">
-                        <h3>Русская баня</h3>
-                        <span class="price">2 500 ₽/день</span>
-                    </div>
-                </div>
-                
-                <!-- Услуга 2 -->
-                <div class="card service-card">
-                    <div class="service-card_image">
-                        <img src="resource/img/Frame%20173.png" alt="Квадроциклы">
-                    </div>
-                    <div class="card_content">
-                        <h3>Квадроциклы</h3>
-                        <span class="price">3 000 ₽/час</span>
-                    </div>
-                </div>
-                
-                <!-- Услуга 3 -->
-                <div class="card service-card">
-                    <div class="service-card_image">
-                        <img src="resource/img/Frame%20174.png" alt="Снегоходы">
-                    </div>
-                    <div class="card_content">
-                        <h3>Снегоходы</h3>
-                        <span class="price">3 500 ₽/час</span>
-                    </div>
-                </div>
-                
-                <!-- Услуга 4 -->
-                <div class="card service-card">
-                    <div class="service-card_image">
-                        <img src="resource/img/Frame%20175.png" alt="Рыбалка">
-                    </div>
-                    <div class="card_content">
-                        <h3>Рыбалка</h3>
-                        <span class="price">1 500 ₽/день</span>
-                    </div>
-                </div>
-                
-                <!-- Услуга 5 -->
-                <div class="card service-card">
-                    <div class="service-card_image">
-                        <img src="resource/img/Frame%20176.png" alt="Прокат снаряжения">
-                    </div>
-                    <div class="card_content">
-                        <h3>Прокат снаряжения</h3>
-                        <span class="price">от 500 ₽</span>
-                    </div>
-                </div>
-            </div>
+            // Собираем только выбранные (не пустые) услуги
+            $service_slots = array();
+            if (!empty($service_slot_1)) $service_slots[] = $service_slot_1;
+            if (!empty($service_slot_2)) $service_slots[] = $service_slot_2;
+            if (!empty($service_slot_3)) $service_slots[] = $service_slot_3;
+            if (!empty($service_slot_4)) $service_slots[] = $service_slot_4;
+            if (!empty($service_slot_5)) $service_slots[] = $service_slot_5;
             
-            <div class="section_footer">
-                <a href="#" class="btn-link">Все услуги</a>
-            </div>
+            foreach ($service_slots as $slot_id) {
+                $service = get_post($slot_id);
+                if ($service) {
+                    $price = get_post_meta($slot_id, 'service_price', true);
+                    $price_unit = get_post_meta($slot_id, 'service_price_unit', true);
+                    $image_id = get_post_meta($slot_id, 'service_image_id', true);
+                    ?>
+                    <div class="card service-card">
+                        <?php if ($image_id) : ?>
+                            <div class="service-card_image">
+                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($service->post_title); ?>">
+                            </div>
+                        <?php else : ?>
+                            <div class="service-card_image">
+                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Услуга">
+                            </div>
+                        <?php endif; ?>
+                        <div class="card_content">
+                            <h3><?php echo esc_html($service->post_title); ?></h3>
+                            <span class="price"><?php echo esc_html($price); ?> <?php echo esc_html($price_unit); ?></span>
+                            <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
         </div>
-    </section>
+        
+        <div class="section_footer">
+            <a href="<?php echo home_url('/услуги/'); ?>" class="btn-link">Все услуги</a>
+        </div>
+    </div>
+</section>
     
-    <!-- Галерея -->
-    <section class="section gallery">
-        <div class="container">
-            <h2>Галерея</h2>
+<!-- Галерея -->
+<section class="section gallery">
+    <div class="container">
+        <h2>Галерея</h2>
+        
+        <div class="gallery-grid">
+            <?php
+            $gallery_query = new WP_Query(array(
+                'post_type' => 'gallery',
+                'posts_per_page' => 5,
+                'post_status' => 'publish'
+            ));
             
-            <div class="gallery-grid">
-                <div class="gallery-large">
-                    <img src="resource/img/bg_image_1.png" alt="Галерея">
-                </div>
-                <div class="gallery-small-grid">
-                    <div class="gallery-small">
-                        <img src="resource/img/room_1.jpg" alt="Галерея">
-                    </div>
-                    <div class="gallery-small">
-                        <img src="resource/img/room_2.jpg" alt="Галерея">
-                    </div>
-                    <div class="gallery-small">
-                        <img src="resource/img/room_3.jpg" alt="Галерея">
-                    </div>
-                    <div class="gallery-small">
-                        <img src="resource/img/room_4.jpg" alt="Галерея">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section_footer">
-                <a href="#" class="btn-link">Все фотографии</a>
-            </div>
+            if ($gallery_query->have_posts()) :
+                $counter = 0;
+                while ($gallery_query->have_posts()) : $gallery_query->the_post();
+                    $image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                    if (!$image_url) {
+                        $image_url = get_template_directory_uri() . '/resource/img/placeholder.jpg';
+                    }
+                    
+                    if ($counter === 0) : ?>
+                        <div class="gallery-large">
+                            <a href="<?php echo esc_url($image_url); ?>" data-lightbox="gallery" data-title="<?php the_title(); ?>">
+                                <img src="<?php echo esc_url($image_url); ?>" alt="<?php the_title(); ?>">
+                            </a>
+                        </div>
+                    <?php else : 
+                        if ($counter === 1) echo '<div class="gallery-small-grid">';
+                        ?>
+                        <div class="gallery-small">
+                            <a href="<?php echo esc_url($image_url); ?>" data-lightbox="gallery" data-title="<?php the_title(); ?>">
+                                <img src="<?php echo esc_url($image_url); ?>" alt="<?php the_title(); ?>">
+                            </a>
+                        </div>
+                    <?php 
+                    endif;
+                    $counter++;
+                endwhile;
+                if ($counter > 1) echo '</div>';
+                wp_reset_postdata();
+            else : ?>
+                <p>Фотографии пока не добавлены. Зайдите в админку → Галерея → Добавить фото</p>
+            <?php endif; ?>
         </div>
-    </section>
+    
+        
+        <div class="section_footer">
+            <a href="<?php echo home_url('/галерея/'); ?>" class="btn-link">Все фотографии</a>
+        </div>
+    </div>
+</section>
     
     <!-- Отзывы -->
     <section class="section reviews">

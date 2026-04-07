@@ -20,9 +20,9 @@
             <nav>
                 <ul>
                     <li><a href="<?php echo home_url('/проживание/'); ?>">Проживание</a></li>
-                    <li><a href="#">Экскурсии</a></li>
-                    <li><a href="#">Услуги</a></li>
-                    <li><a href="#">Галерея</a></li>
+                    <li><a href="<?php echo home_url('/маршруты/'); ?>">Экскурсии</a></li> 
+                    <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
+                    <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>
                     <li><a href="#">Отзывы</a></li>
                     <li><a href="#">О нас</a></li>
                 </ul>

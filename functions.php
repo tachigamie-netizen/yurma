@@ -13,6 +13,10 @@ function yurma_enqueue_assets() {
     if (file_exists(get_template_directory() . '/script.js')) {
         wp_enqueue_script('yurma-script', get_template_directory_uri() . '/script.js', array(), '1.0', true);
     }
+
+    // Подключаем лайтбокс
+wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css', array(), '2.11.4');
+wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', array('jquery'), '2.11.4', true);
 }
 add_action('wp_enqueue_scripts', 'yurma_enqueue_assets');
 
@@ -326,8 +330,446 @@ function yurma_customize_register($wp_customize) {
         'type'     => 'select',
         'choices'  => get_rooms_list(),
     ));
+    
+    // ========== Выбор экскурсий на главной (4 слота) ==========
+$wp_customize->add_section('tours_slots', array(
+    'title'    => 'Экскурсии на главной (4 слота)',
+    'priority' => 32,
+    'description' => 'Выберите экскурсии для отображения в 4 слотах на главной странице.',
+));
+
+// Функция для получения списка экскурсий
+function get_tours_list() {
+    $choices = array('' => '— Не выбрано —');
+    $tours = get_posts(array(
+        'post_type' => 'tours',
+        'numberposts' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'title',
+        'order' => 'ASC'
+    ));
+    foreach ($tours as $tour) {
+        $choices[$tour->ID] = $tour->post_title;
+    }
+    return $choices;
+}
+
+// Слот 1
+$wp_customize->add_setting('tour_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('tour_slot_1', array(
+    'label'    => 'Слот 1',
+    'section'  => 'tours_slots',
+    'type'     => 'select',
+    'choices'  => get_tours_list(),
+));
+
+// Слот 2
+$wp_customize->add_setting('tour_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('tour_slot_2', array(
+    'label'    => 'Слот 2',
+    'section'  => 'tours_slots',
+    'type'     => 'select',
+    'choices'  => get_tours_list(),
+));
+
+// Слот 3
+$wp_customize->add_setting('tour_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('tour_slot_3', array(
+    'label'    => 'Слот 3',
+    'section'  => 'tours_slots',
+    'type'     => 'select',
+    'choices'  => get_tours_list(),
+));
+
+// Слот 4
+$wp_customize->add_setting('tour_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('tour_slot_4', array(
+    'label'    => 'Слот 4',
+    'section'  => 'tours_slots',
+    'type'     => 'select',
+    'choices'  => get_tours_list(),
+));
+
+// ========== Выбор услуг на главной (4 слота) ==========
+$wp_customize->add_section('services_slots', array(
+    'title'    => 'Услуги на главной (4 слота)',
+    'priority' => 33,
+));
+
+function get_services_list() {
+    $choices = array('' => '— Не выбрано —');
+    $services = get_posts(array(
+        'post_type' => 'services',
+        'numberposts' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'title',
+        'order' => 'ASC'
+    ));
+    foreach ($services as $service) {
+        $choices[$service->ID] = $service->post_title;
+    }
+    return $choices;
+}
+
+$wp_customize->add_setting('service_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('service_slot_1', array(
+    'label'    => 'Слот 1',
+    'section'  => 'services_slots',
+    'type'     => 'select',
+    'choices'  => get_services_list(),
+));
+
+$wp_customize->add_setting('service_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('service_slot_2', array(
+    'label'    => 'Слот 2',
+    'section'  => 'services_slots',
+    'type'     => 'select',
+    'choices'  => get_services_list(),
+));
+
+$wp_customize->add_setting('service_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('service_slot_3', array(
+    'label'    => 'Слот 3',
+    'section'  => 'services_slots',
+    'type'     => 'select',
+    'choices'  => get_services_list(),
+));
+
+$wp_customize->add_setting('service_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('service_slot_4', array(
+    'label'    => 'Слот 4',
+    'section'  => 'services_slots',
+    'type'     => 'select',
+    'choices'  => get_services_list(),
+));
+// Слот 5
+$wp_customize->add_setting('service_slot_5', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('service_slot_5', array(
+    'label'    => 'Слот 5',
+    'section'  => 'services_slots',
+    'type'     => 'select',
+    'choices'  => get_services_list(),
+));
 }
 add_action('customize_register', 'yurma_customize_register');
+
+
+
+
+
+
+
+    // ========== Тип записей "Экскурсии" ==========
+    function register_tours_cpt() {
+        $labels = array(
+            'name'               => 'Экскурсии',
+            'singular_name'      => 'Экскурсия',
+            'menu_name'          => 'Экскурсии',
+            'add_new'            => 'Добавить экскурсию',
+            'add_new_item'       => 'Добавить новую экскурсию',
+            'edit_item'          => 'Редактировать экскурсию',
+            'new_item'           => 'Новая экскурсия',
+            'view_item'          => 'Просмотреть экскурсию',
+            'search_items'       => 'Искать экскурсии',
+            'not_found'          => 'Экскурсии не найдены',
+            'not_found_in_trash' => 'В корзине нет экскурсий',
+        );
+        
+        $args = array(
+            'labels'       => $labels,
+            'public'       => true,
+            'menu_icon'    => 'dashicons-palmtree',
+            'supports'     => array('title', 'thumbnail'),
+            'has_archive'  => true,
+            'rewrite'      => array('slug' => 'tours'),
+            'show_in_rest' => false,
+        );
+        
+        register_post_type('tours', $args);
+    }
+    add_action('init', 'register_tours_cpt');
+
+    // ========== Метаполя для экскурсий ==========
+    function add_tours_meta_boxes() {
+        add_meta_box('tours_details', 'Детали экскурсии', 'render_tours_meta_box', 'tours', 'normal', 'high');
+    }
+    add_action('add_meta_boxes', 'add_tours_meta_boxes');
+
+    function render_tours_meta_box($post) {
+        $price = get_post_meta($post->ID, 'tour_price', true);
+        $length = get_post_meta($post->ID, 'tour_length', true);
+        $duration = get_post_meta($post->ID, 'tour_duration', true);
+        $difficulty = get_post_meta($post->ID, 'tour_difficulty', true);
+        $image_id = get_post_meta($post->ID, 'tour_image_id', true);
+        $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+        ?>
+        <div style="padding: 15px; background: #f9f9f9;">
+            <p>
+                <label>💰 Цена (₽):</label><br>
+                <input type="number" name="tour_price" value="<?php echo esc_attr($price); ?>" style="width: 200px;">
+            </p>
+            <p>
+                <label>📍 Длина (км):</label><br>
+                <input type="text" name="tour_length" value="<?php echo esc_attr($length); ?>" style="width: 200px;" placeholder="например: 25 км">
+            </p>
+            <p>
+                <label>⏱ Время:</label><br>
+                <input type="text" name="tour_duration" value="<?php echo esc_attr($duration); ?>" style="width: 200px;" placeholder="например: 2-2.5 ч">
+            </p>
+            <p>
+                <label>📊 Сложность:</label><br>
+                <select name="tour_difficulty" style="width: 200px;">
+                    <option value="■□□□□" <?php selected($difficulty, '■□□□□'); ?>>1/5 (легкий)</option>
+                    <option value="■■□□□" <?php selected($difficulty, '■■□□□'); ?>>2/5 (средний)</option>
+                    <option value="■■■□□" <?php selected($difficulty, '■■■□□'); ?>>3/5 (выше среднего)</option>
+                    <option value="■■■■□" <?php selected($difficulty, '■■■■□'); ?>>4/5 (сложный)</option>
+                    <option value="■■■■■" <?php selected($difficulty, '■■■■■'); ?>>5/5 (очень сложный)</option>
+                </select>
+            </p>
+            <p>
+                <label>📷 Фото:</label><br>
+                <input type="hidden" name="tour_image_id" value="<?php echo esc_attr($image_id); ?>">
+                <div class="tour-image-preview">
+                    <?php if ($image_url) : ?>
+                        <img src="<?php echo esc_url($image_url); ?>" style="max-width: 200px;">
+                    <?php endif; ?>
+                </div>
+                <button type="button" class="button tour-upload-btn">Выбрать фото</button>
+                <button type="button" class="button tour-remove-btn" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">Удалить фото</button>
+            </p>
+        </div>
+        
+        <script>
+        jQuery(document).ready(function($) {
+            var mediaUploader;
+            
+            $('.tour-upload-btn').click(function(e) {
+                e.preventDefault();
+                var btn = $(this);
+                var container = btn.closest('div');
+                
+                if (mediaUploader) {
+                    mediaUploader.open();
+                    return;
+                }
+                mediaUploader = wp.media({
+                    title: 'Выберите фото экскурсии',
+                    button: { text: 'Выбрать' },
+                    multiple: false
+                });
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    container.find('input[name="tour_image_id"]').val(attachment.id);
+                    container.find('.tour-image-preview').html('<img src="' + attachment.url + '" style="max-width: 200px;">');
+                    container.find('.tour-remove-btn').show();
+                });
+                mediaUploader.open();
+            });
+            
+            $('.tour-remove-btn').click(function(e) {
+                e.preventDefault();
+                var btn = $(this);
+                var container = btn.closest('div');
+                container.find('input[name="tour_image_id"]').val('');
+                container.find('.tour-image-preview').html('');
+                btn.hide();
+            });
+        });
+        </script>
+        <?php
+    }
+
+    function save_tours_meta($post_id) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if (!current_user_can('edit_post', $post_id)) return;
+        if (get_post_type($post_id) != 'tours') return;
+        
+        if (isset($_POST['tour_price'])) {
+            update_post_meta($post_id, 'tour_price', sanitize_text_field($_POST['tour_price']));
+        }
+        if (isset($_POST['tour_length'])) {
+            update_post_meta($post_id, 'tour_length', sanitize_text_field($_POST['tour_length']));
+        }
+        if (isset($_POST['tour_duration'])) {
+            update_post_meta($post_id, 'tour_duration', sanitize_text_field($_POST['tour_duration']));
+        }
+        if (isset($_POST['tour_difficulty'])) {
+            update_post_meta($post_id, 'tour_difficulty', sanitize_text_field($_POST['tour_difficulty']));
+        }
+        if (isset($_POST['tour_image_id'])) {
+            $image_id = intval($_POST['tour_image_id']);
+            update_post_meta($post_id, 'tour_image_id', $image_id);
+            if ($image_id) {
+                set_post_thumbnail($post_id, $image_id);
+            }
+        }
+    }
+    add_action('save_post', 'save_tours_meta');
+
+
+
+
+
+    // ========== Тип записей "Услуги" ==========
+function register_services_cpt() {
+    $labels = array(
+        'name'               => 'Услуги',
+        'singular_name'      => 'Услуга',
+        'menu_name'          => 'Услуги',
+        'add_new'            => 'Добавить услугу',
+        'add_new_item'       => 'Добавить новую услугу',
+        'edit_item'          => 'Редактировать услугу',
+        'new_item'           => 'Новая услуга',
+        'view_item'          => 'Просмотреть услугу',
+        'search_items'       => 'Искать услуги',
+        'not_found'          => 'Услуги не найдены',
+        'not_found_in_trash' => 'В корзине нет услуг',
+    );
+    
+    $args = array(
+        'labels'       => $labels,
+        'public'       => true,
+        'menu_icon'    => 'dashicons-hammer',
+        'supports'     => array('title', 'thumbnail'),
+        'has_archive'  => true,
+        'rewrite'      => array('slug' => 'services'),
+        'show_in_rest' => false,
+    );
+    
+    register_post_type('services', $args);
+}
+add_action('init', 'register_services_cpt');
+
+// ========== Метаполя для услуг ==========
+function add_services_meta_boxes() {
+    add_meta_box('services_details', 'Детали услуги', 'render_services_meta_box', 'services', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'add_services_meta_boxes');
+
+function render_services_meta_box($post) {
+    $price = get_post_meta($post->ID, 'service_price', true);
+    $price_unit = get_post_meta($post->ID, 'service_price_unit', true);
+    $image_id = get_post_meta($post->ID, 'service_image_id', true);
+    $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+    ?>
+    <div style="padding: 15px; background: #f9f9f9;">
+        <p>
+            <label>💰 Цена:</label><br>
+            <input type="text" name="service_price" value="<?php echo esc_attr($price); ?>" style="width: 150px;" placeholder="например: 2 500">
+            <select name="service_price_unit" style="width: 120px;">
+                <option value="₽/день" <?php selected($price_unit, '₽/день'); ?>>₽/день</option>
+                <option value="₽/час" <?php selected($price_unit, '₽/час'); ?>>₽/час</option>
+                <option value="₽" <?php selected($price_unit, '₽'); ?>>₽</option>
+                <option value="от 500 ₽" <?php selected($price_unit, 'от 500 ₽'); ?>>от 500 ₽</option>
+            </select>
+        </p>
+        <p>
+            <label>📷 Фото:</label><br>
+            <input type="hidden" name="service_image_id" value="<?php echo esc_attr($image_id); ?>">
+            <div class="service-image-preview">
+                <?php if ($image_url) : ?>
+                    <img src="<?php echo esc_url($image_url); ?>" style="max-width: 200px;">
+                <?php endif; ?>
+            </div>
+            <button type="button" class="button service-upload-btn">Выбрать фото</button>
+            <button type="button" class="button service-remove-btn" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">Удалить фото</button>
+        </p>
+    </div>
+    
+    <script>
+    jQuery(document).ready(function($) {
+        var mediaUploader;
+        
+        $('.service-upload-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var container = btn.closest('div');
+            
+            if (mediaUploader) {
+                mediaUploader.open();
+                return;
+            }
+            mediaUploader = wp.media({
+                title: 'Выберите фото услуги',
+                button: { text: 'Выбрать' },
+                multiple: false
+            });
+            mediaUploader.on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                container.find('input[name="service_image_id"]').val(attachment.id);
+                container.find('.service-image-preview').html('<img src="' + attachment.url + '" style="max-width: 200px;">');
+                container.find('.service-remove-btn').show();
+            });
+            mediaUploader.open();
+        });
+        
+        $('.service-remove-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var container = btn.closest('div');
+            container.find('input[name="service_image_id"]').val('');
+            container.find('.service-image-preview').html('');
+            btn.hide();
+        });
+    });
+    </script>
+    <?php
+}
+
+function save_services_meta($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    if (get_post_type($post_id) != 'services') return;
+    
+    if (isset($_POST['service_price'])) {
+        update_post_meta($post_id, 'service_price', sanitize_text_field($_POST['service_price']));
+    }
+    if (isset($_POST['service_price_unit'])) {
+        update_post_meta($post_id, 'service_price_unit', sanitize_text_field($_POST['service_price_unit']));
+    }
+    if (isset($_POST['service_image_id'])) {
+        $image_id = intval($_POST['service_image_id']);
+        update_post_meta($post_id, 'service_image_id', $image_id);
+        if ($image_id) {
+            set_post_thumbnail($post_id, $image_id);
+        }
+    }
+}
+add_action('save_post', 'save_services_meta');
+
+
+
+// ========== Тип записей "Галерея" (упрощенный) ==========
+function register_gallery_cpt() {
+    $labels = array(
+        'name'               => 'Галерея',
+        'singular_name'      => 'Фото',
+        'menu_name'          => 'Галерея',
+        'add_new'            => 'Добавить фото',
+        'add_new_item'       => 'Добавить новое фото',
+        'edit_item'          => 'Редактировать фото',
+        'new_item'           => 'Новое фото',
+        'view_item'          => 'Просмотреть фото',
+        'search_items'       => 'Искать фото',
+        'not_found'          => 'Фото не найдены',
+        'not_found_in_trash' => 'В корзине нет фото',
+    );
+    
+    $args = array(
+        'labels'       => $labels,
+        'public'       => true,
+        'menu_icon'    => 'dashicons-format-gallery',
+        'supports'     => array('title', 'thumbnail'),
+        'has_archive'  => true,
+        'rewrite'      => array('slug' => 'gallery'),
+        'show_in_rest' => true,
+    );
+    
+    register_post_type('gallery', $args);
+}
+add_action('init', 'register_gallery_cpt');
+
+
 
 // Логируем все события Contact Form 7
 add_action('wpcf7_before_send_mail', function($contact_form) {
