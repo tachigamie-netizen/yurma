@@ -450,10 +450,68 @@ $wp_customize->add_control('service_slot_5', array(
     'type'     => 'select',
     'choices'  => get_services_list(),
 ));
+
+
+// ========== Выбор отзывов на главной (4 слота) ==========
+$wp_customize->add_section('reviews_slots', array(
+    'title'    => 'Отзывы на главной (4 слота)',
+    'priority' => 34,
+    'description' => 'Выберите отзывы для отображения в 4 слотах на главной странице.',
+));
+
+function get_reviews_list() {
+    $choices = array('' => '— Не выбрано —');
+    $reviews = get_posts(array(
+        'post_type' => 'reviews',
+        'numberposts' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'date',
+        'order' => 'DESC'
+    ));
+    foreach ($reviews as $review) {
+        $choices[$review->ID] = $review->post_title;
+    }
+    return $choices;
+}
+
+// Слот 1
+$wp_customize->add_setting('review_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('review_slot_1', array(
+    'label'    => 'Слот 1',
+    'section'  => 'reviews_slots',
+    'type'     => 'select',
+    'choices'  => get_reviews_list(),
+));
+
+// Слот 2
+$wp_customize->add_setting('review_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('review_slot_2', array(
+    'label'    => 'Слот 2',
+    'section'  => 'reviews_slots',
+    'type'     => 'select',
+    'choices'  => get_reviews_list(),
+));
+
+// Слот 3
+$wp_customize->add_setting('review_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('review_slot_3', array(
+    'label'    => 'Слот 3',
+    'section'  => 'reviews_slots',
+    'type'     => 'select',
+    'choices'  => get_reviews_list(),
+));
+
+// Слот 4
+$wp_customize->add_setting('review_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
+$wp_customize->add_control('review_slot_4', array(
+    'label'    => 'Слот 4',
+    'section'  => 'reviews_slots',
+    'type'     => 'select',
+    'choices'  => get_reviews_list(),
+));
+
 }
 add_action('customize_register', 'yurma_customize_register');
-
-
 
 
 
@@ -771,22 +829,181 @@ add_action('init', 'register_gallery_cpt');
 
 
 
-// Логируем все события Contact Form 7
-add_action('wpcf7_before_send_mail', function($contact_form) {
-    file_put_contents(__DIR__ . '/cf7_debug.txt', date('H:i:s') . " - before_send_mail вызван\n", FILE_APPEND);
-});
+// // ========== СОХРАНЯЕМ ОТЗЫВ ИЗ CONTACT FORM 7 В БАЗУ ДАННЫХ ==========
+// add_action('wpcf7_before_send_mail', function($contact_form) {
+//     $form_id = $contact_form->id();
+    
+//     // ID формы отзыва 
+//     if ($form_id != 100) {
+//         return;
+//     }
+    
+//     $submission = WPCF7_Submission::get_instance();
+//     if ($submission) {
+//         $data = $submission->get_posted_data();
+        
+//         // Правильные имена полей из твоей формы
+//         $author = sanitize_text_field($data['review-author'] ?? '');
+// $rating = intval($data['review-rating']);
+// if ($rating === 0 && isset($data['review-rating'])) {
+//     // Если пришла строка типа "5" или "★★★★★"
+//     $rating = intval(trim($data['review-rating']));
+// }        $content = sanitize_textarea_field($data['review-content'] ?? '');
+        
+//         if ($author && $content) {
+//             $post_data = array(
+//                 'post_title'   => 'Отзыв от ' . $author,
+//                 'post_content' => $content,
+//                 'post_status'  => 'publish',
+//                 'post_type'    => 'reviews',
+//             );
+            
+//             $post_id = wp_insert_post($post_data);
+            
+//             if ($post_id) {
+//                 update_post_meta($post_id, 'review_author', $author);
+//                 update_post_meta($post_id, 'review_rating', $rating);
+//             }
+//         }
+//     }
+// }, 20);
 
-add_action('wpcf7_mail_sent', function($contact_form) {
-    file_put_contents(__DIR__ . '/cf7_debug.txt', date('H:i:s') . " - mail_sent (успех)\n", FILE_APPEND);
-});
+// ========== ОБРАБОТКА ФОРМЫ ОТЗЫВА ==========
+function handle_review_submission() {
+    if (isset($_POST['submit_review']) && isset($_POST['review_author']) && !empty($_POST['review_author'])) {
+        
+        $author = sanitize_text_field($_POST['review_author']);
+        $rating = intval($_POST['review_rating']);
+        $content = sanitize_textarea_field($_POST['review_content']);
+        
+        if (!empty($author) && !empty($content)) {
+            $post_data = array(
+                'post_title'   => 'Отзыв от ' . $author,
+                'post_content' => $content,
+                'post_status'  => 'publish',
+                'post_type'    => 'reviews',
+            );
+            
+            $post_id = wp_insert_post($post_data);
+            
+            if ($post_id) {
+                update_post_meta($post_id, 'review_author', $author);
+                update_post_meta($post_id, 'review_rating', $rating);
+            }
+        }
+        
+        // Получаем URL текущей страницы из реферера
+        $current_url = wp_get_referer();
+        if (!$current_url) {
+            $current_url = home_url('/reviews/');
+        }
+        
+        wp_redirect($current_url . '?review_sent=1');
+        exit;
+    }
+}
+add_action('init', 'handle_review_submission');
 
-add_action('wpcf7_mail_failed', function($contact_form) {
-    file_put_contents(__DIR__ . '/cf7_debug.txt', date('H:i:s') . " - mail_failed (ошибка)\n", FILE_APPEND);
-});
-add_action('wpcf7_mail_sent', function($contact_form) {
-    $submission = WPCF7_Submission::get_instance();
-    if ($submission) {
-        $data = $submission->get_posted_data();
-        file_put_contents(__DIR__ . '/cf7_data.txt', date('H:i:s') . " - Имя: " . ($data['your-name'] ?? '') . " Телефон: " . ($data['your-phone'] ?? '') . "\n", FILE_APPEND);
+// Уведомление об успешной отправке
+add_action('wp_head', function() {
+    if (isset($_GET['review_sent']) && $_GET['review_sent'] == 1) {
+        echo '<script>alert("Спасибо за ваш отзыв!");</script>';
     }
 });
+
+
+// ========== Тип записей "Отзывы" ==========
+function register_reviews_cpt() {
+    $labels = array(
+        'name'               => 'Отзывы',
+        'singular_name'      => 'Отзыв',
+        'menu_name'          => 'Отзывы',
+        'add_new'            => 'Добавить отзыв',
+        'add_new_item'       => 'Добавить новый отзыв',
+        'edit_item'          => 'Редактировать отзыв',
+        'new_item'           => 'Новый отзыв',
+        'view_item'          => 'Просмотреть отзыв',
+        'search_items'       => 'Искать отзывы',
+        'not_found'          => 'Отзывы не найдены',
+        'not_found_in_trash' => 'В корзине нет отзывов',
+    );
+    
+    $args = array(
+        'labels'       => $labels,
+        'public'       => true,
+        'menu_icon'    => 'dashicons-star-filled',
+        'supports'     => array('title', 'editor'),
+        'has_archive'  => true,
+        'rewrite'      => array('slug' => 'reviews'),
+        'show_in_rest' => true,
+    );
+    
+    register_post_type('reviews', $args);
+}
+add_action('init', 'register_reviews_cpt');
+
+// ========== Метаполя для отзывов ==========
+function add_reviews_meta_boxes() {
+    add_meta_box('reviews_details', 'Детали отзыва', 'render_reviews_meta_box', 'reviews', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'add_reviews_meta_boxes');
+
+function render_reviews_meta_box($post) {
+    $rating = get_post_meta($post->ID, 'review_rating', true);
+    $author = get_post_meta($post->ID, 'review_author', true);
+    ?>
+    <div style="padding: 15px; background: #f9f9f9;">
+        <p>
+            <label>👤 Имя автора:</label><br>
+            <input type="text" name="review_author" value="<?php echo esc_attr($author); ?>" style="width: 100%; max-width: 300px;" placeholder="Например: Алексей">
+        </p>
+        <p>
+            <label>⭐ Оценка (1-5):</label><br>
+            <select name="review_rating" style="width: 150px;">
+                <option value="5" <?php selected($rating, '5'); ?>>★★★★★ (5)</option>
+                <option value="4" <?php selected($rating, '4'); ?>>★★★★☆ (4)</option>
+                <option value="3" <?php selected($rating, '3'); ?>>★★★☆☆ (3)</option>
+                <option value="2" <?php selected($rating, '2'); ?>>★★☆☆☆ (2)</option>
+                <option value="1" <?php selected($rating, '1'); ?>>★☆☆☆☆ (1)</option>
+            </select>
+        </p>
+    </div>
+    <?php
+}
+
+function save_reviews_meta($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    if (get_post_type($post_id) != 'reviews') return;
+    
+    if (isset($_POST['review_author'])) {
+        update_post_meta($post_id, 'review_author', sanitize_text_field($_POST['review_author']));
+    }
+    if (isset($_POST['review_rating'])) {
+        update_post_meta($post_id, 'review_rating', sanitize_text_field($_POST['review_rating']));
+    }
+}
+add_action('save_post', 'save_reviews_meta');
+
+
+// ========== ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ СТАТИСТИКИ ОТЗЫВОВ ==========
+function get_reviews_statistics() {
+    global $wpdb;
+    
+    // Получаем средний рейтинг и количество отзывов одним SQL запросом
+    $result = $wpdb->get_row("
+        SELECT 
+            ROUND(AVG(CAST(meta_value AS DECIMAL(10,1))), 1) as avg_rating,
+            COUNT(*) as total_reviews
+        FROM {$wpdb->postmeta} pm
+        INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+        WHERE p.post_type = 'reviews' 
+            AND p.post_status = 'publish'
+            AND pm.meta_key = 'review_rating'
+    ");
+    
+    return array(
+        'avg_rating' => ($result && $result->avg_rating > 0) ? $result->avg_rating : 0,
+        'total_reviews' => $result ? intval($result->total_reviews) : 0
+    );
+}

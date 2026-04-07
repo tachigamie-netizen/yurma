@@ -10,16 +10,16 @@
             <!-- Меню -->
             <ul class="footer_menu">
                 <div class="menu_col">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Проживание</a></li>
-                    <li><a href="#">Услуги</a></li>
-                    <li><a href="#">Экскурсии</a></li>
+                    <li><a href="<?php echo home_url(); ?>">Главная</a></li>
+                    <li><a href="<?php echo home_url('/проживание/'); ?>">Проживание</a></li>
+                    <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
+                    <li><a href="<?php echo home_url('/маршруты/'); ?>">Экскурсии</a></li> 
                 </div>
                 <div class="menu_col">
-                    <li><a href="#">Галерея</a></li>
-                    <li><a href="#">Отзывы</a></li>
-                    <li><a href="#">О нас</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>
+                    <li><a href="<?php echo home_url('/отзывы/'); ?>">Отзывы</a></li>
+                    <!-- <li><a href="#">О нас</a></li>
+                    <li><a href="#">FAQ</a></li> -->
                 </div>
             </ul>
             
@@ -28,9 +28,9 @@
                 <a href="tel:+79227150546" class="footer_phone">+7 (922) 715-05-46</a>
                 <a href="mailto:yurma@active.ru" class="footer_email">yurma@active.ru</a>
                 <div class="footer_social">
-                    <a href="#"><img src="img/social-vk.svg" alt="ВК"></a>
-                    <a href="#"><img src="img/social-tg.svg" alt="TG"></a>
-                    <a href="#"><img src="img/social-wa.svg" alt="WA"></a>
+<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/resource/img/social-vk.svg" alt="ВК"></a>
+<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/resource/img/social-tg.svg" alt="TG"></a>
+<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/resource/img/social-wa.svg" alt="WA"></a>
                 </div>
             </div>
         </div>
@@ -47,11 +47,11 @@
     </div>
 </footer>
 
-<!-- Модальное окно -->
-<div id="orderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:99999;">
-    <div style="background:white; width:90%; max-width:450px; margin:50px auto; padding:25px; border-radius:16px; position:relative;">
-        <span style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;" onclick="document.getElementById('orderModal').style.display='none';">&times;</span>
-        <h3 style="margin-top:0;">Оставить заявку</h3>
+<!-- Модальное окно для заказа -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Оставить заявку</h3>
         <?php echo do_shortcode('[contact-form-7 id="9130443" title="форма заказа"]'); ?>
     </div>
 </div>

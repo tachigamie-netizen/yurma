@@ -1,47 +1,60 @@
-// ========== Модальное окно ==========
+// ========== УНИВЕРСАЛЬНОЕ УПРАВЛЕНИЕ МОДАЛЬНЫМИ ОКНАМИ ==========
 (function() {
-    const modal = document.getElementById('orderModal');
-    const closeBtn = document.querySelector('.modal-close');
-    
-    // Функция открытия
-    window.openOrderModal = function() {
+    // Функция открытия модального окна по ID
+    window.openModal = function(modalId) {
+        const modal = document.getElementById(modalId);
         if (modal) {
             modal.style.display = 'block';
         }
     };
     
-    // Закрытие по крестику
-    if (closeBtn) {
-        closeBtn.onclick = function() {
-            modal.style.display = 'none';
-        };
-    }
-    
-    // Закрытие по клику вне окна
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
+    // Функция закрытия модального окна
+    window.closeModal = function(modalElement) {
+        if (modalElement) {
+            modalElement.style.display = 'none';
         }
     };
     
-    // Закрытие по ESC
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && modal && modal.style.display === 'block') {
-            modal.style.display = 'none';
+    // Закрытие по крестику для всех модальных окон
+    document.addEventListener('click', function(e) {
+        if (e.target.classList && e.target.classList.contains('modal-close')) {
+            const modal = e.target.closest('.modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
         }
     });
     
-    // Автоматическое закрытие после отправки формы
-    document.addEventListener('wpcf7mailsent', function(event) {
-        setTimeout(function() {
-            if (modal) {
-                modal.style.display = 'none';
-                const form = modal.querySelector('form');
-                if (form) form.reset();
-            }
-        }, 2000);
+    // Закрытие по клику вне модального окна
+    document.addEventListener('click', function(e) {
+        if (e.target.classList && e.target.classList.contains('modal')) {
+            e.target.style.display = 'none';
+        }
     });
-    // Защита от множественной отправки формы
+    
+    // Закрытие по клавише ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(function(modal) {
+                if (modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    });
+})();
+
+// ========== ОТКРЫТИЕ КОНКРЕТНЫХ МОДАЛЬНЫХ ОКОН ==========
+function openOrderModal() {
+    openModal('orderModal');
+}
+
+function openReviewModal() {
+    openModal('reviewModal');
+}
+
+// ========== ЗАЩИТА ОТ МНОЖЕСТВЕННОЙ ОТПРАВКИ ФОРМЫ ==========
 document.addEventListener('wpcf7submit', function(event) {
     const form = event.detail.contactForm.el;
     const submitBtn = form.querySelector('input[type="submit"]');
@@ -49,7 +62,6 @@ document.addEventListener('wpcf7submit', function(event) {
         submitBtn.disabled = true;
         submitBtn.value = 'Отправка...';
         
-        // Разблокируем через 5 секунд на случай ошибки
         setTimeout(function() {
             submitBtn.disabled = false;
             submitBtn.value = 'Отправить';
@@ -57,12 +69,22 @@ document.addEventListener('wpcf7submit', function(event) {
     }
 }, false);
 
-// Очищаем старые ошибки перед новой отправкой
+// Очищаем старые ошибки
 document.addEventListener('wpcf7invalid', function(event) {
-    // Удаляем старые сообщения об ошибках
     const oldErrors = document.querySelectorAll('.wpcf7-not-valid-tip');
     oldErrors.forEach(function(error) {
         error.remove();
     });
 });
-})();
+
+// Закрытие модального окна после успешной отправки Contact Form 7
+document.addEventListener('wpcf7mailsent', function(event) {
+    const modal = document.getElementById('orderModal');
+    if (modal) {
+        setTimeout(function() {
+            modal.style.display = 'none';
+            const form = modal.querySelector('form');
+            if (form) form.reset();
+        }, 2000);
+    }
+});

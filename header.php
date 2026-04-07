@@ -23,8 +23,8 @@
                     <li><a href="<?php echo home_url('/маршруты/'); ?>">Экскурсии</a></li> 
                     <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
                     <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>
-                    <li><a href="#">Отзывы</a></li>
-                    <li><a href="#">О нас</a></li>
+                    <li><a href="<?php echo home_url('/отзывы/'); ?>">Отзывы</a></li>
+                    <!-- <li><a href="#">О нас</a></li> -->
                 </ul>
             </nav>
             <a href="#" class="btn btn-whatsapp">WhatsApp</a>

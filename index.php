@@ -209,7 +209,6 @@
                         <div class="card_content">
                             <h3><?php echo esc_html($service->post_title); ?></h3>
                             <span class="price"><?php echo esc_html($price); ?> <?php echo esc_html($price_unit); ?></span>
-                            <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
                         </div>
                     </div>
                     <?php
@@ -277,78 +276,72 @@
     </div>
 </section>
     
-    <!-- Отзывы -->
-    <section class="section reviews">
-        <div class="container">
-            <h2>Отзывы</h2>
+<!-- Отзывы на главной -->
+<section class="section reviews">
+    <div class="container">
+        <h2>Отзывы</h2>
+        
+        <div class="card-grid reviews-grid">
+            <?php
+            // Получаем ID выбранных отзывов
+            $review_slot_1 = get_theme_mod('review_slot_1', '');
+            $review_slot_2 = get_theme_mod('review_slot_2', '');
+            $review_slot_3 = get_theme_mod('review_slot_3', '');
+            $review_slot_4 = get_theme_mod('review_slot_4', '');
             
-            <div class="card-grid reviews-grid">
-                <!-- Отзыв 1 -->
-                <div class="card review-card">
-                    <img src="resource/img/quote.svg" alt="" class="review-card_background">
-                    <div class="card_content">
-                        <div class="review_header">
-                            <h3>Алексей</h3>
-                            <div class="review_rating">★ ★ ★ ★ ★</div>
-                        </div>
-                        <p class="review_text">
-                            Отдыхали на новогодних праздниках. Брали снегоходы, маршрут на Соколиную сопку — полный восторг! Техника новая, шлемы выдали тёплые, гид Дмитрий показал такие места, куда пешком не дойдёшь. Баня после катания — сказка. Обязательно вернёмся летом на квадроциклах. 
-                        </p>
-                        <span class="second review_date">Январь 2026</span>
-                    </div>
-                </div>
-                
-                <!-- Отзыв 2 -->
-                <div class="card review-card">
-                    <img src="resource/img/quote.svg" alt="" class="review-card_background">
-                    <div class="card_content">
-                        <div class="review_header">
-                            <h3>Екатерина</h3>
-                            <div class="review_rating">★ ★ ★ ★ ★</div>
-                        </div>
-                        <p class="review_text">
-                            Отличное место для активного отдыха! Жили в номере Комфорт с балконом — очень уютно, чисто, есть всё необходимое. Отдельное спасибо повару — кормили очень вкусно, домашние обеды после катания заходили на ура. Обязательно приедем еще!
-                        </p>
-                        <span class="second review_date">Февраль 2026</span>
-                    </div>
-                </div>
-                
-                <!-- Отзыв 3 -->
-                <div class="card review-card">
-                    <img src="resource/img/quote.svg" alt="" class="review-card_background">
-                    <div class="card_content">
-                        <div class="review_header">
-                            <h3>Сергей</h3>
-                            <div class="review_rating">★ ★ ★ ★ ★</div>
-                        </div>
-                        <p class="review_text">
-                            Ездили с сыном (10 лет) на учебном маршруте. Ребёнок был счастлив! Инструктор внимательный, всё объяснил, показал. Дорога нормальная, доехали без проблем. Из минусов — слабый интернет, но в горах это даже плюс, чтобы отдохнуть от телефона. В следующий раз возьмем маршрут подлиннее.
-                        </p>
-                        <span class="second review_date">Март 2025</span>
-                    </div>
-                </div>
-                
-                <!-- Отзыв 4 -->
-                <div class="card review-card">
-                    <img src="resource/img/quote.svg" alt="" class="review-card_background">
-                    <div class="card_content">
-                        <div class="review_header">
-                            <h3>Дмитрий</h3>
-                            <div class="review_rating">★ ★ ★ ★ ★</div>
-                        </div>
-                        <p class="review_text">
-                            Большая компания брали квадроциклы на весь день. Организация на высоте: гид знает своё дело, маршрут интересный с разными препятствиями, были на нескольких вершинах. Вечером баня и шашлык — идеальный день! Отдельное спасибо за вкусный обед на природе.
-                        </p>
-                        <span class="second review_date">Август 2025</span>
-                    </div>
-                </div>
-            </div>
+            // Собираем только выбранные (не пустые) отзывы
+            $review_slots = array();
+            if (!empty($review_slot_1)) $review_slots[] = $review_slot_1;
+            if (!empty($review_slot_2)) $review_slots[] = $review_slot_2;
+            if (!empty($review_slot_3)) $review_slots[] = $review_slot_3;
+            if (!empty($review_slot_4)) $review_slots[] = $review_slot_4;
             
-            <div class="section_footer">
-                <a href="#" class="btn-link">Все отзывы</a>
-            </div>
+            foreach ($review_slots as $slot_id) {
+                $review = get_post($slot_id);
+                if ($review) {
+                    $author = get_post_meta($slot_id, 'review_author', true);
+                    $rating = get_post_meta($slot_id, 'review_rating', true);
+                    if (!$author) $author = 'Аноним';
+                    if (!$rating) $rating = 5;
+                    
+                    // Звезды
+                    $stars = '';
+                    for ($i = 1; $i <= 5; $i++) {
+                        $stars .= ($i <= $rating) ? '★' : '☆';
+                    }
+                    
+                    // Берём текст отзыва из $review->post_content
+                    $review_text = $review->post_content;
+                    if (empty($review_text)) {
+                        $review_text = 'Отзыв без текста';
+                    }
+                    ?>
+                    <div class="card review-card">
+                        <img src="<?php echo get_template_directory_uri(); ?>/resource/img/quote.svg" alt="" class="review-card_background">
+                        <div class="card_content">
+                            <div class="review_header">
+                                <h3><?php echo esc_html($author); ?></h3>
+                                <div class="review_rating"><?php echo $stars; ?></div>
+                            </div>
+                            <p class="review_text">
+                                <?php echo wp_trim_words($review_text, 30, '...'); ?>
+                            </p>
+                            <span class="second review_date"><?php echo get_the_date('F Y', $slot_id); ?></span>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
         </div>
-    </section>
+        
+        <div class="section_footer">
+            <a href="<?php echo home_url('/отзывы/'); ?>" class="btn-link">Все отзывы</a>                    
+        </div>
+    </div>
+</section>
+            
+
 </main>
 
 <?php get_footer(); ?>
