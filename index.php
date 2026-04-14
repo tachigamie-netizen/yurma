@@ -78,7 +78,7 @@
                                 <?php if ($price) : ?>
                                     <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                 <?php endif; ?>
-                                <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                                <button class="btn btn-primary btn-card" onclick="openOrderModal()">Забронировать</button>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
         </div>
         
         <div class="section_footer">
-            <a href="<?php echo home_url('/rooms/'); ?>" class="btn-link">Все варианты размещения</a>
+            <a href="<?php echo home_url('/проживание/'); ?>" class="btn-link">Все варианты размещения</a>
         </div>
     </div>
 </section>
@@ -149,7 +149,7 @@
                                 <?php if ($price) : ?>
                                     <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                 <?php endif; ?>
-                                <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                                <button class="btn btn-primary btn-card" onclick="openOrderModal()">Забронировать</button>
                             </div>
                         </div>
                     </div>

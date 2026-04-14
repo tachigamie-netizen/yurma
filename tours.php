@@ -43,7 +43,7 @@ get_header(); ?>
                                 </ul>
                                 <div class="card_footer">
                                     <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
-                                    <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                                    <button class="btn btn-primary btn-card" onclick="openOrderModal()">Забронировать</button>
                                 </div>
                             </div>
                         </div>

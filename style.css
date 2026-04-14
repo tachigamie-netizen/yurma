@@ -73,22 +73,32 @@ p {
 
 /* ===== КНОПКИ ===== */
 .btn {
-    padding: 10px 20px;
+    padding: 10px 16px;
     border-radius: 30px;
     text-decoration: none;
     font-size: 16px;
     font-weight: 400;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 
 .btn-primary {
     background: #75BA12;
     color: white;
+    display: inline-block;
+    width: auto;
 }
 
 .btn-primary:hover {
     background: #5f9e0e;
+}
+
+/* Кнопка в карточках - растягивается на всю ширину */
+.btn-card {
+    width: 100%;
+    display: block;
+    text-align: center;
 }
 
 .btn-link {
@@ -126,6 +136,7 @@ p {
     display: flex;
     flex-direction: column;
 }
+
 .card,
 .room-card,
 .route-card,
@@ -144,6 +155,7 @@ p {
     transform: translateY(-4px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
+
 .card_image {
     width: 100%;
     height: 200px;
@@ -163,7 +175,18 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 15px;
     margin-top: auto;
+}
+
+/* Цена слева */
+.card_footer .price {
+    flex-shrink: 0;
+}
+
+/* Кнопка справа растянутая */
+.card_footer .btn-card {
+    flex: 1;
 }
 
 .card-grid {
@@ -816,26 +839,6 @@ footer a:hover {
     color: #999;
     font-size: 18px;
 }
-.review-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-
-.review-header h3 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
-    color: #333;
-}
-
-.review-rating {
-    font-size: 18px;
-    letter-spacing: 2px;
-    color: #FFB800;
-}
 
 /* ===== БЛОК СРЕДНЕГО РЕЙТИНГА ===== */
 .rating-summary {
@@ -899,6 +902,113 @@ main {
     flex: 1;
 }
 
+/* ===== ХЕДЕР И БУРГЕР-МЕНЮ ===== */
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.header_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 15px;
+}
+
+/* Бургер-кнопка (скрыта на десктопе) */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+
+.burger-menu span {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Анимация бургера в крестик */
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Обертка для навигации */
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Навигация */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 60px;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s;
+}
+
+nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* WhatsApp кнопки */
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+}
+
+.btn-whatsapp:hover {
+    background: #20B859;
+}
+
+.mobile-wa {
+    display: none;
+}
+
+/* Мобильное меню */
+.mobile-logo {
+    display: none;
+}
+
+.mobile-social {
+    display: none;
+}
+
+/* Блокировка скролла */
+.no-scroll {
+    overflow: hidden;
+}
+
 /* ===== АДАПТИВ ===== */
 @media (max-width: 1200px) {
     .services-grid {
@@ -931,7 +1041,7 @@ main {
     }
 }
 
-@media (max-width 992px) {
+@media (max-width: 992px) {
     .services-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -987,6 +1097,111 @@ main {
     .review-rating {
         font-size: 18px;
     }
+    
+    /* Бургер-меню */
+    .burger-menu {
+        display: flex;
+    }
+    
+    .desktop-wa {
+        display: none;
+    }
+    
+    .mobile-wa {
+        display: block;
+    }
+    
+    /* Мобильное меню */
+    .nav-wrapper {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 350px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: space-between;
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+        padding: 80px 30px 40px;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-wrapper.active {
+        right: 0;
+    }
+    
+    .mobile-logo {
+        display: block;
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .mobile-logo img {
+        max-width: 150px;
+        height: auto;
+    }
+    
+    nav {
+        width: 100%;
+        flex: 1;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        width: 100%;
+    }
+    
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    nav ul li a {
+        font-size: 24px;
+        display: block;
+        padding: 10px 0;
+        font-weight: 500;
+    }
+    
+    .mobile-wa {
+        display: block;
+        margin-top: 30px;
+        padding: 14px 30px;
+        font-size: 18px;
+        text-align: center;
+        width: 100%;
+        border-radius: 30px;
+    }
+    
+    .mobile-social {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .mobile-social a {
+        opacity: 0.7;
+        transition: opacity 0.3s;
+    }
+    
+    .mobile-social a:hover {
+        opacity: 1;
+    }
+    
+    .mobile-social img {
+        width: 28px;
+        height: 28px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1013,6 +1228,20 @@ main {
     .services-grid {
         grid-template-columns: 1fr;
     }
+    
+    .nav-wrapper {
+        width: 100%;
+        max-width: 100%;
+        padding: 80px 20px 30px;
+    }
+    
+    nav ul li a {
+        font-size: 20px;
+    }
+    
+    .mobile-logo img {
+        max-width: 120px;
+    }
 }
 
 @media (max-width: 360px) {
@@ -1021,6 +1250,17 @@ main {
     }
     .hero p {
         font-size: 24px;
+    }
+}
+
+/* Планшеты (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    nav ul {
+        gap: 30px;
+    }
+    
+    nav ul li a {
+        font-size: 14px;
     }
 }
 
@@ -1072,4 +1312,24 @@ main {
     width: 100%;
     padding: 14px;
     font-size: 16px;
+}
+
+
+/* второй стиль для карточек */
+.card_footer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: auto;
+}
+
+/* Цена сверху и слева */
+.card_footer .price {
+    text-align: left;
+    align-self: flex-start;
+}
+
+/* Кнопка снизу на всю ширину */
+.card_footer .btn-card {
+    width: 100%;
 }

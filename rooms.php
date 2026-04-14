@@ -59,7 +59,7 @@ get_header(); ?>
                                     <?php if ($price) : ?>
                                         <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                     <?php endif; ?>
-                                    <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
+                                    <button class="btn btn-primary btn-card" onclick="openOrderModal()">Забронировать</button>
                                 </div>
                             </div>
                         </div>

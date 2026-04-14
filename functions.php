@@ -15,8 +15,8 @@ function yurma_enqueue_assets() {
     }
 
     // Подключаем лайтбокс
-wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css', array(), '2.11.4');
-wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', array('jquery'), '2.11.4', true);
+    wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css', array(), '2.11.4');
+    wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', array('jquery'), '2.11.4', true);
 }
 add_action('wp_enqueue_scripts', 'yurma_enqueue_assets');
 
@@ -36,23 +36,31 @@ function register_rooms_cpt() {
         'not_found_in_trash' => 'В корзине нет номеров',
     );
     
-    $args = array(
-        'labels'              => $labels,
-        'public'              => true,
-        'publicly_queryable'  => true,
-        'show_ui'             => true,
-        'show_in_menu'        => true,
-        'query_var'           => true,
-        'rewrite'             => array('slug' => 'rooms'),
-        'capability_type'     => 'post',
-        'has_archive'         => true,
-        'hierarchical'        => false,
-        'menu_position'       => 5,
-        'menu_icon'           => 'dashicons-building',
-        'supports'            => array('title'), // Убираем стандартный редактор
-        'show_in_rest'        => false,
-    );
-    
+    // $args = array(
+    //     'labels'              => $labels,
+    //     'public'              => true,
+    //     'publicly_queryable'  => true,
+    //     'show_ui'             => true,
+    //     'show_in_menu'        => true,
+    //     'query_var'           => true,
+    //     'rewrite'             => array('slug' => 'rooms'),
+    //     'capability_type'     => 'post',
+    //     'has_archive'         => true,
+    //     'hierarchical'        => false,
+    //     'menu_position'       => 5,
+    //     'menu_icon'           => 'dashicons-building',
+    //     'supports'            => array('title'),
+    //     'show_in_rest'        => false,
+    // );
+     $args = array(
+        'labels'       => $labels,
+        'public'       => true,
+        'menu_icon'    => 'dashicons-building',
+        'supports'     => array('title'),
+        'has_archive'  => true,
+        'rewrite'      => array('slug' => 'rooms'),
+        'show_in_rest' => false,
+    );   
     register_post_type('rooms', $args);
 }
 add_action('init', 'register_rooms_cpt');
@@ -67,7 +75,7 @@ function rooms_admin_scripts() {
 }
 add_action('admin_enqueue_scripts', 'rooms_admin_scripts');
 
-// ========== Кастомный метабокс ==========
+// ========== Кастомный метабокс для номеров ==========
 function add_rooms_meta_boxes() {
     add_meta_box(
         'rooms_details',
@@ -104,13 +112,11 @@ function render_rooms_meta_box($post) {
     
     <div style="padding: 20px; background: #fff; border-radius: 8px;">
         
-        <!-- Название номера -->
         <div class="rooms-form-group">
             <label>🏷️ Название номера</label>
             <input type="text" name="post_title" value="<?php echo esc_attr($post->post_title); ?>" placeholder="Например: Комфорт с балконом">
         </div>
         
-        <!-- Фото номера -->
         <div class="rooms-form-group">
             <label>📷 Фото номера</label>
             <input type="hidden" id="room_image_id" name="room_image_id" value="<?php echo esc_attr($image_id); ?>">
@@ -126,7 +132,6 @@ function render_rooms_meta_box($post) {
             <div class="rooms-help">Загрузите основное фото номера</div>
         </div>
         
-        <!-- Цена и вместимость -->
         <div class="rooms-two-columns">
             <div class="rooms-form-group">
                 <label>💰 Цена (₽/сутки)</label>
@@ -138,21 +143,18 @@ function render_rooms_meta_box($post) {
             </div>
         </div>
         
-        <!-- Удобства -->
         <div class="rooms-form-group">
             <label>📋 Удобства</label>
             <textarea name="room_features" rows="5" placeholder="Двуспальная кровать&#10;TV Триколор&#10;Душ и туалет&#10;Балкон"><?php echo esc_textarea($features); ?></textarea>
             <div class="rooms-help">Каждое удобство с новой строки</div>
         </div>
         
-        <!-- Описание -->
         <div class="rooms-form-group">
             <label>📝 Описание номера</label>
             <textarea name="room_description" rows="8" placeholder="Подробное описание номера..."><?php echo esc_textarea($description); ?></textarea>
             <div class="rooms-help">Подробное описание для страницы номера</div>
         </div>
         
-        <!-- Кнопка сохранения -->
         <div class="rooms-save-btn">
             <button type="submit" class="button button-primary button-large">💾 Сохранить номер</button>
         </div>
@@ -193,24 +195,20 @@ function render_rooms_meta_box($post) {
     <?php
 }
 
-// ========== Сохранение данных ==========
+// ========== Сохранение данных номеров ==========
 function save_rooms_meta($post_id) {
-    // Защита от автосохранения
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
     
-    // Проверяем права
     if (!current_user_can('edit_post', $post_id)) {
         return;
     }
     
-    // Проверяем тип записи
     if (get_post_type($post_id) != 'rooms') {
         return;
     }
     
-    // Сохраняем название
     if (isset($_POST['post_title']) && !empty($_POST['post_title'])) {
         remove_action('save_post', 'save_rooms_meta');
         wp_update_post(array(
@@ -220,7 +218,6 @@ function save_rooms_meta($post_id) {
         add_action('save_post', 'save_rooms_meta');
     }
     
-    // Сохраняем метаполя
     if (isset($_POST['room_price'])) {
         update_post_meta($post_id, 'room_price', sanitize_text_field($_POST['room_price']));
     }
@@ -277,398 +274,255 @@ function rooms_admin_columns_data($column, $post_id) {
 }
 add_action('manage_rooms_posts_custom_column', 'rooms_admin_columns_data', 10, 2);
 
-// ========== Настройки темы (4 слота) ==========
-function get_rooms_list() {
+// ========== УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ ЛЮБОГО ТИПА ПОСТОВ ==========
+function get_posts_list_for_customizer($post_type, $orderby = 'title', $order = 'ASC') {
     $choices = array('' => '— Не выбрано —');
-    $rooms = get_posts(array(
-        'post_type' => 'rooms',
-        'numberposts' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'title',
-        'order' => 'ASC'
+    $posts = get_posts(array(
+        'post_type'      => $post_type,
+        'numberposts'    => -1,
+        'post_status'    => 'publish',
+        'orderby'        => $orderby,
+        'order'          => $order,
+        'suppress_filters' => false,
     ));
-    foreach ($rooms as $room) {
-        $choices[$room->ID] = $room->post_title;
+    
+    foreach ($posts as $post) {
+        $choices[$post->ID] = $post->post_title;
     }
     return $choices;
 }
 
+// ========== ОСНОВНАЯ ФУНКЦИЯ РЕГИСТРАЦИИ НАСТРОЕК ==========
 function yurma_customize_register($wp_customize) {
+    
+    // === 1. Номера (4 слота) ===
     $wp_customize->add_section('rooms_slots', array(
         'title'    => 'Номера на главной (4 слота)',
         'priority' => 31,
     ));
     
-    $wp_customize->add_setting('room_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
-    $wp_customize->add_control('room_slot_1', array(
-        'label'    => 'Слот 1',
-        'section'  => 'rooms_slots',
-        'type'     => 'select',
-        'choices'  => get_rooms_list(),
-    ));
-    
-    $wp_customize->add_setting('room_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
-    $wp_customize->add_control('room_slot_2', array(
-        'label'    => 'Слот 2',
-        'section'  => 'rooms_slots',
-        'type'     => 'select',
-        'choices'  => get_rooms_list(),
-    ));
-    
-    $wp_customize->add_setting('room_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
-    $wp_customize->add_control('room_slot_3', array(
-        'label'    => 'Слот 3',
-        'section'  => 'rooms_slots',
-        'type'     => 'select',
-        'choices'  => get_rooms_list(),
-    ));
-    
-    $wp_customize->add_setting('room_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
-    $wp_customize->add_control('room_slot_4', array(
-        'label'    => 'Слот 4',
-        'section'  => 'rooms_slots',
-        'type'     => 'select',
-        'choices'  => get_rooms_list(),
-    ));
-    
-    // ========== Выбор экскурсий на главной (4 слота) ==========
-$wp_customize->add_section('tours_slots', array(
-    'title'    => 'Экскурсии на главной (4 слота)',
-    'priority' => 32,
-    'description' => 'Выберите экскурсии для отображения в 4 слотах на главной странице.',
-));
-
-// Функция для получения списка экскурсий
-function get_tours_list() {
-    $choices = array('' => '— Не выбрано —');
-    $tours = get_posts(array(
-        'post_type' => 'tours',
-        'numberposts' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'title',
-        'order' => 'ASC'
-    ));
-    foreach ($tours as $tour) {
-        $choices[$tour->ID] = $tour->post_title;
+    for ($i = 1; $i <= 4; $i++) {
+        $wp_customize->add_setting("room_slot_$i", array(
+            'default' => '',
+            'sanitize_callback' => 'absint'
+        ));
+        $wp_customize->add_control("room_slot_$i", array(
+            'label'    => "Слот $i",
+            'section'  => 'rooms_slots',
+            'type'     => 'select',
+            'choices'  => get_posts_list_for_customizer('rooms'),
+        ));
     }
-    return $choices;
-}
-
-// Слот 1
-$wp_customize->add_setting('tour_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('tour_slot_1', array(
-    'label'    => 'Слот 1',
-    'section'  => 'tours_slots',
-    'type'     => 'select',
-    'choices'  => get_tours_list(),
-));
-
-// Слот 2
-$wp_customize->add_setting('tour_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('tour_slot_2', array(
-    'label'    => 'Слот 2',
-    'section'  => 'tours_slots',
-    'type'     => 'select',
-    'choices'  => get_tours_list(),
-));
-
-// Слот 3
-$wp_customize->add_setting('tour_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('tour_slot_3', array(
-    'label'    => 'Слот 3',
-    'section'  => 'tours_slots',
-    'type'     => 'select',
-    'choices'  => get_tours_list(),
-));
-
-// Слот 4
-$wp_customize->add_setting('tour_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('tour_slot_4', array(
-    'label'    => 'Слот 4',
-    'section'  => 'tours_slots',
-    'type'     => 'select',
-    'choices'  => get_tours_list(),
-));
-
-// ========== Выбор услуг на главной (4 слота) ==========
-$wp_customize->add_section('services_slots', array(
-    'title'    => 'Услуги на главной (4 слота)',
-    'priority' => 33,
-));
-
-function get_services_list() {
-    $choices = array('' => '— Не выбрано —');
-    $services = get_posts(array(
-        'post_type' => 'services',
-        'numberposts' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'title',
-        'order' => 'ASC'
+    
+    // === 2. Экскурсии (4 слота) ===
+    $wp_customize->add_section('tours_slots', array(
+        'title'       => 'Экскурсии на главной (4 слота)',
+        'priority'    => 32,
+        'description' => 'Выберите экскурсии для отображения в 4 слотах на главной странице.',
     ));
-    foreach ($services as $service) {
-        $choices[$service->ID] = $service->post_title;
+    
+    for ($i = 1; $i <= 4; $i++) {
+        $wp_customize->add_setting("tour_slot_$i", array(
+            'default' => '',
+            'sanitize_callback' => 'absint'
+        ));
+        $wp_customize->add_control("tour_slot_$i", array(
+            'label'    => "Слот $i",
+            'section'  => 'tours_slots',
+            'type'     => 'select',
+            'choices'  => get_posts_list_for_customizer('tours'),
+        ));
     }
-    return $choices;
-}
-
-$wp_customize->add_setting('service_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('service_slot_1', array(
-    'label'    => 'Слот 1',
-    'section'  => 'services_slots',
-    'type'     => 'select',
-    'choices'  => get_services_list(),
-));
-
-$wp_customize->add_setting('service_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('service_slot_2', array(
-    'label'    => 'Слот 2',
-    'section'  => 'services_slots',
-    'type'     => 'select',
-    'choices'  => get_services_list(),
-));
-
-$wp_customize->add_setting('service_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('service_slot_3', array(
-    'label'    => 'Слот 3',
-    'section'  => 'services_slots',
-    'type'     => 'select',
-    'choices'  => get_services_list(),
-));
-
-$wp_customize->add_setting('service_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('service_slot_4', array(
-    'label'    => 'Слот 4',
-    'section'  => 'services_slots',
-    'type'     => 'select',
-    'choices'  => get_services_list(),
-));
-// Слот 5
-$wp_customize->add_setting('service_slot_5', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('service_slot_5', array(
-    'label'    => 'Слот 5',
-    'section'  => 'services_slots',
-    'type'     => 'select',
-    'choices'  => get_services_list(),
-));
-
-
-// ========== Выбор отзывов на главной (4 слота) ==========
-$wp_customize->add_section('reviews_slots', array(
-    'title'    => 'Отзывы на главной (4 слота)',
-    'priority' => 34,
-    'description' => 'Выберите отзывы для отображения в 4 слотах на главной странице.',
-));
-
-function get_reviews_list() {
-    $choices = array('' => '— Не выбрано —');
-    $reviews = get_posts(array(
-        'post_type' => 'reviews',
-        'numberposts' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'date',
-        'order' => 'DESC'
+    
+    // === 3. Услуги (5 слотов) ===
+    $wp_customize->add_section('services_slots', array(
+        'title'    => 'Услуги на главной (5 слотов)',
+        'priority' => 33,
     ));
-    foreach ($reviews as $review) {
-        $choices[$review->ID] = $review->post_title;
+    
+    for ($i = 1; $i <= 5; $i++) {
+        $wp_customize->add_setting("service_slot_$i", array(
+            'default' => '',
+            'sanitize_callback' => 'absint'
+        ));
+        $wp_customize->add_control("service_slot_$i", array(
+            'label'    => "Слот $i",
+            'section'  => 'services_slots',
+            'type'     => 'select',
+            'choices'  => get_posts_list_for_customizer('services'),
+        ));
     }
-    return $choices;
-}
-
-// Слот 1
-$wp_customize->add_setting('review_slot_1', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('review_slot_1', array(
-    'label'    => 'Слот 1',
-    'section'  => 'reviews_slots',
-    'type'     => 'select',
-    'choices'  => get_reviews_list(),
-));
-
-// Слот 2
-$wp_customize->add_setting('review_slot_2', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('review_slot_2', array(
-    'label'    => 'Слот 2',
-    'section'  => 'reviews_slots',
-    'type'     => 'select',
-    'choices'  => get_reviews_list(),
-));
-
-// Слот 3
-$wp_customize->add_setting('review_slot_3', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('review_slot_3', array(
-    'label'    => 'Слот 3',
-    'section'  => 'reviews_slots',
-    'type'     => 'select',
-    'choices'  => get_reviews_list(),
-));
-
-// Слот 4
-$wp_customize->add_setting('review_slot_4', array('default' => '', 'sanitize_callback' => 'absint'));
-$wp_customize->add_control('review_slot_4', array(
-    'label'    => 'Слот 4',
-    'section'  => 'reviews_slots',
-    'type'     => 'select',
-    'choices'  => get_reviews_list(),
-));
-
+    
+    // === 4. Отзывы (4 слота) ===
+    $wp_customize->add_section('reviews_slots', array(
+        'title'       => 'Отзывы на главной (4 слота)',
+        'priority'    => 34,
+        'description' => 'Выберите отзывы для отображения в 4 слотах на главной странице.',
+    ));
+    
+    for ($i = 1; $i <= 4; $i++) {
+        $wp_customize->add_setting("review_slot_$i", array(
+            'default' => '',
+            'sanitize_callback' => 'absint'
+        ));
+        $wp_customize->add_control("review_slot_$i", array(
+            'label'    => "Слот $i",
+            'section'  => 'reviews_slots',
+            'type'     => 'select',
+            'choices'  => get_posts_list_for_customizer('reviews', 'date', 'DESC'),
+        ));
+    }
 }
 add_action('customize_register', 'yurma_customize_register');
 
+// ========== Тип записей "Экскурсии" ==========
+function register_tours_cpt() {
+    $labels = array(
+        'name'               => 'Экскурсии',
+        'singular_name'      => 'Экскурсия',
+        'menu_name'          => 'Экскурсии',
+        'add_new'            => 'Добавить экскурсию',
+        'add_new_item'       => 'Добавить новую экскурсию',
+        'edit_item'          => 'Редактировать экскурсию',
+        'new_item'           => 'Новая экскурсия',
+        'view_item'          => 'Просмотреть экскурсию',
+        'search_items'       => 'Искать экскурсии',
+        'not_found'          => 'Экскурсии не найдены',
+        'not_found_in_trash' => 'В корзине нет экскурсий',
+    );
+    
+    $args = array(
+        'labels'       => $labels,
+        'public'       => true,
+        'menu_icon'    => 'dashicons-palmtree',
+        'supports'     => array('title', 'thumbnail'),
+        'has_archive'  => true,
+        'rewrite'      => array('slug' => 'tours'),
+        'show_in_rest' => false,
+    );
+    
+    register_post_type('tours', $args);
+}
+add_action('init', 'register_tours_cpt');
 
+// ========== Метаполя для экскурсий ==========
+function add_tours_meta_boxes() {
+    add_meta_box('tours_details', 'Детали экскурсии', 'render_tours_meta_box', 'tours', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'add_tours_meta_boxes');
 
-
-
-    // ========== Тип записей "Экскурсии" ==========
-    function register_tours_cpt() {
-        $labels = array(
-            'name'               => 'Экскурсии',
-            'singular_name'      => 'Экскурсия',
-            'menu_name'          => 'Экскурсии',
-            'add_new'            => 'Добавить экскурсию',
-            'add_new_item'       => 'Добавить новую экскурсию',
-            'edit_item'          => 'Редактировать экскурсию',
-            'new_item'           => 'Новая экскурсия',
-            'view_item'          => 'Просмотреть экскурсию',
-            'search_items'       => 'Искать экскурсии',
-            'not_found'          => 'Экскурсии не найдены',
-            'not_found_in_trash' => 'В корзине нет экскурсий',
-        );
+function render_tours_meta_box($post) {
+    $price = get_post_meta($post->ID, 'tour_price', true);
+    $length = get_post_meta($post->ID, 'tour_length', true);
+    $duration = get_post_meta($post->ID, 'tour_duration', true);
+    $difficulty = get_post_meta($post->ID, 'tour_difficulty', true);
+    $image_id = get_post_meta($post->ID, 'tour_image_id', true);
+    $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+    ?>
+    <div style="padding: 15px; background: #f9f9f9;">
+        <p>
+            <label>💰 Цена (₽):</label><br>
+            <input type="number" name="tour_price" value="<?php echo esc_attr($price); ?>" style="width: 200px;">
+        </p>
+        <p>
+            <label>📍 Длина (км):</label><br>
+            <input type="text" name="tour_length" value="<?php echo esc_attr($length); ?>" style="width: 200px;" placeholder="например: 25 км">
+        </p>
+        <p>
+            <label>⏱ Время:</label><br>
+            <input type="text" name="tour_duration" value="<?php echo esc_attr($duration); ?>" style="width: 200px;" placeholder="например: 2-2.5 ч">
+        </p>
+        <p>
+            <label>📊 Сложность:</label><br>
+            <select name="tour_difficulty" style="width: 200px;">
+                <option value="■□□□□" <?php selected($difficulty, '■□□□□'); ?>>1/5 (легкий)</option>
+                <option value="■■□□□" <?php selected($difficulty, '■■□□□'); ?>>2/5 (средний)</option>
+                <option value="■■■□□" <?php selected($difficulty, '■■■□□'); ?>>3/5 (выше среднего)</option>
+                <option value="■■■■□" <?php selected($difficulty, '■■■■□'); ?>>4/5 (сложный)</option>
+                <option value="■■■■■" <?php selected($difficulty, '■■■■■'); ?>>5/5 (очень сложный)</option>
+            </select>
+        </p>
+        <p>
+            <label>📷 Фото:</label><br>
+            <input type="hidden" name="tour_image_id" value="<?php echo esc_attr($image_id); ?>">
+            <div class="tour-image-preview">
+                <?php if ($image_url) : ?>
+                    <img src="<?php echo esc_url($image_url); ?>" style="max-width: 200px;">
+                <?php endif; ?>
+            </div>
+            <button type="button" class="button tour-upload-btn">Выбрать фото</button>
+            <button type="button" class="button tour-remove-btn" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">Удалить фото</button>
+        </p>
+    </div>
+    
+    <script>
+    jQuery(document).ready(function($) {
+        var mediaUploader;
         
-        $args = array(
-            'labels'       => $labels,
-            'public'       => true,
-            'menu_icon'    => 'dashicons-palmtree',
-            'supports'     => array('title', 'thumbnail'),
-            'has_archive'  => true,
-            'rewrite'      => array('slug' => 'tours'),
-            'show_in_rest' => false,
-        );
-        
-        register_post_type('tours', $args);
-    }
-    add_action('init', 'register_tours_cpt');
-
-    // ========== Метаполя для экскурсий ==========
-    function add_tours_meta_boxes() {
-        add_meta_box('tours_details', 'Детали экскурсии', 'render_tours_meta_box', 'tours', 'normal', 'high');
-    }
-    add_action('add_meta_boxes', 'add_tours_meta_boxes');
-
-    function render_tours_meta_box($post) {
-        $price = get_post_meta($post->ID, 'tour_price', true);
-        $length = get_post_meta($post->ID, 'tour_length', true);
-        $duration = get_post_meta($post->ID, 'tour_duration', true);
-        $difficulty = get_post_meta($post->ID, 'tour_difficulty', true);
-        $image_id = get_post_meta($post->ID, 'tour_image_id', true);
-        $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
-        ?>
-        <div style="padding: 15px; background: #f9f9f9;">
-            <p>
-                <label>💰 Цена (₽):</label><br>
-                <input type="number" name="tour_price" value="<?php echo esc_attr($price); ?>" style="width: 200px;">
-            </p>
-            <p>
-                <label>📍 Длина (км):</label><br>
-                <input type="text" name="tour_length" value="<?php echo esc_attr($length); ?>" style="width: 200px;" placeholder="например: 25 км">
-            </p>
-            <p>
-                <label>⏱ Время:</label><br>
-                <input type="text" name="tour_duration" value="<?php echo esc_attr($duration); ?>" style="width: 200px;" placeholder="например: 2-2.5 ч">
-            </p>
-            <p>
-                <label>📊 Сложность:</label><br>
-                <select name="tour_difficulty" style="width: 200px;">
-                    <option value="■□□□□" <?php selected($difficulty, '■□□□□'); ?>>1/5 (легкий)</option>
-                    <option value="■■□□□" <?php selected($difficulty, '■■□□□'); ?>>2/5 (средний)</option>
-                    <option value="■■■□□" <?php selected($difficulty, '■■■□□'); ?>>3/5 (выше среднего)</option>
-                    <option value="■■■■□" <?php selected($difficulty, '■■■■□'); ?>>4/5 (сложный)</option>
-                    <option value="■■■■■" <?php selected($difficulty, '■■■■■'); ?>>5/5 (очень сложный)</option>
-                </select>
-            </p>
-            <p>
-                <label>📷 Фото:</label><br>
-                <input type="hidden" name="tour_image_id" value="<?php echo esc_attr($image_id); ?>">
-                <div class="tour-image-preview">
-                    <?php if ($image_url) : ?>
-                        <img src="<?php echo esc_url($image_url); ?>" style="max-width: 200px;">
-                    <?php endif; ?>
-                </div>
-                <button type="button" class="button tour-upload-btn">Выбрать фото</button>
-                <button type="button" class="button tour-remove-btn" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">Удалить фото</button>
-            </p>
-        </div>
-        
-        <script>
-        jQuery(document).ready(function($) {
-            var mediaUploader;
+        $('.tour-upload-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var container = btn.closest('div');
             
-            $('.tour-upload-btn').click(function(e) {
-                e.preventDefault();
-                var btn = $(this);
-                var container = btn.closest('div');
-                
-                if (mediaUploader) {
-                    mediaUploader.open();
-                    return;
-                }
-                mediaUploader = wp.media({
-                    title: 'Выберите фото экскурсии',
-                    button: { text: 'Выбрать' },
-                    multiple: false
-                });
-                mediaUploader.on('select', function() {
-                    var attachment = mediaUploader.state().get('selection').first().toJSON();
-                    container.find('input[name="tour_image_id"]').val(attachment.id);
-                    container.find('.tour-image-preview').html('<img src="' + attachment.url + '" style="max-width: 200px;">');
-                    container.find('.tour-remove-btn').show();
-                });
+            if (mediaUploader) {
                 mediaUploader.open();
-            });
-            
-            $('.tour-remove-btn').click(function(e) {
-                e.preventDefault();
-                var btn = $(this);
-                var container = btn.closest('div');
-                container.find('input[name="tour_image_id"]').val('');
-                container.find('.tour-image-preview').html('');
-                btn.hide();
-            });
-        });
-        </script>
-        <?php
-    }
-
-    function save_tours_meta($post_id) {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-        if (!current_user_can('edit_post', $post_id)) return;
-        if (get_post_type($post_id) != 'tours') return;
-        
-        if (isset($_POST['tour_price'])) {
-            update_post_meta($post_id, 'tour_price', sanitize_text_field($_POST['tour_price']));
-        }
-        if (isset($_POST['tour_length'])) {
-            update_post_meta($post_id, 'tour_length', sanitize_text_field($_POST['tour_length']));
-        }
-        if (isset($_POST['tour_duration'])) {
-            update_post_meta($post_id, 'tour_duration', sanitize_text_field($_POST['tour_duration']));
-        }
-        if (isset($_POST['tour_difficulty'])) {
-            update_post_meta($post_id, 'tour_difficulty', sanitize_text_field($_POST['tour_difficulty']));
-        }
-        if (isset($_POST['tour_image_id'])) {
-            $image_id = intval($_POST['tour_image_id']);
-            update_post_meta($post_id, 'tour_image_id', $image_id);
-            if ($image_id) {
-                set_post_thumbnail($post_id, $image_id);
+                return;
             }
+            mediaUploader = wp.media({
+                title: 'Выберите фото экскурсии',
+                button: { text: 'Выбрать' },
+                multiple: false
+            });
+            mediaUploader.on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                container.find('input[name="tour_image_id"]').val(attachment.id);
+                container.find('.tour-image-preview').html('<img src="' + attachment.url + '" style="max-width: 200px;">');
+                container.find('.tour-remove-btn').show();
+            });
+            mediaUploader.open();
+        });
+        
+        $('.tour-remove-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var container = btn.closest('div');
+            container.find('input[name="tour_image_id"]').val('');
+            container.find('.tour-image-preview').html('');
+            btn.hide();
+        });
+    });
+    </script>
+    <?php
+}
+
+function save_tours_meta($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    if (get_post_type($post_id) != 'tours') return;
+    
+    if (isset($_POST['tour_price'])) {
+        update_post_meta($post_id, 'tour_price', sanitize_text_field($_POST['tour_price']));
+    }
+    if (isset($_POST['tour_length'])) {
+        update_post_meta($post_id, 'tour_length', sanitize_text_field($_POST['tour_length']));
+    }
+    if (isset($_POST['tour_duration'])) {
+        update_post_meta($post_id, 'tour_duration', sanitize_text_field($_POST['tour_duration']));
+    }
+    if (isset($_POST['tour_difficulty'])) {
+        update_post_meta($post_id, 'tour_difficulty', sanitize_text_field($_POST['tour_difficulty']));
+    }
+    if (isset($_POST['tour_image_id'])) {
+        $image_id = intval($_POST['tour_image_id']);
+        update_post_meta($post_id, 'tour_image_id', $image_id);
+        if ($image_id) {
+            set_post_thumbnail($post_id, $image_id);
         }
     }
-    add_action('save_post', 'save_tours_meta');
+}
+add_action('save_post', 'save_tours_meta');
 
-
-
-
-
-    // ========== Тип записей "Услуги" ==========
+// ========== Тип записей "Услуги" ==========
 function register_services_cpt() {
     $labels = array(
         'name'               => 'Услуги',
@@ -795,9 +649,7 @@ function save_services_meta($post_id) {
 }
 add_action('save_post', 'save_services_meta');
 
-
-
-// ========== Тип записей "Галерея" (упрощенный) ==========
+// ========== Тип записей "Галерея" ==========
 function register_gallery_cpt() {
     $labels = array(
         'name'               => 'Галерея',
@@ -826,91 +678,6 @@ function register_gallery_cpt() {
     register_post_type('gallery', $args);
 }
 add_action('init', 'register_gallery_cpt');
-
-
-
-// // ========== СОХРАНЯЕМ ОТЗЫВ ИЗ CONTACT FORM 7 В БАЗУ ДАННЫХ ==========
-// add_action('wpcf7_before_send_mail', function($contact_form) {
-//     $form_id = $contact_form->id();
-    
-//     // ID формы отзыва 
-//     if ($form_id != 100) {
-//         return;
-//     }
-    
-//     $submission = WPCF7_Submission::get_instance();
-//     if ($submission) {
-//         $data = $submission->get_posted_data();
-        
-//         // Правильные имена полей из твоей формы
-//         $author = sanitize_text_field($data['review-author'] ?? '');
-// $rating = intval($data['review-rating']);
-// if ($rating === 0 && isset($data['review-rating'])) {
-//     // Если пришла строка типа "5" или "★★★★★"
-//     $rating = intval(trim($data['review-rating']));
-// }        $content = sanitize_textarea_field($data['review-content'] ?? '');
-        
-//         if ($author && $content) {
-//             $post_data = array(
-//                 'post_title'   => 'Отзыв от ' . $author,
-//                 'post_content' => $content,
-//                 'post_status'  => 'publish',
-//                 'post_type'    => 'reviews',
-//             );
-            
-//             $post_id = wp_insert_post($post_data);
-            
-//             if ($post_id) {
-//                 update_post_meta($post_id, 'review_author', $author);
-//                 update_post_meta($post_id, 'review_rating', $rating);
-//             }
-//         }
-//     }
-// }, 20);
-
-// ========== ОБРАБОТКА ФОРМЫ ОТЗЫВА ==========
-function handle_review_submission() {
-    if (isset($_POST['submit_review']) && isset($_POST['review_author']) && !empty($_POST['review_author'])) {
-        
-        $author = sanitize_text_field($_POST['review_author']);
-        $rating = intval($_POST['review_rating']);
-        $content = sanitize_textarea_field($_POST['review_content']);
-        
-        if (!empty($author) && !empty($content)) {
-            $post_data = array(
-                'post_title'   => 'Отзыв от ' . $author,
-                'post_content' => $content,
-                'post_status'  => 'publish',
-                'post_type'    => 'reviews',
-            );
-            
-            $post_id = wp_insert_post($post_data);
-            
-            if ($post_id) {
-                update_post_meta($post_id, 'review_author', $author);
-                update_post_meta($post_id, 'review_rating', $rating);
-            }
-        }
-        
-        // Получаем URL текущей страницы из реферера
-        $current_url = wp_get_referer();
-        if (!$current_url) {
-            $current_url = home_url('/reviews/');
-        }
-        
-        wp_redirect($current_url . '?review_sent=1');
-        exit;
-    }
-}
-add_action('init', 'handle_review_submission');
-
-// Уведомление об успешной отправке
-add_action('wp_head', function() {
-    if (isset($_GET['review_sent']) && $_GET['review_sent'] == 1) {
-        echo '<script>alert("Спасибо за ваш отзыв!");</script>';
-    }
-});
-
 
 // ========== Тип записей "Отзывы" ==========
 function register_reviews_cpt() {
@@ -985,12 +752,52 @@ function save_reviews_meta($post_id) {
 }
 add_action('save_post', 'save_reviews_meta');
 
+// ========== ОБРАБОТКА ФОРМЫ ОТЗЫВА ==========
+function handle_review_submission() {
+    if (isset($_POST['submit_review']) && isset($_POST['review_author']) && !empty($_POST['review_author'])) {
+        
+        $author = sanitize_text_field($_POST['review_author']);
+        $rating = intval($_POST['review_rating']);
+        $content = sanitize_textarea_field($_POST['review_content']);
+        
+        if (!empty($author) && !empty($content)) {
+            $post_data = array(
+                'post_title'   => 'Отзыв от ' . $author,
+                'post_content' => $content,
+                'post_status'  => 'publish',
+                'post_type'    => 'reviews',
+            );
+            
+            $post_id = wp_insert_post($post_data);
+            
+            if ($post_id) {
+                update_post_meta($post_id, 'review_author', $author);
+                update_post_meta($post_id, 'review_rating', $rating);
+            }
+        }
+        
+        $current_url = wp_get_referer();
+        if (!$current_url) {
+            $current_url = home_url('/reviews/');
+        }
+        
+        wp_redirect($current_url . '?review_sent=1');
+        exit;
+    }
+}
+add_action('init', 'handle_review_submission');
+
+// Уведомление об успешной отправке
+add_action('wp_head', function() {
+    if (isset($_GET['review_sent']) && $_GET['review_sent'] == 1) {
+        echo '<script>alert("Спасибо за ваш отзыв!");</script>';
+    }
+});
 
 // ========== ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ СТАТИСТИКИ ОТЗЫВОВ ==========
 function get_reviews_statistics() {
     global $wpdb;
     
-    // Получаем средний рейтинг и количество отзывов одним SQL запросом
     $result = $wpdb->get_row("
         SELECT 
             ROUND(AVG(CAST(meta_value AS DECIMAL(10,1))), 1) as avg_rating,
@@ -1007,3 +814,64 @@ function get_reviews_statistics() {
         'total_reviews' => $result ? intval($result->total_reviews) : 0
     );
 }
+
+// ========== УНИВЕРСАЛЬНЫЕ ФУНКЦИИ ДЛЯ КАРТОЧЕК ==========
+function get_post_card_data($post, $post_type) {
+    $post_id = $post->ID;
+    $image_id = get_post_meta($post_id, $post_type . '_image_id', true);
+    
+    $data = array(
+        'id' => $post_id,
+        'title' => get_the_title(),
+        'image_url' => $image_id ? wp_get_attachment_url($image_id) : get_template_directory_uri() . '/resource/img/placeholder.jpg',
+        'price' => null,
+        'formatted_price' => null,
+        'button_text' => 'заказать'
+    );
+    
+    switch ($post_type) {
+        case 'rooms':
+            $data['price'] = get_post_meta($post_id, 'room_price', true);
+            $data['formatted_price'] = $data['price'] ? number_format($data['price'], 0, '', ' ') . ' ₽' : null;
+            $data['capacity'] = get_post_meta($post_id, 'room_capacity', true);
+            $data['features'] = get_post_meta($post_id, 'room_features', true);
+            $data['features_list'] = $data['features'] ? explode("\n", $data['features']) : array();
+            break;
+            
+        case 'tours':
+            $data['price'] = get_post_meta($post_id, 'tour_price', true);
+            $data['formatted_price'] = $data['price'] ? number_format($data['price'], 0, '', ' ') . ' ₽' : null;
+            $data['length'] = get_post_meta($post_id, 'tour_length', true);
+            $data['duration'] = get_post_meta($post_id, 'tour_duration', true);
+            $data['difficulty'] = get_post_meta($post_id, 'tour_difficulty', true);
+            break;
+            
+        case 'services':
+            $data['price'] = get_post_meta($post_id, 'service_price', true);
+            $data['price_unit'] = get_post_meta($post_id, 'service_price_unit', true);
+            $data['formatted_price'] = $data['price'] ? $data['price'] . ' ' . $data['price_unit'] : null;
+            break;
+    }
+    
+    return $data;
+}
+
+function get_posts_query($post_type, $args = array()) {
+    $defaults = array(
+        'post_type' => $post_type,
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'title',
+        'order' => 'ASC'
+    );
+    
+    $args = wp_parse_args($args, $defaults);
+    
+    if ($post_type == 'reviews') {
+        $args['orderby'] = 'date';
+        $args['order'] = 'DESC';
+    }
+    
+    return new WP_Query($args);
+}
+?>

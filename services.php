@@ -39,7 +39,6 @@ get_header(); ?>
                             <div class="card_content">
                                 <h3><?php the_title(); ?></h3>
                                 <span class="price"><?php echo esc_html($price); ?> <?php echo esc_html($price_unit); ?></span>
-                                <button class="btn btn-primary" onclick="openOrderModal()">заказать</button>
                             </div>
                         </div>
                     <?php endwhile;

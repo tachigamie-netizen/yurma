@@ -46,9 +46,7 @@
 })();
 
 // ========== ОТКРЫТИЕ КОНКРЕТНЫХ МОДАЛЬНЫХ ОКОН ==========
-function openOrderModal() {
-    openModal('orderModal');
-}
+
 
 function openReviewModal() {
     openModal('reviewModal');
@@ -87,4 +85,58 @@ document.addEventListener('wpcf7mailsent', function(event) {
             if (form) form.reset();
         }, 2000);
     }
+});
+
+// ========== БУРГЕР-МЕНЮ ==========
+document.addEventListener('DOMContentLoaded', function() {
+    const burgerBtn = document.getElementById('burgerBtn');
+    const navWrapper = document.getElementById('navWrapper');
+    const body = document.body;
+
+    if (!burgerBtn || !navWrapper) return;
+
+    // Функция открытия/закрытия меню
+    function toggleMenu() {
+        burgerBtn.classList.toggle('active');
+        navWrapper.classList.toggle('active');
+        body.classList.toggle('no-scroll');
+    }
+
+    // Клик по бургеру
+    burgerBtn.addEventListener('click', toggleMenu);
+
+    // Закрытие меню при клике на ссылку
+    const menuLinks = navWrapper.querySelectorAll('a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Не закрываем если это якорь с #
+            if (this.getAttribute('href') === '#') return;
+            
+            // Закрываем меню
+            burgerBtn.classList.remove('active');
+            navWrapper.classList.remove('active');
+            body.classList.remove('no-scroll');
+        });
+    });
+
+    // Закрытие при клике вне меню
+    document.addEventListener('click', function(event) {
+        if (navWrapper.classList.contains('active')) {
+            const isClickInside = navWrapper.contains(event.target) || burgerBtn.contains(event.target);
+            if (!isClickInside) {
+                burgerBtn.classList.remove('active');
+                navWrapper.classList.remove('active');
+                body.classList.remove('no-scroll');
+            }
+        }
+    });
+
+    // Закрытие при нажатии Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && navWrapper.classList.contains('active')) {
+            burgerBtn.classList.remove('active');
+            navWrapper.classList.remove('active');
+            body.classList.remove('no-scroll');
+        }
+    });
 });
