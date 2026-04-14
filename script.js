@@ -87,56 +87,45 @@ document.addEventListener('wpcf7mailsent', function(event) {
     }
 });
 
-// ========== БУРГЕР-МЕНЮ ==========
+// ===== БУРГЕР-МЕНЮ =====
 document.addEventListener('DOMContentLoaded', function() {
-    const burgerBtn = document.getElementById('burgerBtn');
-    const navWrapper = document.getElementById('navWrapper');
+    const burger = document.querySelector('.burger-menu');
+    const navWrapper = document.querySelector('.nav-wrapper');
     const body = document.body;
-
-    if (!burgerBtn || !navWrapper) return;
-
-    // Функция открытия/закрытия меню
-    function toggleMenu() {
-        burgerBtn.classList.toggle('active');
-        navWrapper.classList.toggle('active');
-        body.classList.toggle('no-scroll');
-    }
-
-    // Клик по бургеру
-    burgerBtn.addEventListener('click', toggleMenu);
-
-    // Закрытие меню при клике на ссылку
-    const menuLinks = navWrapper.querySelectorAll('a');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Не закрываем если это якорь с #
-            if (this.getAttribute('href') === '#') return;
-            
-            // Закрываем меню
-            burgerBtn.classList.remove('active');
-            navWrapper.classList.remove('active');
-            body.classList.remove('no-scroll');
+    
+    if (burger && navWrapper) {
+        burger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            burger.classList.toggle('active');
+            navWrapper.classList.toggle('active');
+            body.classList.toggle('no-scroll');
         });
-    });
-
-    // Закрытие при клике вне меню
-    document.addEventListener('click', function(event) {
-        if (navWrapper.classList.contains('active')) {
-            const isClickInside = navWrapper.contains(event.target) || burgerBtn.contains(event.target);
-            if (!isClickInside) {
-                burgerBtn.classList.remove('active');
+        
+        // Закрытие меню при клике на ссылку
+        const navLinks = navWrapper.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                navWrapper.classList.remove('active');
+                body.classList.remove('no-scroll');
+            });
+        });
+        
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', function(event) {
+            if (!navWrapper.contains(event.target) && !burger.contains(event.target) && navWrapper.classList.contains('active')) {
+                burger.classList.remove('active');
                 navWrapper.classList.remove('active');
                 body.classList.remove('no-scroll');
             }
-        }
-    });
-
-    // Закрытие при нажатии Escape
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && navWrapper.classList.contains('active')) {
-            burgerBtn.classList.remove('active');
-            navWrapper.classList.remove('active');
-            body.classList.remove('no-scroll');
-        }
-    });
+        });
+    }
 });
+window.openModal = function(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';  // Вместо 'block'
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+    }
+};

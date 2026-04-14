@@ -7,26 +7,38 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-    
-  <body>
-    <!-- ШАПКА -->
-    <header class="header">
-        <div class="container header_container">
-            <a href="index.html" class="logo">
-                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo.svg" alt="Логотип">
-            </a>
 
-            <!-- Навигация -->
+<header class="header">
+    <div class="container header_container">
+        <a href="<?php echo home_url('/'); ?>" class="logo">
+            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo.svg" alt="Логотип">
+        </a>
+
+        <!-- Бургер-кнопка (только на мобильных) -->
+        <button class="burger-menu" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Навигация (обернута в overlay для мобильной версии) -->
+        <div class="nav-wrapper">
             <nav>
                 <ul>
                     <li><a href="<?php echo home_url('/проживание/'); ?>">Проживание</a></li>
-                    <li><a href="<?php echo home_url('/маршруты/'); ?>">Экскурсии</a></li> 
+                    <li><a href="<?php echo home_url('/маршруты/'); ?>">Экскурсии</a></li>
                     <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
                     <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>
                     <li><a href="<?php echo home_url('/отзывы/'); ?>">Отзывы</a></li>
-                    <!-- <li><a href="#">О нас</a></li> -->
                 </ul>
             </nav>
-            <a href="#" class="btn btn-whatsapp">WhatsApp</a>
+            <!-- Кнопка WhatsApp внутри мобильного меню -->
+            <a href="#" class="btn btn-whatsapp mobile-wa">WhatsApp</a>
         </div>
-    </header>
+
+        <!-- Кнопка WhatsApp для десктопа -->
+        <a href="#" class="btn btn-whatsapp desktop-wa">WhatsApp</a>
+    </div>
+</header>
+
+<main>

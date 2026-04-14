@@ -94,7 +94,6 @@ p {
     background: #5f9e0e;
 }
 
-/* Кнопка в карточках - растягивается на всю ширину */
 .btn-card {
     width: 100%;
     display: block;
@@ -173,26 +172,24 @@ p {
 
 .card_footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     gap: 15px;
     margin-top: auto;
 }
 
-/* Цена слева */
 .card_footer .price {
-    flex-shrink: 0;
+    text-align: left;
+    align-self: flex-start;
 }
 
-/* Кнопка справа растянутая */
 .card_footer .btn-card {
-    flex: 1;
+    width: 100%;
 }
 
 .card-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 16px;
 }
 
 /* ===== ШАПКА ===== */
@@ -202,8 +199,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    opacity: 1;
-    transition: opacity 0.3s;
+    backdrop-filter: blur(10px);
 }
 
 .header_container {
@@ -242,6 +238,60 @@ nav a:hover {
 
 .btn-whatsapp:hover {
     background: #20B859;
+}
+
+/* Бургер-кнопка */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+
+.burger-menu span {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.desktop-wa {
+    display: block;
+}
+
+.mobile-wa,
+.mobile-logo,
+.mobile-social {
+    display: none;
+}
+
+.no-scroll {
+    overflow: hidden;
 }
 
 /* ===== HERO ===== */
@@ -295,7 +345,6 @@ nav a:hover {
 
 /* ===== ПРОЖИВАНИЕ ===== */
 .room-card {
-    max-width: 280px;
     width: 100%;
     margin: 0 auto;
 }
@@ -339,6 +388,12 @@ nav a:hover {
 }
 
 /* ===== УСЛУГИ ===== */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
 .service-card {
     position: relative;
     height: 280px;
@@ -372,7 +427,7 @@ nav a:hover {
     gap: 10px;
     background: rgba(0, 0, 0, 0.3);
     color: white;
-    padding: 150px 0 0 0;
+    padding: 150px 0 10px 0;
 }
 
 .service-card .card_content h3,
@@ -381,6 +436,12 @@ nav a:hover {
 }
 
 /* ===== ОТЗЫВЫ ===== */
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
 .review-card {
     position: relative;
 }
@@ -429,11 +490,75 @@ nav a:hover {
     align-self: flex-start;
 }
 
+/* Страница отзывов */
+.review-card-horizontal {
+    background: #fff;
+    border-radius: 5px;
+    padding: 24px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.review-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.review-rating {
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: #FFB800;
+}
+
+.review-content {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.review-date {
+    font-size: 13px;
+    color: #999;
+    text-align: right;
+}
+
+.rating-summary {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.rating-summary-number {
+    font-size: 48px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1;
+}
+
+.rating-summary-total {
+    font-size: 16px;
+    color: #666;
+    line-height: 1;
+}
+
 /* ===== ГАЛЕРЕЯ ===== */
 .gallery-grid {
     display: grid;
     grid-template-columns: 576px 1fr;
-    gap: 20px;
+    gap: 16px;
     margin-bottom: 60px;
 }
 
@@ -454,12 +579,13 @@ nav a:hover {
 .gallery-small-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 16px;
 }
 
 .gallery-small {
     width: 100%;
-    height: 280px;
+    height: auto;
+    aspect-ratio: 1 / 1;
     border-radius: 5px;
     overflow: hidden;
 }
@@ -471,11 +597,10 @@ nav a:hover {
     display: block;
 }
 
-/* Страница всех фото */
 .gallery-all-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    gap: 16px;
 }
 
 .gallery-all-item {
@@ -495,13 +620,9 @@ nav a:hover {
     transform: scale(1.05);
 }
 
-/* Эффект наведения для всех фото */
 .gallery-large img,
 .gallery-small img,
 .gallery-all-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -569,10 +690,6 @@ footer a:hover {
 
 .footer_email {
     font-size: 20px;
-}
-
-.footer_contacts a:hover {
-    text-decoration: none;
 }
 
 .footer_social {
@@ -651,7 +768,6 @@ footer a:hover {
     font-weight: bold;
     color: #999;
     cursor: pointer;
-    transition: color 0.2s;
 }
 
 .modal-close:hover {
@@ -666,7 +782,6 @@ footer a:hover {
     color: #333;
 }
 
-/* ===== СТИЛИ ДЛЯ ВСЕХ ФОРМ В МОДАЛКАХ ===== */
 .modal .form-row {
     margin-bottom: 15px;
 }
@@ -689,10 +804,9 @@ footer a:hover {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    margin-top: 0;
 }
 
-/* Стили для полей CF7 */
+/* ===== CF7 СТИЛИ ===== */
 .wpcf7-form input,
 .wpcf7-form textarea,
 .wpcf7-form select {
@@ -728,7 +842,6 @@ footer a:hover {
     display: none;
 }
 
-/* Кнопка отправки CF7 */
 .wpcf7-form input[type="submit"].btn,
 .wpcf7-form input[type="submit"].btn-primary {
     width: 100%;
@@ -745,7 +858,6 @@ footer a:hover {
     background: #5f9e0e;
 }
 
-/* Чекбокс в форме */
 .wpcf7-form .checkbox .wpcf7-list-item {
     display: flex;
     align-items: flex-start;
@@ -765,7 +877,6 @@ footer a:hover {
     font-weight: normal;
 }
 
-/* Ответ после отправки */
 .wpcf7-response-output {
     display: none;
 }
@@ -779,94 +890,49 @@ footer a:hover {
     text-align: center;
 }
 
-/* ===== ОТЗЫВЫ (страница) ===== */
-.reviews-page .reviews-button-wrapper {
-    margin-bottom: 40px;
+.wpcf7-mail-sent-ok {
+    background: #dff0d8;
+    border: 1px solid #c9e2b3;
+    color: #3c763d;
 }
 
-.review-card-horizontal {
-    background: #fff;
-    border-radius: 5px;
-    padding: 24px 30px;
+/* ===== ФОРМА ОТЗЫВА ===== */
+#reviewForm .form-row,
+#reviewModal .form-row {
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.review-card-horizontal:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-}
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.review-header h3 {
-    margin: 0;
-    font-size: 20px;
+#reviewForm label,
+#reviewModal label {
+    display: block;
     font-weight: 600;
-    color: #333;
+    margin-bottom: 8px;
 }
 
-.review-rating {
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: #FFB800;
+#reviewForm input,
+#reviewForm select,
+#reviewForm textarea,
+#reviewModal input,
+#reviewModal select,
+#reviewModal textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
 }
 
-.review-content {
+#reviewForm textarea,
+#reviewModal textarea {
+    resize: vertical;
+}
+
+#reviewForm .btn-primary,
+#reviewModal .btn-primary {
+    width: 100%;
+    padding: 14px;
     font-size: 16px;
-    line-height: 1.5;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-.review-date {
-    font-size: 13px;
-    color: #999;
-    text-align: right;
-}
-
-.no-reviews {
-    text-align: center;
-    padding: 40px;
-    color: #999;
-    font-size: 18px;
-}
-
-/* ===== БЛОК СРЕДНЕГО РЕЙТИНГА ===== */
-.rating-summary {
-    display: flex;
-    align-items: baseline;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.rating-summary-number {
-    font-size: 48px;
-    font-weight: 600;
-    color: #333;
-    line-height: 1;
-}
-
-.rating-summary-total {
-    font-size: 16px;
-    color: #666;
-    line-height: 1;
-    white-space: nowrap;
-}
-
-/* ===== СЕТКИ ===== */
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
 }
 
 /* ===== LIGHTBOX ===== */
@@ -902,117 +968,10 @@ main {
     flex: 1;
 }
 
-/* ===== ХЕДЕР И БУРГЕР-МЕНЮ ===== */
-header {
-    background-color: rgba(0, 0, 0, 0.7);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(10px);
-}
-
-.header_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    padding: 10px 15px;
-}
-
-/* Бургер-кнопка (скрыта на десктопе) */
-.burger-menu {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 1001;
-}
-
-.burger-menu span {
-    width: 100%;
-    height: 3px;
-    background-color: white;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-}
-
-/* Анимация бургера в крестик */
-.burger-menu.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-}
-
-.burger-menu.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.burger-menu.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-}
-
-/* Обертка для навигации */
-.nav-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-/* Навигация */
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 60px;
-    margin: 0;
-    padding: 0;
-}
-
-nav a {
-    text-decoration: none;
-    color: white;
-    transition: all 0.3s;
-}
-
-nav a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-
-/* WhatsApp кнопки */
-.btn-whatsapp {
-    background: #25D366;
-    color: white;
-}
-
-.btn-whatsapp:hover {
-    background: #20B859;
-}
-
-.mobile-wa {
-    display: none;
-}
-
-/* Мобильное меню */
-.mobile-logo {
-    display: none;
-}
-
-.mobile-social {
-    display: none;
-}
-
-/* Блокировка скролла */
-.no-scroll {
-    overflow: hidden;
-}
-
 /* ===== АДАПТИВ ===== */
 @media (max-width: 1200px) {
     .services-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
     }
 }
 
@@ -1060,45 +1019,7 @@ nav a:hover {
         font-size: 36px;
         letter-spacing: -1.5px;
     }
-    .footer_content {
-        flex-direction: column;
-        gap: 40px;
-    }
-    .footer_about,
-    .footer_menu,
-    .footer_contacts {
-        width: 100%;
-    }
-    .footer_menu {
-        justify-content: space-between;
-        gap: 20px;
-    }
-    .footer_menu .menu_col {
-        width: calc(50% - 10px);
-    }
-    .footer_bottom div {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    .footer_bottom .separator {
-        display: none;
-    }
-    .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .review-card-horizontal {
-        padding: 18px 20px;
-    }
-    .review-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .review-rating {
-        font-size: 18px;
-    }
     
-    /* Бургер-меню */
     .burger-menu {
         display: flex;
     }
@@ -1111,7 +1032,6 @@ nav a:hover {
         display: block;
     }
     
-    /* Мобильное меню */
     .nav-wrapper {
         position: fixed;
         top: 0;
@@ -1154,7 +1074,7 @@ nav a:hover {
     nav ul {
         flex-direction: column;
         align-items: center;
-        gap: 25px;
+        gap: 24px;
         width: 100%;
     }
     
@@ -1171,7 +1091,6 @@ nav a:hover {
     }
     
     .mobile-wa {
-        display: block;
         margin-top: 30px;
         padding: 14px 30px;
         font-size: 18px;
@@ -1202,11 +1121,74 @@ nav a:hover {
         width: 28px;
         height: 28px;
     }
+    
+    .footer_content {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .footer_about,
+    .footer_menu,
+    .footer_contacts {
+        width: 100%;
+    }
+    .footer_menu {
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .footer_menu .menu_col {
+        width: calc(50% - 10px);
+    }
+    .footer_bottom div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .footer_bottom .separator {
+        display: none;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .reviews-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .gallery-large {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+    
+    .gallery-small {
+        aspect-ratio: 1 / 1;
+    }
+    
+    .gallery-all-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .review-card-horizontal {
+        padding: 18px 20px;
+    }
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .review-rating {
+        font-size: 18px;
+    }
 }
 
 @media (max-width: 640px) {
     .card-grid {
         grid-template-columns: 1fr;
+    }
+    .reviews-grid {
+        grid-template-columns: 1fr;
+    }
+    .gallery-all-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -1219,28 +1201,25 @@ nav a:hover {
         font-size: 30px;
         letter-spacing: -1px;
     }
-    .footer_menu {
-        gap: 15px;
-    }
-    .footer_social {
-        justify-content: center;
-    }
     .services-grid {
         grid-template-columns: 1fr;
     }
-    
+    .footer_menu {
+        gap: 15px;
+    }
     .nav-wrapper {
         width: 100%;
         max-width: 100%;
         padding: 80px 20px 30px;
     }
-    
     nav ul li a {
-        font-size: 20px;
+        font-size: 28px;
     }
-    
     .mobile-logo img {
         max-width: 120px;
+    }
+    .gallery-all-grid {
+        gap: 16px;
     }
 }
 
@@ -1258,64 +1237,70 @@ nav a:hover {
     nav ul {
         gap: 30px;
     }
-    
     nav ul li a {
         font-size: 14px;
     }
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .gallery-all-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
-/* Сообщение об успешной отправке Contact Form 7 */
-.wpcf7-mail-sent-ok {
-    background: #dff0d8;
-    border: 1px solid #c9e2b3;
-    color: #3c763d;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 20px;
+/* ===== КАРТОЧКИ ===== */
+.card {
+    background: #FFFFFF;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* ===== ФОРМА ОТЗЫВА ===== */
-#reviewForm .form-row,
-#reviewModal .form-row {
-    margin-bottom: 20px;
+.card,
+.room-card,
+.route-card,
+.service-card,
+.review-card,
+.review-card-horizontal {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#reviewForm label,
-#reviewModal label {
+.card:hover,
+.room-card:hover,
+.route-card:hover,
+.service-card:hover,
+.review-card:hover,
+.review-card-horizontal:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card_image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
     display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
 }
 
-#reviewForm input,
-#reviewForm select,
-#reviewForm textarea,
-#reviewModal input,
-#reviewModal select,
-#reviewModal textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 15px;
-    font-family: inherit;
+.card_content {
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
 }
 
-#reviewForm textarea,
-#reviewModal textarea {
-    resize: vertical;
-}
-
-#reviewForm .btn-primary,
-#reviewModal .btn-primary {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-}
-
-
-/* второй стиль для карточек */
+/* Активный стиль - колонкой */
 .card_footer {
     display: flex;
     flex-direction: column;
@@ -1323,13 +1308,296 @@ nav a:hover {
     margin-top: auto;
 }
 
-/* Цена сверху и слева */
 .card_footer .price {
     text-align: left;
     align-self: flex-start;
 }
 
-/* Кнопка снизу на всю ширину */
 .card_footer .btn-card {
     width: 100%;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+/* ===== КНОПКА "ОСТАВИТЬ ОТЗЫВ" НА СТРАНИЦЕ ОТЗЫВОВ ===== */
+.reviews-button-wrapper {
+    margin-bottom: 40px;
+}
+
+/* ===== ВТОРОЙ СТИЛЬ ДЛЯ КАРТОЧЕК (закомментирован) ===== */
+/*
+.card_footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: auto;
+}
+
+.card_footer .price {
+    flex-shrink: 0;
+}
+
+.card_footer .btn-card {
+    flex: 1;
+}
+*/
+
+/* ===== ПЛАНШЕТЫ (768px - 1024px) ===== */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .gallery-large {
+        height: 400px;
+    }
+    
+    .gallery-all-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    
+    /* Скрываем 5-ю услугу */
+    .services-grid .service-card:nth-child(5) {
+        display: none;
+    }
+    
+    /* Скрываем 4-й отзыв */
+    .reviews-grid .review-card:nth-child(4) {
+        display: none;
+    }
+    
+    /* Скрываем 3-й и 4-й номера (оставляем только 2) */
+    .card-grid .room-card:nth-child(3),
+    .card-grid .room-card:nth-child(4) {
+        display: none;
+    }
+    
+    /* Скрываем 3-ю и 4-ю экскурсии (оставляем только 2) */
+    .card-grid .route-card:nth-child(3),
+    .card-grid .route-card:nth-child(4) {
+        display: none;
+    }
+    
+    .reviews-button-wrapper {
+        margin-bottom: 40px;
+    }
+}
+
+/* ===== МОБИЛЬНЫЕ (до 767px) ===== */
+@media (max-width: 767px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .gallery-large {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+    
+    .gallery-small-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .gallery-small {
+        aspect-ratio: 1 / 1;
+    }
+    
+    .gallery-all-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    /* Номера - оставляем только 2 */
+    .accommodation .card-grid .room-card:nth-child(3),
+    .accommodation .card-grid .room-card:nth-child(4) {
+        display: none;
+    }
+    
+    /* Экскурсии - оставляем только 2 */
+    .tours .card-grid .route-card:nth-child(3),
+    .tours .card-grid .route-card:nth-child(4) {
+        display: none;
+    }
+    
+    /* Услуги - скрываем 3-ю, 4-ю, 5-ю (оставляем 2) */
+    .services-grid .service-card:nth-child(3),
+    .services-grid .service-card:nth-child(4),
+    .services-grid .service-card:nth-child(5) {
+        display: none;
+    }
+    
+    /* Отзывы - скрываем 2-й, 3-й, 4-й (оставляем 1) */
+    .reviews-grid .review-card:nth-child(2),
+    .reviews-grid .review-card:nth-child(3),
+    .reviews-grid .review-card:nth-child(4) {
+        display: none;
+    }
+    
+    .reviews-button-wrapper {
+        margin-bottom: 40px;
+    }
+}
+
+/* ===== МАЛЕНЬКИЕ ТЕЛЕФОНЫ (до 480px) ===== */
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 70px;
+        letter-spacing: -1.5px;
+    }
+    .hero p {
+        font-size: 30px;
+        letter-spacing: -1px;
+    }
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .footer_menu {
+        gap: 16px;
+    }
+    .gallery-all-grid {
+        gap: 16px;
+    }
+    .reviews-button-wrapper {
+        margin-bottom: 40px;
+    }
+}
+
+/* ===== УСЛУГИ ===== */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+/* Планшеты (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Мобильные (до 767px) */
+@media (max-width: 767px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* ===== МОДАЛЬНЫЕ ОКНА ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 99999;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 9px;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #ff6600;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Планшеты (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .modal-content {
+        width: 80%;
+        max-width: 80%;
+        margin: 40px auto;
+        padding: 25px;
+    }
+}
+
+/* Мобильные (до 767px) */
+@media (max-width: 767px) {
+    .modal-content {
+        width: 90%;
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 20px 15px;
+    }
+    
+    .modal-content h3 {
+        font-size: 20px;
+    }
 }
