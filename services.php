@@ -28,15 +28,15 @@ get_header(); ?>
                         ?>
                         <div class="card service-card">
                             <?php if ($image_id) : ?>
-                                <div class="service-card_image">
+                                <div class="service-card-image">
                                     <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php the_title(); ?>">
                                 </div>
                             <?php else : ?>
-                                <div class="service-card_image">
+                                <div class="service-card-image">
                                     <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Услуга">
                                 </div>
                             <?php endif; ?>
-                            <div class="card_content">
+                            <div class="card-content">
                                 <h3><?php the_title(); ?></h3>
                                 <span class="price"><?php echo esc_html($price); ?> <?php echo esc_html($price_unit); ?></span>
                             </div>

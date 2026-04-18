@@ -1,9 +1,8 @@
 /*
 Theme Name: Хребет Юрма
 Theme URI: 
-Author: Вы
+Author: Антименко Андрей
 Description: Тема для клуба активного отдыха "Хребет Юрма"
-Version: 1.0
 */
 
 /* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
@@ -125,7 +124,7 @@ p {
     color: white;
 }
 
-.section_footer {
+.section-footer {
     text-align: center;
     margin-top: 60px;
 }
@@ -161,14 +160,14 @@ p {
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card_image {
+.card-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
 }
 
-.card_content {
+.card-content {
     padding: 20px 16px;
     display: flex;
     flex-direction: column;
@@ -176,19 +175,19 @@ p {
     flex: 1;
 }
 
-.card_footer {
+.card-footer {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: auto;
 }
 
-.card_footer .price {
+.card-footer .price {
     text-align: left;
     align-self: flex-start;
 }
 
-.card_footer .btn-card {
+.card-footer .btn-card {
     width: 100%;
 }
 
@@ -208,7 +207,7 @@ header {
     backdrop-filter: blur(10px);
 }
 
-.header_container {
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -313,7 +312,7 @@ nav a:hover {
 
 }
 
-.hero_background {
+.hero-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -323,7 +322,7 @@ nav a:hover {
     overflow: hidden;
 }
 
-.hero_background img {
+.hero-background img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -357,13 +356,13 @@ nav a:hover {
     margin: 0 auto;
 }
 
-.room-card .card_header {
+.room-card .card-header {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.room-card .card_list {
+.room-card .card-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -372,15 +371,15 @@ nav a:hover {
     gap: 16px;
 }
 
-.tours_header {
+.block-header {
     display: flex;
     flex-direction: column;
-    max-width: 650px;
+    max-width: 750px;
     margin-bottom: 60px;
 }
 
 /* ===== ЭКСКУРСИИ ===== */
-.route-card .card_list {
+.route-card .card-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -389,7 +388,7 @@ nav a:hover {
     gap: 8px;
 }
 
-.route-card .card_list li {
+.route-card .card-list li {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -407,7 +406,7 @@ nav a:hover {
     height: 280px;
 }
 
-.service-card_image {
+.service-card-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -416,14 +415,14 @@ nav a:hover {
     z-index: 0;
 }
 
-.service-card_image img {
+.service-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
 
-.service-card .card_content {
+.service-card .card-content {
     position: relative;
     z-index: 1;
     height: 100%;
@@ -438,8 +437,8 @@ nav a:hover {
     padding: 150px 0 10px 0;
 }
 
-.service-card .card_content h3,
-.service-card .card_content .price {
+.service-card .card-content h3,
+.service-card .card-content .price {
     color: white;
 }
 
@@ -454,7 +453,7 @@ nav a:hover {
     position: relative;
 }
 
-.review-card_background {
+.review-card-background {
     position: absolute;
     top: 20px;
     right: 10px;
@@ -463,27 +462,27 @@ nav a:hover {
     opacity: 0.7;
 }
 
-.review-card .card_content {
+.review-card .card-content {
     position: relative;
     z-index: 1;
     height: 100%;
     padding: 40px;
 }
 
-.review-card .review_header {
+.review-card .review-header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
 }
 
-.review-card .review_rating {
+.review-card .review-rating {
     color: #FFB800;
     letter-spacing: 2px;
     white-space: nowrap;
 }
 
-.review-card .review_text {
+.review-card .review-text {
     flex: 1;
     overflow: hidden;
     display: -webkit-box;
@@ -494,7 +493,7 @@ nav a:hover {
     margin: 0;
 }
 
-.review-card .review_date {
+.review-card .review-date {
     align-self: flex-start;
 }
 
@@ -657,18 +656,45 @@ footer a:hover {
     margin-bottom: 40px;
 }
 
-.footer_content {
+.footer-content {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
 }
 
-.footer_about {
+.footer-about {
+    width: calc((100% / 12) * 4);
+    max-width: 100%;
+}
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* Левая колонка с логотипом и текстом */
+.footer-info {
     width: calc((100% / 12) * 4);
     max-width: 100%;
 }
 
-.footer_menu {
+.footer-info .logo {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.footer-info .logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+.footer-about {
+    width: 100%;
+}
+
+/* Меню */
+.footer-menu {
     display: flex;
     justify-content: space-between;
     width: calc((100% / 12) * 3);
@@ -677,44 +703,91 @@ footer a:hover {
     padding: 0;
 }
 
-.footer_menu .menu_col {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: auto;
-}
-
-.footer_contacts {
+/* Контакты */
+.footer-contacts {
     display: flex;
     flex-direction: column;
     width: calc((100% / 12) * 3);
     gap: 20px;
 }
 
-.footer_phone {
+/* Адаптив для планшетов */
+@media (max-width: 1024px) {
+    .footer-info,
+    .footer-menu,
+    .footer-contacts {
+        width: 100%;
+    }
+    
+    .footer-menu {
+        width: calc(50% - 20px);
+    }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .footer-info {
+        width: 100%;
+    }
+    
+    .footer-menu {
+        width: 100%;
+        justify-content: space-between;
+        gap: 20px;
+    }
+}
+.footer-menu {
+    display: flex;
+    justify-content: space-between;
+    width: calc((100% / 12) * 3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-menu .menu-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto;
+}
+
+.footer-contacts {
+    display: flex;
+    flex-direction: column;
+    width: calc((100% / 12) * 3);
+    gap: 20px;
+}
+
+.footer-phone {
     font-size: 24px;
 }
 
-.footer_email {
+.footer-email {
     font-size: 20px;
 }
 
-.footer_social {
+.footer-social {
     display: flex;
     gap: 15px;
     margin-top: 0;
 }
 
-.footer_social img {
+.footer-social img {
     opacity: 0.7;
     transition: opacity 0.3s;
 }
 
-.footer_social img:hover {
+.footer-social img:hover {
     opacity: 1;
 }
 
-.footer_bottom {
+.footer-bottom {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -723,7 +796,7 @@ footer a:hover {
     border-top: 1px solid #333;
 }
 
-.footer_bottom div {
+.footer-bottom div {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -992,17 +1065,17 @@ main {
     .gallery-large {
         height: 400px;
     }
-    .footer_content {
+    .footer-content {
         flex-wrap: wrap;
         gap: 40px;
     }
-    .footer_about {
+    .footer-about {
         width: 100%;
     }
-    .footer_menu {
+    .footer-menu {
         width: calc(50% - 20px);
     }
-    .footer_contacts {
+    .footer-contacts {
         width: calc(50% - 20px);
     }
 }
@@ -1129,28 +1202,28 @@ main {
         height: 28px;
     }
     
-    .footer_content {
+    .footer-content {
         flex-direction: column;
         gap: 40px;
     }
-    .footer_about,
-    .footer_menu,
-    .footer_contacts {
+    .footer-about,
+    .footer-menu,
+    .footer-contacts {
         width: 100%;
     }
-    .footer_menu {
+    .footer-menu {
         justify-content: space-between;
         gap: 20px;
     }
-    .footer_menu .menu_col {
+    .footer-menu .menu- qcol {
         width: calc(50% - 10px);
     }
-    .footer_bottom div {
+    .footer-bottom div {
         flex-direction: column;
         align-items: flex-start;
         gap: 5px;
     }
-    .footer_bottom .separator {
+    .footer-bottom .separator {
         display: none;
     }
     
@@ -1211,7 +1284,7 @@ main {
     .services-grid {
         grid-template-columns: 1fr;
     }
-    .footer_menu {
+    .footer-menu {
         gap: 15px;
     }
     .nav-wrapper {
@@ -1292,14 +1365,14 @@ main {
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card_image {
+.card-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
 }
 
-.card_content {
+.card-content {
     padding: 20px 16px;
     display: flex;
     flex-direction: column;
@@ -1308,19 +1381,19 @@ main {
 }
 
 /* Активный стиль - колонкой */
-.card_footer {
+.card-footer {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: auto;
 }
 
-.card_footer .price {
+.card-footer .price {
     text-align: left;
     align-self: flex-start;
 }
 
-.card_footer .btn-card {
+.card-footer .btn-card {
     width: 100%;
 }
 
@@ -1337,7 +1410,7 @@ main {
 
 /* ===== ВТОРОЙ СТИЛЬ ДЛЯ КАРТОЧЕК (закомментирован) ===== */
 /*
-.card_footer {
+.card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1345,11 +1418,11 @@ main {
     margin-top: auto;
 }
 
-.card_footer .price {
+.card-footer .price {
     flex-shrink: 0;
 }
 
-.card_footer .btn-card {
+.card-footer .btn-card {
     flex: 1;
 }
 */
@@ -1498,7 +1571,7 @@ main {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-    .footer_menu {
+    .footer-menu {
         gap: 16px;
     }
     .gallery-all-grid {
@@ -1890,5 +1963,87 @@ main {
 @media (min-width: 768px) and (max-width: 1024px) {
     .section:first-of-type {
         margin-top: 80px;
+    }
+}
+
+/* Выделение важных фраз */
+.accent {
+    font-weight: 600;
+}
+
+/* Планшеты - немного уменьшаем текст */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .about-content p {
+        line-height: 1.7;
+    }
+}
+
+/* ===== АДАПТИВНЫЕ ШРИФТЫ ===== */
+
+
+
+/* Планшеты (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    h1 {
+        font-size: 110px;
+    }
+    h2 {
+        font-size: 40px;
+        margin-bottom: 50px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+    p, li, .btn, .btn-link {
+        font-size: 18px;
+    }
+    .price {
+        font-size: 24px;
+    }
+    .second {
+        font-size: 16px;
+    }
+}
+
+/* Мобильные (до 767px) */
+@media (max-width: 767px) {
+    h1 {
+        font-size: 80px;
+    }
+    h2 {
+        font-size: 36px;
+        margin-bottom: 40px;
+    }
+    h3 {
+        font-size: 19px;
+    }
+    p, li, .btn, .btn-link {
+        font-size: 16px;
+    }
+    .price {
+        font-size: 22px;
+    }
+    .second {
+        font-size: 13px;
+    }
+}
+
+/* Маленькие телефоны (до 480px) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 60px;
+    }
+    h2 {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+    h3 {
+        font-size: 18px;
+    }
+    p, li {
+        font-size: 15px;
+    }
+    .price {
+        font-size: 20px;
     }
 }

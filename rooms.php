@@ -31,13 +31,13 @@ get_header(); ?>
                         ?>
                         <div class="card room-card">
                             <?php if ($image_id) : ?>
-                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php the_title(); ?>" class="card_image">
+                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php the_title(); ?>" class="card-image">
                             <?php else : ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card_image">
+                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card-image">
                             <?php endif; ?>
                             
-                            <div class="card_content">
-                                <div class="card_header">
+                            <div class="card-content">
+                                <div class="card-header">
                                     <h3><?php the_title(); ?></h3>
                                     <?php if ($capacity) : ?>
                                         <span class="second"><?php echo esc_html($capacity); ?></span>
@@ -45,7 +45,7 @@ get_header(); ?>
                                 </div>
                                 
                                 <?php if (!empty($features_list)) : ?>
-                                    <ul class="card_list">
+                                    <ul class="card-list">
                                         <?php foreach ($features_list as $feature) : ?>
                                             <?php $feature = trim($feature); ?>
                                             <?php if (!empty($feature)) : ?>
@@ -55,7 +55,7 @@ get_header(); ?>
                                     </ul>
                                 <?php endif; ?>
                                 
-                                <div class="card_footer">
+                                <div class="card-footer">
                                     <?php if ($price) : ?>
                                         <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                     <?php endif; ?>

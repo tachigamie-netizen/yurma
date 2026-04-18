@@ -9,7 +9,7 @@
 <body <?php body_class(); ?>>
 
 <header class="header">
-    <div class="container header_container">
+    <div class="container header-container">
         <a href="<?php echo home_url('/'); ?>" class="logo">
             <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo.svg" alt="Логотип">
         </a>

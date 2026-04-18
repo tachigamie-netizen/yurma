@@ -30,18 +30,18 @@ get_header(); ?>
                         ?>
                         <div class="card route-card">
                             <?php if ($image_id) : ?>
-                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php the_title(); ?>" class="card_image">
+                                <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php the_title(); ?>" class="card-image">
                             <?php else : ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Экскурсия" class="card_image">
+                                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Экскурсия" class="card-image">
                             <?php endif; ?>
-                            <div class="card_content">
+                            <div class="card-content">
                                 <h3><?php the_title(); ?></h3>
-                                <ul class="card_list">
+                                <ul class="card-list">
                                     <li>📍 Длина: <?php echo esc_html($length); ?></li>
                                     <li>⏱ Время: <?php echo esc_html($duration); ?></li>
                                     <li>📊 Сложность: <?php echo esc_html($difficulty); ?></li>
                                 </ul>
-                                <div class="card_footer">
+                                <div class="card-footer">
                                     <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                     <button class="btn btn-primary btn-card" onclick="openOrderModal()">Забронировать</button>
                                 </div>
