@@ -898,10 +898,42 @@ function register_faq_cpt() {
         'supports'     => array('title', 'editor'), // title = вопрос, editor = ответ
         'has_archive'  => false,
         'show_in_rest' => true, // для удобства редактирования
-        'menu_position' => 25,
     );
     
     register_post_type('faq', $args);
 }
 add_action('init', 'register_faq_cpt');
+
+// ========== УПРАВЛЕНИЕ АДМИН-МЕНЮ ==========
+add_action('admin_menu', 'custom_admin_menu', 999);
+function custom_admin_menu() {
+    // Скрываем стандартные пункты, которые не нужны
+    remove_menu_page('edit-comments.php');  // Комментарии
+    remove_menu_page('tools.php');           // Инструменты
+    remove_menu_page('options-general.php'); // Настройки
+}
+
+// Изменяем порядок меню
+add_filter('custom_menu_order', '__return_true');
+add_filter('menu_order', 'custom_menu_order');
+function custom_menu_order($menu_order) {
+    return array(
+        'index.php',                        // 1. Консоль
+        'edit.php?post_type=page',          // 2. Страницы
+        'themes.php',                       // Внешний вид
+        'separator1',                       // Разделитель
+
+        'edit.php?post_type=rooms',         // 3. Номера
+        'edit.php?post_type=tours',         // 4. Экскурсии
+        'edit.php?post_type=services',      // 5. Услуги
+        'edit.php?post_type=gallery',       // 6. Галерея
+        'edit.php?post_type=reviews',       // 7. Отзывы
+        'edit.php?post_type=faq',           // 8. FAQ
+        'separator2',                       // Разделитель
+
+        'upload.php',                       // Медиафайлы
+        'users.php',                        // Пользователи
+        'plugins.php',                      // Плагины
+    );
+}
 ?>

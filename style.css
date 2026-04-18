@@ -25,11 +25,8 @@ Version: 1.0
 .section {
     margin-bottom: 120px; /* Отступ после каждой секции */
 }
-section:first-child {
+.section:first-of-type {
     margin-top: 120px;
-}
-main > section:first-child {
-    margin-top: 0px;
 }
 
 /* ===== ЗАГОЛОВКИ ===== */
@@ -312,6 +309,8 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-bottom: 120px;
+
 }
 
 .hero_background {
@@ -1099,7 +1098,7 @@ main {
     }
     
     .mobile-wa {
-        margin-top: 30px;
+        margin-bottom: 30px;
         padding: 14px 30px;
         font-size: 18px;
         text-align: center;
@@ -1455,8 +1454,8 @@ main {
     }
     
     /* Номера - оставляем только 2 */
-    .accommodation .card-grid .room-card:nth-child(3),
-    .accommodation .card-grid .room-card:nth-child(4) {
+    .room .card-grid .room-card:nth-child(3),
+    .room .card-grid .room-card:nth-child(4) {
         display: none;
     }
     
@@ -1779,11 +1778,15 @@ main {
     margin-bottom: 8px;
 }
 
-/* Адаптив */
+/* Адаптив для страницы "О нас" */
 @media (max-width: 768px) {
     .about-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+    }
+    
+    .about-content p {
+        max-width: 100%;
     }
     
     .contacts-grid {
@@ -1806,6 +1809,10 @@ main {
 }
 
 @media (max-width: 480px) {
+    .about-content p {
+        font-size: 15px;
+    }
+    
     .contact-item img {
         width: 24px;
         height: 24px;
@@ -1864,5 +1871,24 @@ main {
     
     .fullwidth-map iframe {
         height: 280px;
+    }
+}
+
+/* Отступ для первой секции на всех страницах */
+.section:first-of-type {
+    margin-top: 120px;
+}
+
+/* На мобильных отступ меньше */
+@media (max-width: 767px) {
+    .section:first-of-type {
+        margin-top: 60px;
+    }
+}
+
+/* На планшетах средний отступ */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .section:first-of-type {
+        margin-top: 80px;
     }
 }

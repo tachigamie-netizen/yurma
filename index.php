@@ -3,7 +3,7 @@
 <main>
     
     <!-- Hero -->
-    <section class="section hero">
+    <section class="hero">
         <div class="hero_background">
             <?php 
             $hero_bg = get_theme_mod('hero_background');
@@ -20,7 +20,7 @@
     </section>
 
     <!-- Проживание -->
-<section class="section accommodation">
+<section class="section room">
     <div class="container">
         <h2>Проживание</h2>
         
