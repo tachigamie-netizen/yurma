@@ -129,3 +129,17 @@ window.openModal = function(modalId) {
         modal.style.justifyContent = 'center';
     }
 };
+
+// Простой FAQ аккордеон
+document.addEventListener('DOMContentLoaded', function() {
+    var faqItems = document.querySelectorAll('.faq-item');
+    
+    for (var i = 0; i < faqItems.length; i++) {
+        var question = faqItems[i].querySelector('.faq-question');
+        
+        question.addEventListener('click', function(e) {
+            var parent = this.parentElement;
+            parent.classList.toggle('active');
+        });
+    }
+});

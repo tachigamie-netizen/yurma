@@ -18,9 +18,7 @@
                 <div class="menu_col">
                     <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>
                     <li><a href="<?php echo home_url('/отзывы/'); ?>">Отзывы</a></li>
-                    <!-- <li><a href="#">О нас</a></li>
-                    <li><a href="#">FAQ</a></li> -->
-                </div>
+                    <li><a href="<?php echo home_url('/о-нас/'); ?>">О нас</a></li>
             </ul>
             
             <!-- Контакты -->

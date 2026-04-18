@@ -22,6 +22,16 @@ Version: 1.0
     padding: 0 15px;
 }
 
+.section {
+    margin-bottom: 120px; /* Отступ после каждой секции */
+}
+section:first-child {
+    margin-top: 120px;
+}
+main > section:first-child {
+    margin-top: 0px;
+}
+
 /* ===== ЗАГОЛОВКИ ===== */
 h1 {
     font-size: 150px;
@@ -36,7 +46,6 @@ h2 {
     font-weight: 600;
     line-height: 110%;
     margin-bottom: 60px;
-    margin-top: 120px;  
 }
 
 h3 {
@@ -638,7 +647,6 @@ footer {
     background: #1A1A1A;
     color: white;
     padding: 60px 0 20px;
-    margin-top: 120px;
 }
 
 footer a:hover {
@@ -1623,12 +1631,8 @@ main {
     line-height: 1.8;
     text-align: justify;
     max-width: 55ch;
-    
-    /* Сглаживание шрифтов */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    
-    /* Кернинг и лигатуры */
     font-kerning: normal;
     font-feature-settings: "kern", "liga";
 }
@@ -1667,24 +1671,85 @@ main {
     color: #75BA12;
 }
 
-/* Секция "FAQ" */
+/* ===== Секция "FAQ" ===== */
 .faq .second {
     opacity: 80%;
 }
 
+/* Аккордеон */
 .faq-grid {
     display: flex;
     flex-direction: column;
-    gap: 40px; /* Отступ между faq-item 40px */
 }
 
 .faq-item {
+    margin-bottom: 20px;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
     padding: 0;
 }
 
-.faq-item h3 {
-    margin-bottom: 20px; /* Отступ между h3 и текстом 20px */
-    color: #75BA12;
+.faq-question h3 {
+    margin-bottom: 0;
+    flex: 1;
+   color: #333; /* Обычный цвет */
+}
+
+/* Активный цвет h3 */
+.faq-item.active .faq-question h3 {
+    color: #75BA12; /* Зеленый при открытии */
+}
+/* Кнопка плюс/минус */
+.faq-toggle {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.faq-toggle::before,
+.faq-toggle::after {
+    content: '';
+    position: absolute;
+    background: #75BA12;
+    border-radius: 3px;
+}
+
+.faq-toggle::before {
+    width: 2px;
+    height: 14px;
+    top: 3px;
+    left: 9px;
+}
+
+.faq-toggle::after {
+    width: 14px;
+    height: 2px;
+    top: 9px;
+    left: 3px;
+}
+
+/* Активное состояние - минус (убираем вертикальную линию) */
+.faq-item.active .faq-toggle::before {
+    display: none;
+}
+
+/* Ответ */
+.faq-answer {
+    display: none;
+    padding-top: 20px;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
 }
 
 .faq-item p {
@@ -1727,13 +1792,16 @@ main {
         gap: 20px;
     }
     
-    .faq-grid {
-        gap: 30px;
+    .faq-item {
+        margin-bottom: 15px;
     }
     
-    .faq-item h3 {
+    .faq-question h3 {
         font-size: 18px;
-        margin-bottom: 15px;
+    }
+    
+    .faq-answer {
+        padding-top: 15px;
     }
 }
 
@@ -1747,16 +1815,54 @@ main {
         font-size: 14px;
     }
     
-    .faq-grid {
-        gap: 20px;
+    .faq-item {
+        margin-bottom: 12px;
     }
     
-    .faq-item h3 {
+    .faq-question h3 {
         font-size: 16px;
-        margin-bottom: 15px;
+    }
+    
+    .faq-answer {
+        padding-top: 12px;
     }
     
     .directions-list {
         margin-left: 15px;
+    }
+}
+
+/* ===== КАРТА НА ВСЮ ШИРИНУ ===== */
+.fullwidth-map {
+    width: 100%;
+    margin-top: 60px;
+    margin-bottom: 0;
+}
+
+.fullwidth-map iframe {
+    display: block;
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+
+/* Адаптив для карты */
+@media (max-width: 768px) {
+    .fullwidth-map {
+        margin-top: 40px;
+    }
+    
+    .fullwidth-map iframe {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .fullwidth-map {
+        margin-top: 30px;
+    }
+    
+    .fullwidth-map iframe {
+        height: 280px;
     }
 }

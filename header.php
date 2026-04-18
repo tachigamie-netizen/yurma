@@ -30,6 +30,7 @@
                     <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
                     <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>
                     <li><a href="<?php echo home_url('/отзывы/'); ?>">Отзывы</a></li>
+                    <li><a href="<?php echo home_url('/о-нас/'); ?>">О Нас</a></li>
                 </ul>
             </nav>
             <!-- Кнопка WhatsApp внутри мобильного меню -->

@@ -5,7 +5,7 @@ Template Name: Все номера
 get_header(); ?>
 
 <main>
-    <section class="accommodation">
+    <section class="section accommodation">
         <div class="container">
             <h2>Проживание</h2>
             

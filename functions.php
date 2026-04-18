@@ -874,4 +874,34 @@ function get_posts_query($post_type, $args = array()) {
     
     return new WP_Query($args);
 }
+
+// ========== Тип записей "FAQ" ==========
+function register_faq_cpt() {
+    $labels = array(
+        'name'               => 'FAQ',
+        'singular_name'      => 'Вопрос',
+        'menu_name'          => 'FAQ',
+        'add_new'            => 'Добавить вопрос',
+        'add_new_item'       => 'Добавить новый вопрос',
+        'edit_item'          => 'Редактировать вопрос',
+        'new_item'           => 'Новый вопрос',
+        'view_item'          => 'Просмотреть вопрос',
+        'search_items'       => 'Искать вопросы',
+        'not_found'          => 'Вопросы не найдены',
+        'not_found_in_trash' => 'В корзине нет вопросов',
+    );
+    
+    $args = array(
+        'labels'       => $labels,
+        'public'       => true,
+        'menu_icon'    => 'dashicons-format-chat',
+        'supports'     => array('title', 'editor'), // title = вопрос, editor = ответ
+        'has_archive'  => false,
+        'show_in_rest' => true, // для удобства редактирования
+        'menu_position' => 25,
+    );
+    
+    register_post_type('faq', $args);
+}
+add_action('init', 'register_faq_cpt');
 ?>

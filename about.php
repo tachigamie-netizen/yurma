@@ -52,58 +52,52 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- Секция "FAQ" (статическая) -->
-    <section class="section faq">
-        <div class="container">
-            <h2>FAQ</h2>
+<!-- Секция "FAQ" -->
+<section class="section faq">
+    <div class="container">
+        <h2>FAQ</h2>
+        
+        <div class="faq-grid">
+            <?php
+            $faq_query = new WP_Query(array(
+                'post_type' => 'faq',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+                'orderby' => 'date',
+                'order' => 'ASC'
+            ));
             
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h3>Как добраться до базы?</h3>
-                    <p class="second">От Кыштыма до базы «ЮРМА» — 44 км, около часа дороги.</p>
-                    <p class="second">Координаты для навигатора: <strong>55.631049, 60.071326</strong></p>
-                    <ol class="directions-list second">
-                        <li>Направляйтесь на юг по ул. Юлии Ичевой в сторону пер. Восточный</li>
-                        <li>Поверните направо на ул. Горького</li>
-                        <li>Поверните направо на ул. Гузынина</li>
-                        <li>Поверните налево на ул. Комарова</li>
-                        <li>Продолжайте движение по ул. Пушкина</li>
-                        <li>Поверните налево на ш. Каслинское</li>
-                        <li>Поверните направо</li>
-                        <li>Поверните налево</li>
-                        <li>Поверните налево</li>
-                        <li>Поверните налево</li>
-                        <li>Место прибытия: База Юрма</li>
-                    </ol>
-                </div>
-                
-                <div class="faq-item">
-                    <h3>Можно ли с животными?</h3>
-                    <p class="second">Да, в некоторых номерах разрешено проживание с собаками. Предупредите заранее при бронировании.</p>
-                </div>
-                
-                <div class="faq-item">
-                    <h3>Что взять с собой?</h3>
-                    <p class="second">Шлемы и экипировку выдаём. С собой: удобная непродуваемая одежда и обувь по сезону, перчатки, термос с чаем. Подробный список пришлём после бронирования.</p>
-                </div>
-                
-                <div class="faq-item">
-                    <h3>Есть ли связь и интернет?</h3>
-                    <p class="second">Wi-Fi есть в общем зале. Сотовая связь работает с перебоями — это особенность места. Для связи с гидами используем рации. Если нужна устойчивая связь, лучше ловит Билайн, другие операторы с перебоями.</p>
-                </div>
-                
-                <div class="faq-item">
-                    <h3>Нужны ли права?</h3>
-                    <p class="second">Нет, права не нужны.</p>
-                </div>
-                
-                <div class="faq-item">
-                    <h3>Можно ли приехать со своей техникой?</h3>
-                    <p class="second">Да, можно на своих квадроциклах или снегоходах. Разработаем маршрут специально под вас.</p>
-                </div>
-            </div>
+            if ($faq_query->have_posts()) :
+                while ($faq_query->have_posts()) : $faq_query->the_post();
+                    ?>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3><?php the_title(); ?></h3>
+                            <button class="faq-toggle"></button>
+                        </div>
+                        <div class="faq-answer">
+                            <?php the_content(); ?>
+                        </div>
+                    </div>
+                <?php endwhile;
+                wp_reset_postdata();
+            else : ?>
+                <p class="second">Вопросы пока не добавлены. Зайдите в админку → FAQ → Добавить вопрос.</p>
+            <?php endif; ?>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- Секция "Карта" -->
+<div class="fullwidth-map">
+    <iframe 
+        src="https://yandex.ru/map-widget/v1/?l=sat%2Cskl&ll=60.557473%2C55.722186&mode=routes&rtext=55.714181%2C60.509947~55.631032%2C60.071424&rtt=auto&ruri=~ymapsbm1%3A%2F%2Forg%3Foid%3D156121608094&um=constructor%3Ab6f6049b67c3ed00725fcdddb6139c60877a3b910ffe8a47add07b2d0e533d59&z=13" 
+        width="100%" 
+        height="450" 
+        frameborder="0" 
+        allowfullscreen>
+    </iframe>
+</div>
 </main>
 
 <?php get_footer(); ?>
