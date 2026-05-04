@@ -112,7 +112,7 @@ $selected_features = array_map('sanitize_text_field', $selected_features);
                                 <div class="card_header">
                                     <h3><?php the_title(); ?></h3>
                                     <?php if ($capacity) : ?>
-                                        <span class="second"><?php echo esc_html($capacity); ?></span>
+                                        <span class="second"><?php echo esc_html($capacity); ?> местный</span>
                                     <?php endif; ?>
                                 </div>
                                 

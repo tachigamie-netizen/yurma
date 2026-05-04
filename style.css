@@ -42,7 +42,7 @@ h2 {
     font-size: 40px;
     font-weight: 600;
     line-height: 110%;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 h3 {
@@ -2061,14 +2061,6 @@ section:first-of-type {
     margin-top: 0;
 }
 
-/* Для страниц без hero (например, rooms, tours) */
-.accommodation:first-of-type,
-.tours:first-of-type,
-.services:first-of-type,
-.reviews-page:first-of-type {
-    padding-top: 80px;
-}
-
 /* Для мобильных устройств - фиксированный header без анимации */
 @media (max-width: 768px) {
     header {
@@ -2095,4 +2087,104 @@ section:first-of-type {
     body {
         padding-top: 0px !important;
     }
+}
+
+/* ===== КОМПАКТНЫЕ ФИЛЬТРЫ В СТРОКУ ===== */
+.tours-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding: 0;
+    background: transparent;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-icon {
+    font-size: 16px;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.filter-pill {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 25px;
+    background: transparent;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.filter-pill.active {
+    background: #75BA12;
+    border-color: #75BA12;
+    color: white;
+}
+
+.filter-pill:hover:not(.active) {
+    border-color: #75BA12;
+    background: rgba(117, 186, 18, 0.05);
+}
+
+/* Кнопка сброса - без рамки */
+.reset-pill {
+    display: inline-block;
+    padding: 5px 10px;
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    color: #999;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.reset-pill:hover {
+    color: #ff4444;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .tours-filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        background: #f8f8f8;
+        border-radius: 16px;
+        padding: 15px;
+    }
+    
+    .filter-item {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    
+    .filter-buttons {
+        flex: 1;
+    }
+    
+    .reset-pill {
+        margin-top: 5px;
+    }
+}
+
+.season-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+    /* justify-content: center; - удалить если есть */
 }

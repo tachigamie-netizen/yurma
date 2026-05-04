@@ -99,23 +99,37 @@
 </section>
     
 <!-- Экскурсии -->
-<section class="section tours">
+<section id="tours-section" class="section tours">
     <div class="container">
         <div class="tours_header">
             <h2>Маршруты</h2>
-            <!-- <p class="tours_description"></p> -->
             <p class="tours_text">Бескрайние леса, заснеженные вершины, горные реки и скалистые хребты. Каждая поездка проходит в сопровождении опытного гида. От спокойных прогулок для новичков до дневных треков для опытных райдеров. Техника рассчитана на двоих, второй участник — 1 000 ₽</p>
         </div>
         
+        <!-- Фильтр по сезонам -->
+        <?php
+        $current_season_home = isset($_GET['season']) ? sanitize_text_field($_GET['season']) : '';
+        ?>
+        <div class="season-tags">
+    <a href="?season=#tours-section" class="season-tag <?php echo empty($current_season_home) ? 'active' : ''; ?>">Зима</a>
+    <a href="?season=summer#tours-section" class="season-tag <?php echo $current_season_home == 'summer' ? 'active' : ''; ?>">Лето</a>
+</div>
+        
         <div class="card-grid">
             <?php
-            // Получаем ID выбранных экскурсий
-            $tour_slot_1 = get_theme_mod('tour_slot_1', '');
-            $tour_slot_2 = get_theme_mod('tour_slot_2', '');
-            $tour_slot_3 = get_theme_mod('tour_slot_3', '');
-            $tour_slot_4 = get_theme_mod('tour_slot_4', '');
+            // Выбираем слоты в зависимости от сезона
+            if (empty($current_season_home) || $current_season_home == 'winter') {
+                $tour_slot_1 = get_theme_mod('tour_winter_slot_1', '');
+                $tour_slot_2 = get_theme_mod('tour_winter_slot_2', '');
+                $tour_slot_3 = get_theme_mod('tour_winter_slot_3', '');
+                $tour_slot_4 = get_theme_mod('tour_winter_slot_4', '');
+            } else {
+                $tour_slot_1 = get_theme_mod('tour_summer_slot_1', '');
+                $tour_slot_2 = get_theme_mod('tour_summer_slot_2', '');
+                $tour_slot_3 = get_theme_mod('tour_summer_slot_3', '');
+                $tour_slot_4 = get_theme_mod('tour_summer_slot_4', '');
+            }
             
-            // Собираем только выбранные (не пустые) экскурсии
             $tour_slots = array();
             if (!empty($tour_slot_1)) $tour_slots[] = $tour_slot_1;
             if (!empty($tour_slot_2)) $tour_slots[] = $tour_slot_2;
@@ -132,27 +146,16 @@
                     $image_id = get_post_meta($slot_id, 'tour_image_id', true);
                     ?>
                     <div class="card route-card">
-                        <?php if ($image_id) : ?>
-                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($tour->post_title); ?>" class="card_image">
-                        <?php else : ?>
-                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Экскурсия" class="card_image">
-                        <?php endif; ?>
-                        
+                        <img src="<?php echo $image_id ? wp_get_attachment_url($image_id) : get_template_directory_uri() . '/resource/img/placeholder.jpg'; ?>" alt="<?php echo esc_attr($tour->post_title); ?>" class="card_image">
                         <div class="card_content">
-                            <div class="card_header">
-                                <h3><?php echo esc_html($tour->post_title); ?></h3>
-                            </div>
-                            
+                            <h3><?php echo esc_html($tour->post_title); ?></h3>
                             <ul class="card_list">
-                                <li>📍 Длина: <?php echo esc_html($length); ?></li>
-                                <li>⏱ Время: <?php echo esc_html($duration); ?></li>
+                                <li>📍 Длина: <?php echo esc_html($length); ?> км</li>
+                                <li>⏱ Время: <?php echo esc_html($duration); ?> ч</li>
                                 <li>📊 Сложность: <?php echo esc_html($difficulty); ?></li>
                             </ul>
-                            
                             <div class="card_footer">
-                                <?php if ($price) : ?>
-                                    <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
-                                <?php endif; ?>
+                                <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                 <button class="btn btn-primary btn-card" onclick="openOrderModal()">Забронировать</button>
                             </div>
                         </div>
@@ -164,11 +167,10 @@
         </div>
         
         <div class="section_footer">
-            <a href="<?php echo home_url('//маршруты/'); ?>" class="btn-link">Все маршруты</a>
+            <a href="<?php echo home_url('/маршруты/'); ?>" class="btn-link">Все маршруты</a>
         </div>
     </div>
 </section>
-        
 
     
 <!-- Услуги -->

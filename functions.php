@@ -352,6 +352,45 @@ function yurma_customize_register($wp_customize) {
             'choices'  => get_posts_list_for_customizer('tours'),
         ));
     }
+    // === 2. Экскурсии на главной (Зимние 4 слота) ===
+$wp_customize->add_section('tours_winter_slots', array(
+    'title'       => '❄️ Зимние экскурсии на главной (4 слота)',
+    'priority'    => 32,
+    'description' => 'Выберите экскурсии для отображения в режиме "Зима" на главной странице.',
+));
+
+for ($i = 1; $i <= 4; $i++) {
+    $wp_customize->add_setting("tour_winter_slot_$i", array(
+        'default' => '',
+        'sanitize_callback' => 'absint'
+    ));
+    $wp_customize->add_control("tour_winter_slot_$i", array(
+        'label'    => "Слот $i",
+        'section'  => 'tours_winter_slots',
+        'type'     => 'select',
+        'choices'  => get_posts_list_for_customizer('tours'),
+    ));
+}
+
+// === 3. Экскурсии на главной (Летние 4 слота) ===
+$wp_customize->add_section('tours_summer_slots', array(
+    'title'       => '☀️ Летние экскурсии на главной (4 слота)',
+    'priority'    => 33,
+    'description' => 'Выберите экскурсии для отображения в режиме "Лето" на главной странице.',
+));
+
+for ($i = 1; $i <= 4; $i++) {
+    $wp_customize->add_setting("tour_summer_slot_$i", array(
+        'default' => '',
+        'sanitize_callback' => 'absint'
+    ));
+    $wp_customize->add_control("tour_summer_slot_$i", array(
+        'label'    => "Слот $i",
+        'section'  => 'tours_summer_slots',
+        'type'     => 'select',
+        'choices'  => get_posts_list_for_customizer('tours'),
+    ));
+}
     
     // === 3. Услуги (5 слотов) ===
     $wp_customize->add_section('services_slots', array(
