@@ -35,23 +35,6 @@ function register_rooms_cpt() {
         'not_found'          => 'Номера не найдены',
         'not_found_in_trash' => 'В корзине нет номеров',
     );
-    
-    // $args = array(
-    //     'labels'              => $labels,
-    //     'public'              => true,
-    //     'publicly_queryable'  => true,
-    //     'show_ui'             => true,
-    //     'show_in_menu'        => true,
-    //     'query_var'           => true,
-    //     'rewrite'             => array('slug' => 'rooms'),
-    //     'capability_type'     => 'post',
-    //     'has_archive'         => true,
-    //     'hierarchical'        => false,
-    //     'menu_position'       => 5,
-    //     'menu_icon'           => 'dashicons-building',
-    //     'supports'            => array('title'),
-    //     'show_in_rest'        => false,
-    // );
      $args = array(
         'labels'       => $labels,
         'public'       => true,
@@ -65,7 +48,7 @@ function register_rooms_cpt() {
 }
 add_action('init', 'register_rooms_cpt');
 
-// ========== Подключаем скрипты для админки ==========
+// ========== скрипты для админки ==========
 function rooms_admin_scripts() {
     global $post_type;
     if ($post_type == 'rooms') {
@@ -74,6 +57,46 @@ function rooms_admin_scripts() {
     }
 }
 add_action('admin_enqueue_scripts', 'rooms_admin_scripts');
+
+// ========== ТАКСОНОМИЯ "УДОБСТВА" ДЛЯ НОМЕРОВ ==========
+function register_room_features_taxonomy() {
+    $labels = array(
+        'name'              => 'Удобства',
+        'singular_name'     => 'Удобство',
+        'menu_name'         => 'Удобства номеров',
+    );
+
+    $args = array(
+        'labels'       => $labels,
+        'hierarchical' => false,
+        'public'       => true,
+        'show_ui'      => true,
+        'show_admin_column' => true,
+        'query_var'    => true,
+        'rewrite'      => array('slug' => 'room-feature'),
+        'show_in_rest' => true,
+    );
+
+    register_taxonomy('room_feature', 'rooms', $args);
+}
+add_action('init', 'register_room_features_taxonomy', 5);
+
+// Добавляем стандартные удобства (только русские названия, slug = русское название)
+function add_default_room_features() {
+    $features = array(
+        'Двуспальная кровать',
+        'Телевизор',
+        'Душ и туалет',
+        'Балкон'
+    );
+    
+    foreach ($features as $name) {
+        if (!term_exists($name, 'room_feature')) {
+            wp_insert_term($name, 'room_feature');
+        }
+    }
+}
+add_action('after_switch_theme', 'add_default_room_features');
 
 // ========== Кастомный метабокс для номеров ==========
 function add_rooms_meta_boxes() {
@@ -88,75 +111,74 @@ function add_rooms_meta_boxes() {
 }
 add_action('add_meta_boxes', 'add_rooms_meta_boxes');
 
+
 function render_rooms_meta_box($post) {
     $price = get_post_meta($post->ID, 'room_price', true);
     $capacity = get_post_meta($post->ID, 'room_capacity', true);
-    $features = get_post_meta($post->ID, 'room_features', true);
     $description = get_post_meta($post->ID, 'room_description', true);
     $image_id = get_post_meta($post->ID, 'room_image_id', true);
     $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
-    ?>
-    <style>
-        .rooms-form-group { margin-bottom: 25px; }
-        .rooms-form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
-        .rooms-form-group input[type="text"],
-        .rooms-form-group input[type="number"],
-        .rooms-form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
-        .rooms-form-group textarea { resize: vertical; }
-        .rooms-two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .rooms-image-preview { margin-bottom: 10px; }
-        .rooms-image-preview img { max-width: 300px; border-radius: 8px; border: 1px solid #ddd; }
-        .rooms-help { color: #666; font-size: 12px; margin-top: 5px; }
-        .rooms-save-btn { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; }
-    </style>
     
+    // Получаем выбранные удобства
+    $selected_features = wp_get_post_terms($post->ID, 'room_feature', array('fields' => 'names'));
+    $all_features = get_terms(array('taxonomy' => 'room_feature', 'hide_empty' => false));
+    ?>
     <div style="padding: 20px; background: #fff; border-radius: 8px;">
         
-        <div class="rooms-form-group">
-            <label>🏷️ Название номера</label>
-            <input type="text" name="post_title" value="<?php echo esc_attr($post->post_title); ?>" placeholder="Например: Комфорт с балконом">
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 10px;">🏷️ Название номера</label>
+            <input type="text" name="post_title" value="<?php echo esc_attr($post->post_title); ?>" style="width: 100%; padding: 8px;">
         </div>
         
-        <div class="rooms-form-group">
-            <label>📷 Фото номера</label>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 10px;">📷 Фото номера</label>
             <input type="hidden" id="room_image_id" name="room_image_id" value="<?php echo esc_attr($image_id); ?>">
-            <div id="room_image_preview" class="rooms-image-preview">
+            <div id="room_image_preview" style="margin-bottom: 10px;">
                 <?php if ($image_url) : ?>
-                    <img src="<?php echo esc_url($image_url); ?>" alt="Фото номера">
+                    <img src="<?php echo esc_url($image_url); ?>" style="max-width: 200px;">
                 <?php endif; ?>
             </div>
+            <button type="button" class="button" id="upload_room_image">Выбрать фото</button>
+            <button type="button" class="button" id="remove_room_image" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">Удалить фото</button>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 10px;">🛋️ Удобства для фильтрации</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <?php foreach ($all_features as $feature) : ?>
+                    <label style="display: flex; align-items: center; gap: 5px;">
+                        <input type="checkbox" name="room_features_tax[]" value="<?php echo esc_attr($feature->name); ?>" 
+                            <?php checked(in_array($feature->name, $selected_features)); ?>>
+                        <?php 
+                            $icons = array(
+                                'Двуспальная кровать' => '🛏️',
+                                'Телевизор' => '📺',
+                                'Душ и туалет' => '🚿',
+                                'Балкон' => '🚪'
+                            );
+                            $icon = isset($icons[$feature->name]) ? $icons[$feature->name] : '✅';
+                            echo $icon . ' ' . esc_html($feature->name);
+                        ?>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+            <div style="color: #666; font-size: 12px; margin-top: 5px;">Отметьте удобства, которые есть в номере</div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
-                <button type="button" class="button" id="upload_room_image">📁 Выбрать фото</button>
-                <button type="button" class="button" id="remove_room_image" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">🗑️ Удалить фото</button>
+                <label style="display: block; font-weight: 600; margin-bottom: 5px;">💰 Цена (₽/сутки)</label>
+                <input type="number" name="room_price" value="<?php echo esc_attr($price); ?>" style="width: 100%; padding: 8px;">
             </div>
-            <div class="rooms-help">Загрузите основное фото номера</div>
-        </div>
-        
-        <div class="rooms-two-columns">
-            <div class="rooms-form-group">
-                <label>💰 Цена (₽/сутки)</label>
-                <input type="number" name="room_price" value="<?php echo esc_attr($price); ?>" placeholder="8800">
-            </div>
-            <div class="rooms-form-group">
-                <label>👥 Вместимость</label>
-                <input type="text" name="room_capacity" value="<?php echo esc_attr($capacity); ?>" placeholder="2 местный">
+            <div>
+                <label style="display: block; font-weight: 600; margin-bottom: 5px;">👥 Вместимость</label>
+                <input type="text" name="room_capacity" value="<?php echo esc_attr($capacity); ?>" style="width: 100%; padding: 8px;">
             </div>
         </div>
         
-        <div class="rooms-form-group">
-            <label>📋 Удобства</label>
-            <textarea name="room_features" rows="5" placeholder="Двуспальная кровать&#10;TV Триколор&#10;Душ и туалет&#10;Балкон"><?php echo esc_textarea($features); ?></textarea>
-            <div class="rooms-help">Каждое удобство с новой строки</div>
-        </div>
-        
-        <div class="rooms-form-group">
-            <label>📝 Описание номера</label>
-            <textarea name="room_description" rows="8" placeholder="Подробное описание номера..."><?php echo esc_textarea($description); ?></textarea>
-            <div class="rooms-help">Подробное описание для страницы номера</div>
-        </div>
-        
-        <div class="rooms-save-btn">
-            <button type="submit" class="button button-primary button-large">💾 Сохранить номер</button>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 5px;">📝 Описание номера</label>
+            <textarea name="room_description" rows="5" style="width: 100%; padding: 8px;"><?php echo esc_textarea($description); ?></textarea>
         </div>
     </div>
     
@@ -178,7 +200,7 @@ function render_rooms_meta_box($post) {
             mediaUploader.on('select', function() {
                 var attachment = mediaUploader.state().get('selection').first().toJSON();
                 $('#room_image_id').val(attachment.id);
-                $('#room_image_preview').html('<img src="' + attachment.url + '" alt="Фото номера">');
+                $('#room_image_preview').html('<img src="' + attachment.url + '" style="max-width: 200px;">');
                 $('#remove_room_image').show();
             });
             mediaUploader.open();
@@ -197,17 +219,9 @@ function render_rooms_meta_box($post) {
 
 // ========== Сохранение данных номеров ==========
 function save_rooms_meta($post_id) {
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-    
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-    
-    if (get_post_type($post_id) != 'rooms') {
-        return;
-    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    if (get_post_type($post_id) != 'rooms') return;
     
     if (isset($_POST['post_title']) && !empty($_POST['post_title'])) {
         remove_action('save_post', 'save_rooms_meta');
@@ -224,9 +238,6 @@ function save_rooms_meta($post_id) {
     if (isset($_POST['room_capacity'])) {
         update_post_meta($post_id, 'room_capacity', sanitize_text_field($_POST['room_capacity']));
     }
-    if (isset($_POST['room_features'])) {
-        update_post_meta($post_id, 'room_features', sanitize_textarea_field($_POST['room_features']));
-    }
     if (isset($_POST['room_description'])) {
         update_post_meta($post_id, 'room_description', sanitize_textarea_field($_POST['room_description']));
     }
@@ -236,6 +247,14 @@ function save_rooms_meta($post_id) {
         if ($image_id) {
             set_post_thumbnail($post_id, $image_id);
         }
+    }
+    
+    // Сохраняем удобства
+    if (isset($_POST['room_features_tax'])) {
+        $features = array_map('sanitize_text_field', $_POST['room_features_tax']);
+        wp_set_post_terms($post_id, $features, 'room_feature');
+    } else {
+        wp_set_post_terms($post_id, array(), 'room_feature');
     }
 }
 add_action('save_post', 'save_rooms_meta');
@@ -418,8 +437,22 @@ function render_tours_meta_box($post) {
     $difficulty = get_post_meta($post->ID, 'tour_difficulty', true);
     $image_id = get_post_meta($post->ID, 'tour_image_id', true);
     $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+    
+    // Получаем выбранные сезоны для этой экскурсии
+    $selected_seasons = wp_get_post_terms($post->ID, 'tour_season', array('fields' => 'slugs'));
     ?>
     <div style="padding: 15px; background: #f9f9f9;">
+        <p>
+            <label>🌿 Сезон:</label><br>
+            <label style="display: inline-block; margin-right: 20px;">
+                <input type="checkbox" name="tour_seasons[]" value="winter" <?php checked(in_array('winter', $selected_seasons)); ?>>
+                ❄️ Зима
+            </label>
+            <label style="display: inline-block;">
+                <input type="checkbox" name="tour_seasons[]" value="summer" <?php checked(in_array('summer', $selected_seasons)); ?>>
+                ☀️ Лето
+            </label>
+        </p>
         <p>
             <label>💰 Цена (₽):</label><br>
             <input type="number" name="tour_price" value="<?php echo esc_attr($price); ?>" style="width: 200px;">
@@ -454,8 +487,8 @@ function render_tours_meta_box($post) {
             <button type="button" class="button tour-remove-btn" style="display: <?php echo $image_url ? 'inline-block' : 'none'; ?>">Удалить фото</button>
         </p>
     </div>
-    
-    <script>
+
+    <script type="text/javascript">
     jQuery(document).ready(function($) {
         var mediaUploader;
         
@@ -518,6 +551,14 @@ function save_tours_meta($post_id) {
         if ($image_id) {
             set_post_thumbnail($post_id, $image_id);
         }
+    }
+    
+    // Сохраняем сезоны
+    if (isset($_POST['tour_seasons'])) {
+        $seasons = array_map('sanitize_text_field', $_POST['tour_seasons']);
+        wp_set_post_terms($post_id, $seasons, 'tour_season');
+    } else {
+        wp_set_post_terms($post_id, array(), 'tour_season');
     }
 }
 add_action('save_post', 'save_tours_meta');
@@ -936,4 +977,43 @@ function custom_menu_order($menu_order) {
         'plugins.php',                      // Плагины
     );
 }
+
+// ========== ТАКСОНОМИЯ "СЕЗОН" ДЛЯ ЭКСКУРСИЙ ==========
+function register_tour_season_taxonomy() {
+    $labels = array(
+        'name'              => 'Сезоны',
+        'singular_name'     => 'Сезон',
+        'menu_name'         => 'Сезоны',
+        'edit_item'         => 'Редактировать сезон',
+        'update_item'       => 'Обновить сезон',
+        'add_new_item'      => 'Добавить новый сезон',
+        'new_item_name'     => 'Название нового сезона',
+    );
+
+    $args = array(
+        'labels'       => $labels,
+        'hierarchical' => false,
+        'public'       => true,
+        'show_ui'      => true,
+        'show_admin_column' => true,
+        'query_var'    => true,
+        'rewrite'      => array('slug' => 'season'),
+        'show_in_rest' => true,
+    );
+
+    register_taxonomy('tour_season', 'tours', $args);
+}
+add_action('init', 'register_tour_season_taxonomy');
+
+// Добавляем сезоны Зима и Лето при активации темы
+function add_default_seasons() {
+    if (!term_exists('Зима', 'tour_season')) {
+        wp_insert_term('Зима', 'tour_season', array('slug' => 'winter'));
+    }
+    if (!term_exists('Лето', 'tour_season')) {
+        wp_insert_term('Лето', 'tour_season', array('slug' => 'summer'));
+    }
+}
+add_action('after_switch_theme', 'add_default_seasons');
+
 ?>

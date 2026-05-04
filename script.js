@@ -130,7 +130,7 @@ window.openModal = function(modalId) {
     }
 };
 
-// Простой FAQ аккордеон
+// FAQ
 document.addEventListener('DOMContentLoaded', function() {
     var faqItems = document.querySelectorAll('.faq-item');
     

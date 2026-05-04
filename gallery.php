@@ -7,7 +7,7 @@ get_header(); ?>
 <main>
     <section class="section gallery">
         <div class="container">
-            <h2>Все фотографии</h2>
+            <h2>Галерея</h2>
             
             <div class="gallery-all-grid">
                 <?php

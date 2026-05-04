@@ -1,8 +1,9 @@
 /*
 Theme Name: Хребет Юрма
 Theme URI: 
-Author: Антименко Андрей
+Author: Вы
 Description: Тема для клуба активного отдыха "Хребет Юрма"
+Version: 1.0
 */
 
 /* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
@@ -10,7 +11,7 @@ Description: Тема для клуба активного отдыха "Хре�
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;   
+    font-family: 'Gotham Pro', sans-serif;   
     color: black;
     letter-spacing: 0px;
 }
@@ -124,7 +125,7 @@ p {
     color: white;
 }
 
-.section-footer {
+.section_footer {
     text-align: center;
     margin-top: 60px;
 }
@@ -160,14 +161,14 @@ p {
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card-image {
+.card_image {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
 }
 
-.card-content {
+.card_content {
     padding: 20px 16px;
     display: flex;
     flex-direction: column;
@@ -175,19 +176,19 @@ p {
     flex: 1;
 }
 
-.card-footer {
+.card_footer {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: auto;
 }
 
-.card-footer .price {
+.card_footer .price {
     text-align: left;
     align-self: flex-start;
 }
 
-.card-footer .btn-card {
+.card_footer .btn-card {
     width: 100%;
 }
 
@@ -207,7 +208,7 @@ header {
     backdrop-filter: blur(10px);
 }
 
-.header-container {
+.header_container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -312,7 +313,7 @@ nav a:hover {
 
 }
 
-.hero-background {
+.hero_background {
     position: absolute;
     top: 0;
     left: 0;
@@ -322,7 +323,7 @@ nav a:hover {
     overflow: hidden;
 }
 
-.hero-background img {
+.hero_background img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -344,7 +345,7 @@ nav a:hover {
     font-size: 48px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.85);
-    letter-spacing: -3px;
+    letter-spacing: 0px;
     line-height: 110%;
     word-wrap: break-word;
     white-space: normal;
@@ -356,13 +357,13 @@ nav a:hover {
     margin: 0 auto;
 }
 
-.room-card .card-header {
+.room-card .card_header {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.room-card .card-list {
+.room-card .card_list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -371,15 +372,15 @@ nav a:hover {
     gap: 16px;
 }
 
-.block-header {
+.tours_header {
     display: flex;
     flex-direction: column;
-    max-width: 750px;
+    max-width: 650px;
     margin-bottom: 60px;
 }
 
 /* ===== ЭКСКУРСИИ ===== */
-.route-card .card-list {
+.route-card .card_list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -388,7 +389,7 @@ nav a:hover {
     gap: 8px;
 }
 
-.route-card .card-list li {
+.route-card .card_list li {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -406,7 +407,7 @@ nav a:hover {
     height: 280px;
 }
 
-.service-card-image {
+.service-card_image {
     position: absolute;
     top: 0;
     left: 0;
@@ -415,14 +416,14 @@ nav a:hover {
     z-index: 0;
 }
 
-.service-card-image img {
+.service-card_image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
 
-.service-card .card-content {
+.service-card .card_content {
     position: relative;
     z-index: 1;
     height: 100%;
@@ -434,11 +435,11 @@ nav a:hover {
     gap: 10px;
     background: rgba(0, 0, 0, 0.3);
     color: white;
-    padding: 150px 0 10px 0;
+    padding: 150px 0 20px 0;
 }
 
-.service-card .card-content h3,
-.service-card .card-content .price {
+.service-card .card_content h3,
+.service-card .card_content .price {
     color: white;
 }
 
@@ -453,7 +454,7 @@ nav a:hover {
     position: relative;
 }
 
-.review-card-background {
+.review-card_background {
     position: absolute;
     top: 20px;
     right: 10px;
@@ -462,27 +463,27 @@ nav a:hover {
     opacity: 0.7;
 }
 
-.review-card .card-content {
+.review-card .card_content {
     position: relative;
     z-index: 1;
     height: 100%;
     padding: 40px;
 }
 
-.review-card .review-header {
+.review-card .review_header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
 }
 
-.review-card .review-rating {
+.review-card .review_rating {
     color: #FFB800;
     letter-spacing: 2px;
     white-space: nowrap;
 }
 
-.review-card .review-text {
+.review-card .review_text {
     flex: 1;
     overflow: hidden;
     display: -webkit-box;
@@ -493,7 +494,7 @@ nav a:hover {
     margin: 0;
 }
 
-.review-card .review-date {
+.review-card .review_date {
     align-self: flex-start;
 }
 
@@ -642,9 +643,11 @@ nav a:hover {
 
 /* ===== ПОДВАЛ ===== */
 footer {
+    flex-shrink: 0; /* Запрещаем футеру сжиматься */
     background: #1A1A1A;
     color: white;
     padding: 60px 0 20px;
+    width: 100%; /* Гарантируем полную ширину */
 }
 
 footer a:hover {
@@ -656,45 +659,18 @@ footer a:hover {
     margin-bottom: 40px;
 }
 
-.footer-content {
+.footer_content {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
 }
 
-.footer-about {
-    width: calc((100% / 12) * 4);
-    max-width: 100%;
-}
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-/* Левая колонка с логотипом и текстом */
-.footer-info {
+.footer_about {
     width: calc((100% / 12) * 4);
     max-width: 100%;
 }
 
-.footer-info .logo {
-    display: inline-block;
-    margin-bottom: 20px;
-}
-
-.footer-info .logo img {
-    max-width: 150px;
-    height: auto;
-}
-
-.footer-about {
-    width: 100%;
-}
-
-/* Меню */
-.footer-menu {
+.footer_menu {
     display: flex;
     justify-content: space-between;
     width: calc((100% / 12) * 3);
@@ -703,91 +679,44 @@ footer a:hover {
     padding: 0;
 }
 
-/* Контакты */
-.footer-contacts {
-    display: flex;
-    flex-direction: column;
-    width: calc((100% / 12) * 3);
-    gap: 20px;
-}
-
-/* Адаптив для планшетов */
-@media (max-width: 1024px) {
-    .footer-info,
-    .footer-menu,
-    .footer-contacts {
-        width: 100%;
-    }
-    
-    .footer-menu {
-        width: calc(50% - 20px);
-    }
-}
-
-/* Адаптив для мобильных */
-@media (max-width: 768px) {
-    .footer-content {
-        flex-direction: column;
-        gap: 40px;
-    }
-    
-    .footer-info {
-        width: 100%;
-    }
-    
-    .footer-menu {
-        width: 100%;
-        justify-content: space-between;
-        gap: 20px;
-    }
-}
-.footer-menu {
-    display: flex;
-    justify-content: space-between;
-    width: calc((100% / 12) * 3);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.footer-menu .menu-col {
+.footer_menu .menu_col {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: auto;
 }
 
-.footer-contacts {
+.footer_contacts {
     display: flex;
     flex-direction: column;
     width: calc((100% / 12) * 3);
     gap: 20px;
 }
 
-.footer-phone {
+.footer_phone {
     font-size: 24px;
 }
 
-.footer-email {
+.footer_email {
     font-size: 20px;
 }
 
-.footer-social {
+.footer_social {
     display: flex;
     gap: 15px;
     margin-top: 0;
 }
 
-.footer-social img {
+.footer_social img {
     opacity: 0.7;
     transition: opacity 0.3s;
 }
 
-.footer-social img:hover {
+.footer_social img:hover {
     opacity: 1;
 }
 
-.footer-bottom {
+.footer_bottom {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -796,7 +725,7 @@ footer a:hover {
     border-top: 1px solid #333;
 }
 
-.footer-bottom div {
+.footer_bottom div {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -1039,13 +968,16 @@ html, body {
 }
 
 body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /* Запасной вариант для новых браузеров */
 }
 
 main {
-    flex: 1;
+    flex: 1 0 auto; /* Растягивается, занимая всё свободное место */
 }
 
 /* ===== АДАПТИВ ===== */
@@ -1065,17 +997,17 @@ main {
     .gallery-large {
         height: 400px;
     }
-    .footer-content {
+    .footer_content {
         flex-wrap: wrap;
         gap: 40px;
     }
-    .footer-about {
+    .footer_about {
         width: 100%;
     }
-    .footer-menu {
+    .footer_menu {
         width: calc(50% - 20px);
     }
-    .footer-contacts {
+    .footer_contacts {
         width: calc(50% - 20px);
     }
 }
@@ -1202,28 +1134,28 @@ main {
         height: 28px;
     }
     
-    .footer-content {
+    .footer_content {
         flex-direction: column;
         gap: 40px;
     }
-    .footer-about,
-    .footer-menu,
-    .footer-contacts {
+    .footer_about,
+    .footer_menu,
+    .footer_contacts {
         width: 100%;
     }
-    .footer-menu {
+    .footer_menu {
         justify-content: space-between;
         gap: 20px;
     }
-    .footer-menu .menu- qcol {
+    .footer_menu .menu_col {
         width: calc(50% - 10px);
     }
-    .footer-bottom div {
+    .footer_bottom div {
         flex-direction: column;
         align-items: flex-start;
         gap: 5px;
     }
-    .footer-bottom .separator {
+    .footer_bottom .separator {
         display: none;
     }
     
@@ -1284,7 +1216,7 @@ main {
     .services-grid {
         grid-template-columns: 1fr;
     }
-    .footer-menu {
+    .footer_menu {
         gap: 15px;
     }
     .nav-wrapper {
@@ -1365,14 +1297,14 @@ main {
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card-image {
+.card_image {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
 }
 
-.card-content {
+.card_content {
     padding: 20px 16px;
     display: flex;
     flex-direction: column;
@@ -1381,19 +1313,19 @@ main {
 }
 
 /* Активный стиль - колонкой */
-.card-footer {
+.card_footer {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: auto;
 }
 
-.card-footer .price {
+.card_footer .price {
     text-align: left;
     align-self: flex-start;
 }
 
-.card-footer .btn-card {
+.card_footer .btn-card {
     width: 100%;
 }
 
@@ -1410,7 +1342,7 @@ main {
 
 /* ===== ВТОРОЙ СТИЛЬ ДЛЯ КАРТОЧЕК (закомментирован) ===== */
 /*
-.card-footer {
+.card_footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1418,11 +1350,11 @@ main {
     margin-top: auto;
 }
 
-.card-footer .price {
+.card_footer .price {
     flex-shrink: 0;
 }
 
-.card-footer .btn-card {
+.card_footer .btn-card {
     flex: 1;
 }
 */
@@ -1430,7 +1362,7 @@ main {
 /* ===== ПЛАНШЕТЫ (768px - 1024px) ===== */
 @media (min-width: 768px) and (max-width: 1024px) {
     .card-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
     }
     
@@ -1571,7 +1503,7 @@ main {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-    .footer-menu {
+    .footer_menu {
         gap: 16px;
     }
     .gallery-all-grid {
@@ -1965,85 +1897,135 @@ main {
         margin-top: 80px;
     }
 }
-
-/* Выделение важных фраз */
-.accent {
-    font-weight: 600;
+/* ===== ТЕГИ ЗИМА/ЛЕТО ===== */
+.season-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
 }
 
-/* Планшеты - немного уменьшаем текст */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .about-content p {
-        line-height: 1.7;
-    }
+.season-tag {
+    display: inline-block;
+    padding: 6px 20px;
+    min-width: 80px;
+    height: 28px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 15px;
+    background: transparent;
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: 500;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
-/* ===== АДАПТИВНЫЕ ШРИФТЫ ===== */
-
-
-
-/* Планшеты (768px - 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-    h1 {
-        font-size: 110px;
-    }
-    h2 {
-        font-size: 40px;
-        margin-bottom: 50px;
-    }
-    h3 {
-        font-size: 20px;
-    }
-    p, li, .btn, .btn-link {
-        font-size: 18px;
-    }
-    .price {
-        font-size: 24px;
-    }
-    .second {
-        font-size: 16px;
-    }
+.season-tag.active {
+    background: #75BA12;
+    border-color: #75BA12;
+    color: white;
 }
 
-/* Мобильные (до 767px) */
-@media (max-width: 767px) {
-    h1 {
-        font-size: 80px;
-    }
-    h2 {
-        font-size: 36px;
-        margin-bottom: 40px;
-    }
-    h3 {
-        font-size: 19px;
-    }
-    p, li, .btn, .btn-link {
-        font-size: 16px;
-    }
-    .price {
-        font-size: 22px;
-    }
-    .second {
-        font-size: 13px;
-    }
+.season-tag:hover {
+    border-color: #75BA12;
+    background: rgba(117, 186, 18, 0.1);
+    color: #20B859;
 }
 
-/* Маленькие телефоны (до 480px) */
-@media (max-width: 480px) {
-    h1 {
-        font-size: 60px;
-    }
-    h2 {
-        font-size: 32px;
+/* ===== ФИЛЬТР ПО УДОБСТВАМ НОМЕРОВ ===== */
+.features-filter {
+    margin-bottom: 40px;
+}
+
+.features-filter-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.features-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.feature-tag {
+    display: inline-block;
+    padding: 6px 20px;
+    min-width: auto;
+    height: 36px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 18px;
+    background: transparent;
+    border: 1px solid #CCCCCC;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.feature-tag.active {
+    background: #75BA12;
+    border-color: #75BA12;
+    color: white;
+}
+
+.feature-tag:hover:not(.active) {
+    border-color: #75BA12;
+    background: rgba(117, 186, 18, 0.1);
+    text-decoration: none;
+    color: #333;
+}
+
+/* ===== ТЕГИ УДОБСТВ НА КАРТОЧКАХ НОМЕРОВ ===== */
+.room-features-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.room-feature-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    height: 28px;
+    line-height: 20px;
+    border-radius: 14px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Адаптив для фильтров */
+@media (max-width: 768px) {
+    .features-filter {
         margin-bottom: 30px;
     }
-    h3 {
-        font-size: 18px;
+    
+    .features-tags {
+        gap: 8px;
     }
-    p, li {
-        font-size: 15px;
+    
+    .feature-tag {
+        padding: 4px 14px;
+        height: 32px;
+        line-height: 22px;
+        font-size: 13px;
     }
-    .price {
-        font-size: 20px;
+    
+    .room-feature-tag {
+        padding: 3px 10px;
+        height: 26px;
+        line-height: 18px;
+        font-size: 11px;
     }
 }

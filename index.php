@@ -4,7 +4,7 @@
     
     <!-- Hero -->
     <section class="hero">
-        <div class="hero-background">
+        <div class="hero_background">
             <?php 
             $hero_bg = get_theme_mod('hero_background');
             if ($hero_bg) : ?>
@@ -13,7 +13,7 @@
                 <img src="<?php echo get_template_directory_uri(); ?>/resource/img/bg_image_1.png" alt="Хребет Юрма">
             <?php endif; ?>
         </div>
-        <div class="container hero-container">
+        <div class="container hero_container">
             <h1><?php echo esc_html(get_theme_mod('hero_title', 'ХРЕБЕТ ЮРМА')); ?></h1>
             <p><?php echo esc_html(get_theme_mod('hero_subtitle', 'активный отдых на южном урале')); ?></p>
         </div>
@@ -22,11 +22,12 @@
     <!-- Проживание -->
 <section class="section room">
     <div class="container">
-        <div class="block-header">
+        <!-- <h2></h2> -->
+       <div class="tours_header">
             <h2>Проживание</h2>
-            <p class="description"> Для проживания доступны уютные комнаты на нашей базе. Наша база расположена в живописном уголке — место тихое, кругом лес. Есть как комфортные и просторные варианты, так и варианты попроще и подешевле. После насыщенного дня приятно вернуться в уютное место и отдохнуть.</p>
+            <!-- <p class="tours_description">.</p> -->
+            <p class="tours_text">Для проживания доступны уютные комнаты на нашей базе. Наша база расположена в живописном уголке — место тихое, кругом лес. Есть как комфортные и просторные варианты, так и варианты попроще и подешевле. После насыщенного дня приятно вернуться в уютное место и отдохнуть.</p>
         </div>
-
         <div class="card-grid">
             <?php
             // Получаем ID выбранных номеров
@@ -53,13 +54,13 @@
                     ?>
                     <div class="card room-card">
                         <?php if ($image_id) : ?>
-                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($room->post_title); ?>" class="card-image">
+                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($room->post_title); ?>" class="card_image">
                         <?php else : ?>
-                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card-image">
+                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Номер" class="card_image">
                         <?php endif; ?>
                         
-                        <div class="card-content">
-                            <div class="card-header">
+                        <div class="card_content">
+                            <div class="card_header">
                                 <h3><?php echo esc_html($room->post_title); ?></h3>
                                 <?php if ($capacity) : ?>
                                     <span class="second"><?php echo esc_html($capacity); ?></span>
@@ -67,7 +68,7 @@
                             </div>
                             
                             <?php if (!empty($features_list)) : ?>
-                                <ul class="card-list">
+                                <ul class="card_list">
                                     <?php foreach ($features_list as $feature) : ?>
                                         <?php $feature = trim($feature); ?>
                                         <?php if (!empty($feature)) : ?>
@@ -77,7 +78,7 @@
                                 </ul>
                             <?php endif; ?>
                             
-                            <div class="card-footer">
+                            <div class="card_footer">
                                 <?php if ($price) : ?>
                                     <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                 <?php endif; ?>
@@ -91,7 +92,7 @@
             ?>
         </div>
         
-        <div class="section-footer">
+        <div class="section_footer">
             <a href="<?php echo home_url('/проживание/'); ?>" class="btn-link">Все варианты размещения</a>
         </div>
     </div>
@@ -100,9 +101,10 @@
 <!-- Экскурсии -->
 <section class="section tours">
     <div class="container">
-        <div class="block-header">
+        <div class="tours_header">
             <h2>Маршруты</h2>
-            <p class="description">Бескрайние леса, заснеженные вершины, горные реки и скалистые хребты. Каждая поездка проходит в сопровождении опытного гида. От спокойных прогулок для новичков до дневных треков для опытных райдеров. Техника рассчитана на двоих, второй участник — 1 000 ₽</p>
+            <!-- <p class="tours_description"></p> -->
+            <p class="tours_text">Бескрайние леса, заснеженные вершины, горные реки и скалистые хребты. Каждая поездка проходит в сопровождении опытного гида. От спокойных прогулок для новичков до дневных треков для опытных райдеров. Техника рассчитана на двоих, второй участник — 1 000 ₽</p>
         </div>
         
         <div class="card-grid">
@@ -131,23 +133,23 @@
                     ?>
                     <div class="card route-card">
                         <?php if ($image_id) : ?>
-                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($tour->post_title); ?>" class="card-image">
+                            <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($tour->post_title); ?>" class="card_image">
                         <?php else : ?>
-                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Экскурсия" class="card-image">
+                            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Экскурсия" class="card_image">
                         <?php endif; ?>
                         
-                        <div class="card-content">
-                            <div class="card-header">
+                        <div class="card_content">
+                            <div class="card_header">
                                 <h3><?php echo esc_html($tour->post_title); ?></h3>
                             </div>
                             
-                            <ul class="card-list">
+                            <ul class="card_list">
                                 <li>📍 Длина: <?php echo esc_html($length); ?></li>
                                 <li>⏱ Время: <?php echo esc_html($duration); ?></li>
                                 <li>📊 Сложность: <?php echo esc_html($difficulty); ?></li>
                             </ul>
                             
-                            <div class="card-footer">
+                            <div class="card_footer">
                                 <?php if ($price) : ?>
                                     <span class="price"><?php echo number_format($price, 0, '', ' '); ?> ₽</span>
                                 <?php endif; ?>
@@ -161,11 +163,13 @@
             ?>
         </div>
         
-        <div class="section-footer">
+        <div class="section_footer">
             <a href="<?php echo home_url('//маршруты/'); ?>" class="btn-link">Все маршруты</a>
         </div>
     </div>
 </section>
+        
+
     
 <!-- Услуги -->
 <section class="section services">
@@ -198,15 +202,15 @@
                     ?>
                     <div class="card service-card">
                         <?php if ($image_id) : ?>
-                            <div class="service-card-image">
+                            <div class="service-card_image">
                                 <img src="<?php echo wp_get_attachment_url($image_id); ?>" alt="<?php echo esc_attr($service->post_title); ?>">
                             </div>
                         <?php else : ?>
-                            <div class="service-card-image">
+                            <div class="service-card_image">
                                 <img src="<?php echo get_template_directory_uri(); ?>/resource/img/placeholder.jpg" alt="Услуга">
                             </div>
                         <?php endif; ?>
-                        <div class="card-content">
+                        <div class="card_content">
                             <h3><?php echo esc_html($service->post_title); ?></h3>
                             <span class="price"><?php echo esc_html($price); ?> <?php echo esc_html($price_unit); ?></span>
                         </div>
@@ -217,7 +221,7 @@
             ?>
         </div>
         
-        <div class="section-footer">
+        <div class="section_footer">
             <a href="<?php echo home_url('/услуги/'); ?>" class="btn-link">Все услуги</a>
         </div>
     </div>
@@ -270,7 +274,7 @@
         </div>
     
         
-        <div class="section-footer">
+        <div class="section_footer">
             <a href="<?php echo home_url('/галерея/'); ?>" class="btn-link">Все фотографии</a>
         </div>
     </div>
@@ -317,16 +321,16 @@
                     }
                     ?>
                     <div class="card review-card">
-                        <img src="<?php echo get_template_directory_uri(); ?>/resource/img/quote.svg" alt="" class="review-card-background">
-                        <div class="card-content">
-                            <div class="review-header">
+                        <img src="<?php echo get_template_directory_uri(); ?>/resource/img/quote.svg" alt="" class="review-card_background">
+                        <div class="card_content">
+                            <div class="review_header">
                                 <h3><?php echo esc_html($author); ?></h3>
-                                <div class="review-rating"><?php echo $stars; ?></div>
+                                <div class="review_rating"><?php echo $stars; ?></div>
                             </div>
-                            <p class="review-text">
+                            <p class="review_text">
                                 <?php echo wp_trim_words($review_text, 30, '...'); ?>
                             </p>
-                            <span class="second review-date"><?php echo get_the_date('F Y', $slot_id); ?></span>
+                            <span class="second review_date"><?php echo get_the_date('F Y', $slot_id); ?></span>
                         </div>
                     </div>
                     <?php
@@ -335,7 +339,7 @@
             ?>
         </div>
         
-        <div class="section-footer">
+        <div class="section_footer">
             <a href="<?php echo home_url('/отзывы/'); ?>" class="btn-link">Все отзывы</a>                    
         </div>
     </div>
