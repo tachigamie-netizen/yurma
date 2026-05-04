@@ -2,22 +2,47 @@
 /*
 Template Name: Все экскурсии
 */
-get_header(); ?>
+get_header();
+
+// Получаем выбранный сезон из URL
+$current_season = isset($_GET['season']) ? sanitize_text_field($_GET['season']) : '';
+?>
 
 <main>
     <section class="section tours">
         <div class="container">
             <h2>Маршруты</h2>
             
+            <!-- Теги Зима/Лето под h2 -->
+            <div class="season-tags">
+                <a href="?season=" class="season-tag <?php echo empty($current_season) ? 'active' : ''; ?>">Все</a>
+                <a href="?season=winter" class="season-tag <?php echo $current_season == 'winter' ? 'active' : ''; ?>">Зима</a>
+                <a href="?season=summer" class="season-tag <?php echo $current_season == 'summer' ? 'active' : ''; ?>">Лето</a>
+            </div>
+            
             <div class="card-grid">
                 <?php
-                $tours_query = new WP_Query(array(
+                // Настройка запроса
+                $args = array(
                     'post_type' => 'tours',
                     'posts_per_page' => -1,
                     'post_status' => 'publish',
                     'orderby' => 'title',
                     'order' => 'ASC'
-                ));
+                );
+                
+                // Добавляем фильтр по сезону если выбран
+                if (!empty($current_season)) {
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'tour_season',
+                            'field'    => 'slug',
+                            'terms'    => $current_season,
+                        )
+                    );
+                }
+                
+                $tours_query = new WP_Query($args);
                 
                 if ($tours_query->have_posts()) :
                     while ($tours_query->have_posts()) : $tours_query->the_post();
@@ -50,7 +75,7 @@ get_header(); ?>
                     <?php endwhile;
                     wp_reset_postdata();
                 else : ?>
-                    <p>Экскурсии пока не добавлены.</p>
+                    <p>Экскурсии не найдены.</p>
                 <?php endif; ?>
             </div>
         </div>

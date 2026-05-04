@@ -36,7 +36,7 @@ get_header(); ?>
             <div class="contacts-grid">
                 <div class="contact-item">
                     <img src="<?php echo get_template_directory_uri(); ?>/resource/img/geo.png" alt="Адрес">
-                    <p>Большие Егусты, Челябинская область</p>
+                        <a href="#map" class="address-link">Большие Егусты, Челябинская область</a>
                 </div>
                 
                 <div class="contact-item">
@@ -82,13 +82,17 @@ get_header(); ?>
                 <?php endwhile;
                 wp_reset_postdata();
             else : ?>
-                <p class="second">Вопросы пока не добавлены. Зайдите в админку → FAQ → Добавить вопрос.</p>
+                <p class="second">Вопросы пока не добавлены.</p>
             <?php endif; ?>
         </div>
     </div>
 </section>
 
 <!-- Секция "Карта" -->
+     <div class="container" id="map">
+         <h2>Расположение</h2>
+        </div>
+
 <div class="fullwidth-map">
     <iframe 
         src="https://yandex.ru/map-widget/v1/?l=sat%2Cskl&ll=60.557473%2C55.722186&mode=routes&rtext=55.714181%2C60.509947~55.631032%2C60.071424&rtt=auto&ruri=~ymapsbm1%3A%2F%2Forg%3Foid%3D156121608094&um=constructor%3Ab6f6049b67c3ed00725fcdddb6139c60877a3b910ffe8a47add07b2d0e533d59&z=13" 
@@ -98,6 +102,7 @@ get_header(); ?>
         allowfullscreen>
     </iframe>
 </div>
+
 </main>
 
 <?php get_footer(); ?>

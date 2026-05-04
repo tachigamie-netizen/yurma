@@ -11,7 +11,7 @@ Version: 1.0
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;   
+    font-family: 'Gotham Pro', sans-serif;   
     color: black;
     letter-spacing: 0px;
 }
@@ -345,7 +345,7 @@ nav a:hover {
     font-size: 48px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.85);
-    letter-spacing: -3px;
+    letter-spacing: 0px;
     line-height: 110%;
     word-wrap: break-word;
     white-space: normal;
@@ -435,7 +435,7 @@ nav a:hover {
     gap: 10px;
     background: rgba(0, 0, 0, 0.3);
     color: white;
-    padding: 150px 0 10px 0;
+    padding: 150px 0 20px 0;
 }
 
 .service-card .card_content h3,
@@ -643,9 +643,11 @@ nav a:hover {
 
 /* ===== ПОДВАЛ ===== */
 footer {
+    flex-shrink: 0; /* Запрещаем футеру сжиматься */
     background: #1A1A1A;
     color: white;
     padding: 60px 0 20px;
+    width: 100%; /* Гарантируем полную ширину */
 }
 
 footer a:hover {
@@ -966,13 +968,16 @@ html, body {
 }
 
 body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /* Запасной вариант для новых браузеров */
 }
 
 main {
-    flex: 1;
+    flex: 1 0 auto; /* Растягивается, занимая всё свободное место */
 }
 
 /* ===== АДАПТИВ ===== */
@@ -1357,7 +1362,7 @@ main {
 /* ===== ПЛАНШЕТЫ (768px - 1024px) ===== */
 @media (min-width: 768px) and (max-width: 1024px) {
     .card-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
     }
     
@@ -1890,5 +1895,137 @@ main {
 @media (min-width: 768px) and (max-width: 1024px) {
     .section:first-of-type {
         margin-top: 80px;
+    }
+}
+/* ===== ТЕГИ ЗИМА/ЛЕТО ===== */
+.season-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.season-tag {
+    display: inline-block;
+    padding: 6px 20px;
+    min-width: 80px;
+    height: 28px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 15px;
+    background: transparent;
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: 500;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.season-tag.active {
+    background: #75BA12;
+    border-color: #75BA12;
+    color: white;
+}
+
+.season-tag:hover {
+    border-color: #75BA12;
+    background: rgba(117, 186, 18, 0.1);
+    color: #20B859;
+}
+
+/* ===== ФИЛЬТР ПО УДОБСТВАМ НОМЕРОВ ===== */
+.features-filter {
+    margin-bottom: 40px;
+}
+
+.features-filter-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.features-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.feature-tag {
+    display: inline-block;
+    padding: 6px 20px;
+    min-width: auto;
+    height: 36px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 18px;
+    background: transparent;
+    border: 1px solid #CCCCCC;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.feature-tag.active {
+    background: #75BA12;
+    border-color: #75BA12;
+    color: white;
+}
+
+.feature-tag:hover:not(.active) {
+    border-color: #75BA12;
+    background: rgba(117, 186, 18, 0.1);
+    text-decoration: none;
+    color: #333;
+}
+
+/* ===== ТЕГИ УДОБСТВ НА КАРТОЧКАХ НОМЕРОВ ===== */
+.room-features-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.room-feature-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    height: 28px;
+    line-height: 20px;
+    border-radius: 14px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Адаптив для фильтров */
+@media (max-width: 768px) {
+    .features-filter {
+        margin-bottom: 30px;
+    }
+    
+    .features-tags {
+        gap: 8px;
+    }
+    
+    .feature-tag {
+        padding: 4px 14px;
+        height: 32px;
+        line-height: 22px;
+        font-size: 13px;
+    }
+    
+    .room-feature-tag {
+        padding: 3px 10px;
+        height: 26px;
+        line-height: 18px;
+        font-size: 11px;
     }
 }

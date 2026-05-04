@@ -37,8 +37,8 @@
         <div class="footer_bottom">
             <p>© 2026 Клуб активного отдыха «ЮРМА»</p>
             <div class="second">
-                <a href="#">Договор оферты</a>     
-                <span class="separator">|</span>
+                <!-- <a href="#">Договор оферты</a>     
+                <span class="separator">|</span> -->
                 <a href="#">Политика конфиденциальности</a>
             </div>
         </div>

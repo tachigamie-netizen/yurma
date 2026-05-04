@@ -7,7 +7,7 @@ get_header(); ?>
 <main>
     <section class="section services">
         <div class="container">
-            <h2>Все услуги</h2>
+            <h2>Услуги</h2>
             
             <div class="card-grid">
                 <?php

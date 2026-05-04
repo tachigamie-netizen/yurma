@@ -11,7 +11,7 @@
 <header class="header">
     <div class="container header_container">
         <a href="<?php echo home_url('/'); ?>" class="logo">
-            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo.svg" alt="Логотип">
+            <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo2 2.svg" alt="Логотип">
         </a>
 
         <!-- Бургер-кнопка (только на мобильных) -->
@@ -34,11 +34,11 @@
                 </ul>
             </nav>
             <!-- Кнопка WhatsApp внутри мобильного меню -->
-            <a href="#" class="btn btn-whatsapp mobile-wa">WhatsApp</a>
+            <a href="#" class="btn  mobile-wa btn-primary">Забронировать</a>
         </div>
 
         <!-- Кнопка WhatsApp для десктопа -->
-        <a href="#" class="btn btn-whatsapp desktop-wa">WhatsApp</a>
+        <a href="#" class="btn  desktop-wa btn-primary">Забронировать</a>
     </div>
 </header>
 
