@@ -2029,3 +2029,70 @@ main {
         font-size: 11px;
     }
 }
+
+/* Фиксированный header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+/* Убираем padding-top у body */
+body {
+    padding-top: 0;
+}
+
+/* Добавляем отступ только для hero или первого блока */
+.hero,
+.hero_background,
+section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* Компенсируем отступ для всех секций кроме hero */
+.section:not(:first-of-type) {
+    margin-top: 0;
+}
+
+/* Для страниц без hero (например, rooms, tours) */
+.accommodation:first-of-type,
+.tours:first-of-type,
+.services:first-of-type,
+.reviews-page:first-of-type {
+    padding-top: 80px;
+}
+
+/* Для мобильных устройств - фиксированный header без анимации */
+@media (max-width: 768px) {
+    header {
+        position: fixed !important;
+        top: 0 !important;
+        transform: none !important; /* Отключаем анимацию */
+        transition: none !important;
+    }
+    
+    body {
+        padding-top: 0px !important;
+    }
+}
+
+/* Для планшетов (опционально) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    header {
+        position: fixed !important;
+        top: 0 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    body {
+        padding-top: 0px !important;
+    }
+}

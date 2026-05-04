@@ -143,3 +143,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Управление header - простая и надёжная версия
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('header');
+    let lastScrollY = window.scrollY;
+    let hoverTimeout;
+    
+    // Скрываем при скролле вниз, показываем при скролле вверх
+    window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Скролл вниз - скрываем
+            header.style.transform = 'translateY(-100%)';
+        } else if (currentScrollY < lastScrollY) {
+            // Скролл вверх - показываем
+            header.style.transform = 'translateY(0)';
+        }
+        
+        // В самом верху всегда показываем
+        if (currentScrollY < 50) {
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+    
+    // При наведении в верхние 80px - показываем
+    document.addEventListener('mousemove', function(e) {
+        if (e.clientY < 80) {
+            header.style.transform = 'translateY(0)';
+            
+            clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(function() {
+                if (window.scrollY > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                }
+            }, 2000);
+        }
+    });
+});
