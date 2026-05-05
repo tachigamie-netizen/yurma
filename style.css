@@ -567,7 +567,6 @@ nav a:hover {
     display: grid;
     grid-template-columns: 576px 1fr;
     gap: 16px;
-    margin-bottom: 60px;
 }
 
 .gallery-large {
@@ -733,6 +732,10 @@ footer a:hover {
 
 .second .separator {
     opacity: 0.4;
+}
+
+.footer_text{
+    margin-top: 20px;
 }
 
 /* ===== МОДАЛЬНЫЕ ОКНА ===== */
@@ -2187,4 +2190,35 @@ section:first-of-type {
     gap: 12px;
     margin-bottom: 40px;
     /* justify-content: center; - удалить если есть */
+}
+
+.footer_content {
+    display: flex;
+}
+
+/* ===== КНОПКИ В ВИДЕ ПОДЧЕРКНУТОГО ТЕКСТА ===== */
+.section_footer {
+    text-align: left; /* Выравнивание по левому краю */
+    margin-top: 20px; /* Отступ 20px от вышестоящего блока */
+}
+
+.btn-link {
+    display: inline-block;
+    background: transparent;
+    color: #333333;
+    border: none; /* Убираем рамку */
+    border-radius: 0; /* Убираем скругление */
+    padding: 0; /* Убираем внутренние отступы */
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: underline; /* Подчеркивание */
+    text-underline-offset: 4px; /* Отступ подчеркивания от текста */
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    background: transparent; /* Убираем фон при наведении */
+    color: #75BA12; /* Меняем цвет текста при наведении */
+    text-decoration: underline;
 }

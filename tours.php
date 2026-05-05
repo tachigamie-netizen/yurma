@@ -70,7 +70,6 @@ function active_class($condition) {
 <div class="tours-filters">
     <!-- Длина -->
     <div class="filter-item">
-        <span class="filter-icon">📏</span>
         <div class="filter-buttons">
             <a href="?length=&time=<?php echo $time_filter; ?>&season=<?php echo $current_season; ?>&difficulty=<?php echo $difficulty_filter; ?>" 
                class="filter-pill <?php echo empty($length_filter) ? 'active' : ''; ?>">Любая</a>
@@ -85,7 +84,6 @@ function active_class($condition) {
     
     <!-- Время -->
     <div class="filter-item">
-        <span class="filter-icon">⏱</span>
         <div class="filter-buttons">
             <a href="?time=&length=<?php echo $length_filter; ?>&season=<?php echo $current_season; ?>&difficulty=<?php echo $difficulty_filter; ?>" 
                class="filter-pill <?php echo empty($time_filter) ? 'active' : ''; ?>">Любое</a>
@@ -100,7 +98,6 @@ function active_class($condition) {
     
     <!-- Сложность -->
     <div class="filter-item">
-        <span class="filter-icon">📊</span>
         <div class="filter-buttons">
             <a href="?difficulty=&season=<?php echo $current_season; ?>&length=<?php echo $length_filter; ?>&time=<?php echo $time_filter; ?>" 
                class="filter-pill <?php echo empty($difficulty_filter) ? 'active' : ''; ?>">Любая</a>

@@ -1,10 +1,16 @@
 <footer class="footer">
     <div class="container">
         <!-- Информ -->
-        <h3>Клуб активного отдыха «ЮРМА»</h3>
         <div class="footer_content">
+ 
             <div class="footer_about">
+                <div class="footer_logo">
+                <a href="<?php echo home_url('/'); ?>" class="logo footer">
+                <img src="<?php echo get_template_directory_uri(); ?>/resource/img/logo 2.svg" alt="Логотип">
+                </a></div>
+                <div class="footer_text">
                 <p>Прокат квадроциклов и снегоходов в горах Южного Урала. Более 10 лет показываем гостям настоящую природу.</p>
+                </div>
             </div>
 
             <!-- Меню -->
@@ -12,8 +18,8 @@
                 <div class="menu_col">
                     <li><a href="<?php echo home_url(); ?>">Главная</a></li>
                     <li><a href="<?php echo home_url('/проживание/'); ?>">Проживание</a></li>
-                    <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
                     <li><a href="<?php echo home_url('/маршруты/'); ?>">Экскурсии</a></li> 
+                    <li><a href="<?php echo home_url('/услуги/'); ?>">Услуги</a></li>
                 </div>
                 <div class="menu_col">
                     <li><a href="<?php echo home_url('/галерея/'); ?>">Галерея</a></li>

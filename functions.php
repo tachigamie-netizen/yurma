@@ -1055,4 +1055,87 @@ function add_default_seasons() {
 }
 add_action('after_switch_theme', 'add_default_seasons');
 
+
+// ========== КНОПКА "НАВЕРХ" ==========
+function add_scroll_to_top_button() {
+    ?>
+    <style>
+        /* Стили кнопки "Наверх" */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #72C500;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .scroll-to-top:hover {
+            background-color: #72C500;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Адаптив для мобильных */
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
+            }
+        }
+    </style>
+    
+    <button class="scroll-to-top" aria-label="Наверх">↑</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollBtn = document.querySelector('.scroll-to-top');
+            
+            if (!scrollBtn) return;
+            
+            // Показываем/скрываем кнопку при прокрутке
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+            
+            // Плавная прокрутка при клике
+            scrollBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    <?php
+}
+add_action('wp_footer', 'add_scroll_to_top_button');
 ?>
