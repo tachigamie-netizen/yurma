@@ -375,7 +375,7 @@ nav a:hover {
 .tours_header {
     display: flex;
     flex-direction: column;
-    max-width: 650px;
+    max-width: 750px;
     margin-bottom: 60px;
 }
 
@@ -542,11 +542,28 @@ nav a:hover {
     text-align: right;
 }
 
+.rating-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px 40px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.rating-wrapper:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
 .rating-summary {
     display: flex;
     align-items: baseline;
     gap: 15px;
-    margin-bottom: 30px;
 }
 
 .rating-summary-number {
@@ -561,6 +578,48 @@ nav a:hover {
     color: #666;
     line-height: 1;
 }
+
+
+.reviews-button-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .rating-wrapper {
+        width: 30%;
+        min-width: 300px;
+        padding: 25px 30px;
+    }
+    
+    .rating-summary-number {
+        font-size: 56px;
+    }
+    
+    .reviews-button-wrapper .btn {
+        width: 100%;
+    }
+}
+
+/* Мобильные устройства (явно указываем) */
+@media (max-width: 767px) {
+    .rating-wrapper {
+        width: 100%;
+        padding: 20px 40px;
+        gap: 30px;
+        box-sizing: border-box;
+    }
+    
+    .reviews-button-wrapper .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+    
+
+
+
+
 
 /* ===== ГАЛЕРЕЯ ===== */
 .gallery-grid {
@@ -689,7 +748,7 @@ footer a:hover {
     display: flex;
     flex-direction: column;
     width: calc((100% / 12) * 3);
-    gap: 20px;
+    gap: 12px;
 }
 
 .footer_phone {
@@ -703,7 +762,7 @@ footer a:hover {
 .footer_social {
     display: flex;
     gap: 15px;
-    margin-top: 0;
+    margin-top: 10px;
 }
 
 .footer_social img {
@@ -1338,10 +1397,7 @@ main {
     gap: 16px;
 }
 
-/* ===== КНОПКА "ОСТАВИТЬ ОТЗЫВ" НА СТРАНИЦЕ ОТЗЫВОВ ===== */
-.reviews-button-wrapper {
-    margin-bottom: 40px;
-}
+
 
 /* ===== ВТОРОЙ СТИЛЬ ДЛЯ КАРТОЧЕК (закомментирован) ===== */
 /*
@@ -1414,10 +1470,7 @@ main {
     .card-grid .route-card:nth-child(4) {
         display: none;
     }
-    
-    .reviews-button-wrapper {
-        margin-bottom: 40px;
-    }
+
 }
 
 /* ===== МОБИЛЬНЫЕ (до 767px) ===== */
@@ -1487,10 +1540,7 @@ main {
         display: none;
     }
     
-    .reviews-button-wrapper {
-        margin-bottom: 40px;
-    }
-}
+
 
 /* ===== МАЛЕНЬКИЕ ТЕЛЕФОНЫ (до 480px) ===== */
 @media (max-width: 480px) {
@@ -1512,9 +1562,7 @@ main {
     .gallery-all-grid {
         gap: 16px;
     }
-    .reviews-button-wrapper {
-        margin-bottom: 40px;
-    }
+
 }
 
 /* ===== УСЛУГИ ===== */
@@ -2222,3 +2270,4 @@ section:first-of-type {
     color: #75BA12; /* Меняем цвет текста при наведении */
     text-decoration: underline;
 }
+

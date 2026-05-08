@@ -17,31 +17,33 @@ get_header(); ?>
             <?php endif; ?>
             
             <!-- Блок среднего рейтинга -->
-            <?php 
-            $stats = get_reviews_statistics();
-            $average_rating = $stats['avg_rating'];
-            $total_reviews = $stats['total_reviews'];
-            ?>
-            
-            <?php if ($total_reviews > 0) : ?>
-            <div class="rating-summary">
-                <span class="rating-summary-number"><?php echo number_format($average_rating, 1); ?></span>
-                <span class="rating-summary-total"><?php echo $total_reviews; ?> <?php 
-                    $last_digit = $total_reviews % 10;
-                    $last_two = $total_reviews % 100;
-                    if ($last_two >= 11 && $last_two <= 14) echo 'отзывов';
-                    elseif ($last_digit == 1) echo 'отзыв';
-                    elseif ($last_digit >= 2 && $last_digit <= 4) echo 'отзыва';
-                    else echo 'отзывов';
-                ?></span>
+            <div class="rating-wrapper">
+                <?php 
+                $stats = get_reviews_statistics();
+                $average_rating = $stats['avg_rating'];
+                $total_reviews = $stats['total_reviews'];
+                ?>
+                
+                <?php if ($total_reviews > 0) : ?>
+                <div class="rating-summary">
+                    <span class="rating-summary-number"><?php echo number_format($average_rating, 1); ?></span>
+                    <span class="rating-summary-total"><?php echo $total_reviews; ?> <?php 
+                        $last_digit = $total_reviews % 10;
+                        $last_two = $total_reviews % 100;
+                        if ($last_two >= 11 && $last_two <= 14) echo 'отзывов';
+                        elseif ($last_digit == 1) echo 'отзыв';
+                        elseif ($last_digit >= 2 && $last_digit <= 4) echo 'отзыва';
+                        else echo 'отзывов';
+                    ?></span>
+                </div>
+                <?php endif; ?>
+                
+                <!-- Кнопка открытия формы -->
+                <div class="reviews-button-wrapper">
+                    <button class="btn btn-primary" onclick="openReviewModal()">Оставить отзыв</button>
+                </div>
             </div>
-            <?php endif; ?>
-            
-            <!-- Кнопка открытия формы -->
-            <div class="reviews-button-wrapper">
-                <button class="btn btn-primary" onclick="openReviewModal()">Оставить отзыв</button>
-            </div>
-            
+
             <!-- Список отзывов -->
             <div class="reviews-list">
                 <?php

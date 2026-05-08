@@ -63,10 +63,9 @@
                             <div class="card_header">
                                 <h3><?php echo esc_html($room->post_title); ?></h3>
                                 <?php if ($capacity) : ?>
-                                    <span class="second"><?php echo esc_html($capacity); ?></span>
+                                    <span class="second"><?php echo esc_html($capacity); ?>местный</span>
                                 <?php endif; ?>
                             </div>
-                            
                             <?php if (!empty($features_list)) : ?>
                                 <ul class="card_list">
                                     <?php foreach ($features_list as $feature) : ?>
